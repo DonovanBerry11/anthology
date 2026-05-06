@@ -7,22 +7,27 @@
   <title>Anthology</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page--front">
 
 <div class="container">
 
   <header class="masthead">
-    <div class="masthead__eyebrow">Est. 2026</div>
+    <div class="masthead__top-bar">
+      <span>Est. 2026</span>
+      <span id="masthead-date"></span>
+    </div>
     <a href="/" class="masthead__wordmark">Anthology</a>
     <p class="masthead__tagline">Essays on politics, economics, society, and technology</p>
+    <hr class="masthead__rule">
   </header>
 
-  <div class="index-bar">
-    <span class="index-bar__label">Essays</span>
-    <nav class="index-bar__links">
-      <a href="#">About</a>
-    </nav>
-  </div>
+  <nav class="section-nav">
+    <a href="#">Politics</a>
+    <a href="#">Economics</a>
+    <a href="#">Technology</a>
+    <a href="#">Society</a>
+    <a href="#">About</a>
+  </nav>
 
   <main>
     <ul class="essay-list">
@@ -37,7 +42,6 @@
         </p>
         <a class="essay-item__read" href="essays/worst-of-both-worlds.html">Read essay</a>
       </li>
-
 
       <li class="essay-item">
         <div class="essay-item__meta">May 2026</div>
@@ -64,7 +68,7 @@
       <!--
         TO ADD A NEW ESSAY:
         1. Copy the <li class="essay-item">...</li> block above.
-        2. Paste it above this comment.
+        2. Paste it above this comment (new essays go at the top).
         3. Update the date, title, href, and standfirst.
         4. Create the corresponding HTML file in the essays/ folder.
       -->
@@ -77,6 +81,15 @@
   </footer>
 
 </div>
+
+<script>
+  const el = document.getElementById('masthead-date');
+  if (el) {
+    el.textContent = new Date().toLocaleDateString('en-GB', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+  }
+</script>
 
 </body>
 </html>
