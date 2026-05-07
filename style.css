@@ -490,3 +490,163 @@ a.masthead__wordmark:hover { text-decoration: none; }
   .essay-page-header { padding: 36px 0 28px; margin-bottom: 36px; }
   .essay-body p:first-child::first-letter { font-size: 3.2em; }
 }
+
+/* ─── SECTION HEADERS (front page) ───────────────────── */
+
+.section-header {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--text);
+  margin-bottom: 40px;
+}
+
+section#notes {
+  margin-bottom: 64px;
+}
+
+/* Hide the notes section entirely when the list is empty */
+section#notes:has(ul.note-list:empty) {
+  display: none;
+}
+
+/* ─── NOTE LIST (front page) ──────────────────────────── */
+
+.note-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 0;
+  list-style: none;
+  margin-bottom: 0;
+}
+
+.note-item {
+  padding: 0 36px 36px;
+  border-right: 1px solid var(--rule);
+}
+
+.note-item:first-child {
+  padding-left: 0;
+}
+
+/* Remove right border from every 3rd item and last item */
+.note-item:nth-child(3n),
+.note-item:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.note-item__meta {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.note-item__title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.note-item__title a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.note-item__title a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.note-item__standfirst {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #555;
+}
+
+/* ─── NOTE PAGE ───────────────────────────────────────── */
+
+.note-body {
+  padding-bottom: 80px;
+}
+
+.note-body p {
+  font-size: 18.5px;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 1.55em;
+}
+
+/* No drop cap on notes — they are too short for one */
+.note-body p:first-child::first-letter {
+  font-size: inherit;
+  line-height: inherit;
+  float: none;
+  margin: 0;
+}
+
+.note-body em { font-style: italic; }
+.note-body strong { font-weight: 700; }
+
+/* ─── RESPONSIVE (notes) ──────────────────────────────── */
+
+@media (max-width: 720px) {
+  .note-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .note-item:nth-child(3n) {
+    border-right: 1px solid var(--rule);
+    padding-right: 36px;
+  }
+
+  .note-item:nth-child(2n),
+  .note-item:last-child {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .note-item:nth-child(2n+1) {
+    padding-left: 0;
+    padding-right: 24px;
+  }
+
+  .note-item:nth-child(2n) {
+    padding-left: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .note-list {
+    grid-template-columns: 1fr;
+  }
+
+  .note-item,
+  .note-item:nth-child(3n),
+  .note-item:nth-child(2n),
+  .note-item:nth-child(2n+1) {
+    padding-left: 0;
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+  }
+
+  .note-item:last-child {
+    border-bottom: none;
+  }
+
+  .note-body p { font-size: 17px; }
+}

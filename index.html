@@ -22,81 +22,70 @@
   </header>
 
   <nav class="section-nav">
-    <a href="#">Politics</a>
-    <a href="#">Economics</a>
-    <a href="#">Technology</a>
-    <a href="#">Society</a>
-    <a href="#">About</a>
+    <a href="#notes">Notes</a>
+    <a href="#essays">Essays</a>
+    <a href="about.html">About</a>
   </nav>
 
   <main>
-    <ul class="essay-list">
 
-      <li class="essay-item">
-        <div class="essay-item__meta">May 2026</div>
-        <h2 class="essay-item__title">
-          <a href="essays/the-demographic-vetocracy.html">The Demographic Vetocracy</a>
-        </h2>
-        <p class="essay-item__standfirst">
-          Across the advanced democracies, four reforms have stalled at once: pension finance, housing supply, fiscal stabilisation and the climate transition. They share a structural cause that is rarely named — an aged median voter who rationally vetoes any reform whose costs would fall on her — and the institutional architecture designed to constrain such vetoes is now eroding precisely as the demographic incentive to use it peaks. The result is not failure but the predictable equilibrium of a vetocracy.
-        </p>
-        <a class="essay-item__read" href="essays/the-demographic-vetocracy.html">Read essay</a>
-      </li>
-
-
-      <li class="essay-item">
-        <div class="essay-item__meta">May 2026</div>
-        <h2 class="essay-item__title">
-          <a href="essays/the-regulatory-sovereign.html">The Regulatory Sovereign</a>
-        </h2>
-        <p class="essay-item__standfirst">
-          Europe has constructed the world's most sophisticated regulatory architecture — the AI Act, the Digital Markets Act, the Carbon Border Adjustment Mechanism — and remains structurally dependent on American compute, American security guarantees, and American capital markets. At the moment when it faces its greatest strategic demands in a generation — rearmament, energy independence, industrial renewal — the EU's fiscal framework makes the capital required structurally impossible to raise. The regulatory sovereign can govern the markets of others; it cannot, by governing alone, become sovereign over the forces that will determine which societies thrive.
-        </p>
-        <a class="essay-item__read" href="essays/the-regulatory-sovereign.html">Read essay</a>
-      </li>
-
-      <li class="essay-item">
-        <div class="essay-item__meta">May 2026</div>
-        <h2 class="essay-item__title">
-          <a href="essays/worst-of-both-worlds.html">The Worst of Both Worlds</a>
-        </h2>
-        <p class="essay-item__standfirst">
-          Trump's economic interventionism is not a version of Chinese state capitalism or European industrial policy — it is political capitalism: a patronage system in which state power functions as an instrument of personal deal-making. The result combines the inefficiency risks of state intervention with the concentration risks of unaccountable private power, without the compensating benefits of either. What it produces is not industrial capacity but oligarchic political economy, structured around relationship rather than rule and considerably harder to dismantle than any policy platform.
-        </p>
-        <a class="essay-item__read" href="essays/worst-of-both-worlds.html">Read essay</a>
-      </li>
-
-      <li class="essay-item">
-        <div class="essay-item__meta">May 2026</div>
-        <h2 class="essay-item__title">
-          <a href="essays/the-ownership-problem.html">The Ownership Problem</a>
-        </h2>
-        <p class="essay-item__standfirst">
-          The AI productivity revolution is a capital distribution event, not primarily a labour market event. The policy debate is asking the wrong question — not how to compensate displaced labour, but who will own the productive capacity of the AI economy.
-        </p>
-        <a class="essay-item__read" href="essays/the-ownership-problem.html">Read essay</a>
-      </li>
-
-      <li class="essay-item">
-        <div class="essay-item__meta">May 2026</div>
-        <h2 class="essay-item__title">
-          <a href="essays/knowledge-without-stakes.html">Knowledge Without Stakes</a>
-        </h2>
-        <p class="essay-item__standfirst">
-          What makes human knowledge trustworthy is not that it is socially produced — it is that it is answerable to consequences. As AI systems become more autonomous, the gap between the surface of accountable knowledge and the absence of its underlying structure is where the real risk lives.
-        </p>
-        <a class="essay-item__read" href="essays/knowledge-without-stakes.html">Read essay</a>
-      </li>
+    <section id="notes">
+      <h2 class="section-header">Notes</h2>
+      <ul class="note-list">
 
       <!--
-        TO ADD A NEW ESSAY:
-        1. Copy the <li class="essay-item">...</li> block above.
-        2. Paste it above this comment (new essays go at the top).
-        3. Update the date, title, href, and standfirst.
-        4. Create the corresponding HTML file in the essays/ folder.
+        TO ADD A NEW NOTE:
+        publish_note.py injects <li class="note-item"> blocks above this comment.
       -->
 
-    </ul>
+      </ul>
+    </section>
+
+    <section id="essays">
+      <h2 class="section-header">Essays</h2>
+      <ul class="essay-list">
+
+        <li class="essay-item">
+          <div class="essay-item__meta">May 2026</div>
+          <h2 class="essay-item__title">
+            <a href="essays/worst-of-both-worlds.html">The Worst of Both Worlds</a>
+          </h2>
+          <p class="essay-item__standfirst">
+            Trump's economic interventionism is not a version of Chinese state capitalism or European industrial policy — it is political capitalism: a patronage system in which state power functions as an instrument of personal deal-making. The result combines the inefficiency risks of state intervention with the concentration risks of unaccountable private power, without the compensating benefits of either. What it produces is not industrial capacity but oligarchic political economy, structured around relationship rather than rule and considerably harder to dismantle than any policy platform.
+          </p>
+          <a class="essay-item__read" href="essays/worst-of-both-worlds.html">Read essay</a>
+        </li>
+
+        <li class="essay-item">
+          <div class="essay-item__meta">May 2026</div>
+          <h2 class="essay-item__title">
+            <a href="essays/the-ownership-problem.html">The Ownership Problem</a>
+          </h2>
+          <p class="essay-item__standfirst">
+            The AI productivity revolution is a capital distribution event, not primarily a labour market event. The policy debate is asking the wrong question — not how to compensate displaced labour, but who will own the productive capacity of the AI economy.
+          </p>
+          <a class="essay-item__read" href="essays/the-ownership-problem.html">Read essay</a>
+        </li>
+
+        <li class="essay-item">
+          <div class="essay-item__meta">May 2026</div>
+          <h2 class="essay-item__title">
+            <a href="essays/knowledge-without-stakes.html">Knowledge Without Stakes</a>
+          </h2>
+          <p class="essay-item__standfirst">
+            What makes human knowledge trustworthy is not that it is socially produced — it is that it is answerable to consequences. As AI systems become more autonomous, the gap between the surface of accountable knowledge and the absence of its underlying structure is where the real risk lives.
+          </p>
+          <a class="essay-item__read" href="essays/knowledge-without-stakes.html">Read essay</a>
+        </li>
+
+        <!--
+          TO ADD A NEW ESSAY:
+          publish_essay.py injects <li class="essay-item"> blocks above this comment.
+        -->
+
+      </ul>
+    </section>
+
   </main>
 
   <footer class="site-footer">
