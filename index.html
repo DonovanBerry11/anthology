@@ -160,6 +160,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/auth/auth.js"></script>
+<script>
+  // Use onAuthStateChange so the nav updates on INITIAL_SESSION (reliable on PKCE flows)
+  // and passes the session directly, avoiding a second getSession() call.
+  _supabase.auth.onAuthStateChange((_event, session) => updateAuthNav(session))
+</script>
 
 <script>
   const el = document.getElementById('masthead-date');
