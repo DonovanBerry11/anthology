@@ -25,6 +25,7 @@
     <a href="#notes">Notes</a>
     <a href="#essays">Essays</a>
     <a href="about.html">About</a>
+    <a href="/login.html" id="auth-nav-link">Sign in</a>
   </nav>
 
   <main>
@@ -155,6 +156,15 @@
   </footer>
 
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+  // Update sign-in nav link based on session state
+  updateAuthNav()
+  _supabase.auth.onAuthStateChange(() => updateAuthNav())
+</script>
 
 <script>
   const el = document.getElementById('masthead-date');

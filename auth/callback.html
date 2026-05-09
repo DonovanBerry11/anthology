@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--auth">
+
+<div class="container">
+  <div class="auth-box">
+    <a class="auth-wordmark" href="/">Anthology</a>
+
+    <p class="auth-status" id="status">Verifying your link…</p>
+
+    <form class="auth-form" id="reset-form" style="display:none">
+      <h2 class="auth-heading">Set a new password</h2>
+      <div class="auth-field">
+        <label for="password">New password</label>
+        <input type="password" id="password" required minlength="8"
+               placeholder="Minimum 8 characters" autocomplete="new-password">
+      </div>
+      <div class="auth-field">
+        <label for="confirm">Confirm password</label>
+        <input type="password" id="confirm" required minlength="8"
+               placeholder="Repeat new password" autocomplete="new-password">
+      </div>
+      <button type="submit" class="auth-btn">Set password</button>
+      <p class="auth-error" id="reset-error" role="alert"></p>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
+<script>
+(async () => {
+  const statusEl = document.getElementById('status')
+
+  // Handle PKCE code exchange (new key format default)
+  if (window.location.search.includes('code=')) {
+    const { error } = await _supabase.auth.exchangeCodeForSession(window.location.search)
+    if (error) {
+      statusEl.innerHTML =
+        'This link has expired or is invalid. <a href="../login.html">Return to login</a>'
+      return
+    }
+  }
+
+  // Listen for auth state — handles both PKCE and hash-based flows
+  _supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      statusEl.style.display = 'none'
+      const form = document.getElementById('reset-form')
+      form.style.display = 'block'
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        const password = document.getElementById('password').value
+        const confirm  = document.getElementById('confirm').value
+        const errorEl  = document.getElementById('reset-error')
+        errorEl.textContent = ''
+
+        if (password !== confirm) {
+          errorEl.textContent = 'Passwords do not match.'
+          return
+        }
+
+        const btn = form.querySelector('.auth-btn')
+        btn.disabled = true
+        btn.textContent = 'Saving…'
+
+        const { error } = await _supabase.auth.updateUser({ password })
+        if (error) {
+          errorEl.textContent = error.message
+          btn.disabled = false
+          btn.textContent = 'Set password'
+        } else {
+          window.location.href = '../account.html'
+        }
+      })
+
+    } else if (event === 'SIGNED_IN') {
+      statusEl.textContent = 'Account confirmed — welcome to Anthology.'
+      setTimeout(() => { window.location.href = '../account.html' }, 1500)
+    }
+  })
+})()
+</script>
+
+</body>
+</html>

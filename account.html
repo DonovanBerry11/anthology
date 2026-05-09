@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account — Anthology</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page--auth">
+
+<div class="container">
+  <div class="auth-box">
+    <a class="auth-wordmark" href="/">Anthology</a>
+
+    <div id="account-view" style="display:none">
+      <h1 class="auth-heading">Your account</h1>
+
+      <div class="account-field">
+        <span class="account-label">Email</span>
+        <span class="account-value" id="account-email"></span>
+      </div>
+
+      <div class="account-field">
+        <span class="account-label">Member since</span>
+        <span class="account-value" id="account-since"></span>
+      </div>
+
+      <div class="auth-actions">
+        <button class="auth-btn auth-btn--secondary" id="change-password-btn">
+          Change password
+        </button>
+        <button class="auth-btn auth-btn--ghost" id="signout-btn">
+          Sign out
+        </button>
+      </div>
+
+      <p class="auth-success" id="reset-success" role="status" style="display:none">
+        Password updated successfully.
+      </p>
+    </div>
+
+    <p class="auth-status" id="loading">Loading…</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+(async () => {
+  const session = await requireAuth()
+  if (!session) return
+
+  const user = session.user
+  document.getElementById('loading').style.display = 'none'
+  document.getElementById('account-view').style.display = 'block'
+  document.getElementById('account-email').textContent = user.email
+
+  const since = new Date(user.created_at).toLocaleDateString('en-GB', {
+    year: 'numeric', month: 'long', day: 'numeric'
+  })
+  document.getElementById('account-since').textContent = since
+
+  // Show success message if redirected after password reset
+  if (new URLSearchParams(window.location.search).get('reset') === 'success') {
+    document.getElementById('reset-success').style.display = 'block'
+  }
+
+  // Change password — sends a reset email
+  document.getElementById('change-password-btn').addEventListener('click', async () => {
+    const btn = document.getElementById('change-password-btn')
+    btn.disabled = true
+    btn.textContent = 'Sending link…'
+    await _supabase.auth.resetPasswordForEmail(user.email, {
+      redirectTo: SITE_URL + '/auth/callback.html'
+    })
+    btn.textContent = 'Reset link sent — check your email'
+  })
+
+  // Sign out
+  document.getElementById('signout-btn').addEventListener('click', async () => {
+    await _supabase.auth.signOut()
+    window.location.href = '/'
+  })
+})()
+</script>
+
+</body>
+</html>

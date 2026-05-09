@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create an Anthology account.">
+  <title>Create account — Anthology</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page--auth">
+
+<div class="container">
+  <div class="auth-box">
+    <a class="auth-wordmark" href="/">Anthology</a>
+
+    <div id="signup-view">
+      <h1 class="auth-heading">Create an account</h1>
+
+      <form class="auth-form" id="signup-form" novalidate>
+        <div class="auth-field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" required
+                 placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="password">Password</label>
+          <input type="password" id="password" required minlength="8"
+                 placeholder="Minimum 8 characters" autocomplete="new-password">
+        </div>
+        <button type="submit" class="auth-btn" id="signup-btn">Create account</button>
+        <p class="auth-error" id="signup-error" role="alert"></p>
+      </form>
+
+      <p class="auth-alt">Already have an account? <a href="/login.html">Sign in</a></p>
+    </div>
+
+    <div id="confirm-view" style="display:none">
+      <h1 class="auth-heading">Check your email</h1>
+      <p class="auth-status">
+        We've sent a confirmation link to <strong id="confirm-email"></strong>.
+        Click the link to activate your account.
+      </p>
+      <p class="auth-alt" style="margin-top:2rem">
+        Wrong address? <a href="/signup.html">Start over</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// Redirect if already signed in
+_supabase.auth.getSession().then(({ data: { session } }) => {
+  if (session) window.location.href = '/account.html'
+})
+
+document.getElementById('signup-form').addEventListener('submit', async (e) => {
+  e.preventDefault()
+  const email    = document.getElementById('email').value.trim()
+  const password = document.getElementById('password').value
+  const errorEl  = document.getElementById('signup-error')
+  const btn      = document.getElementById('signup-btn')
+  errorEl.textContent = ''
+
+  btn.disabled = true
+  btn.textContent = 'Creating account…'
+
+  const { error } = await _supabase.auth.signUp({
+    email,
+    password,
+    options: { emailRedirectTo: SITE_URL + '/auth/callback.html' }
+  })
+
+  if (error) {
+    errorEl.textContent = error.message
+    btn.disabled = false
+    btn.textContent = 'Create account'
+  } else {
+    document.getElementById('signup-view').style.display = 'none'
+    document.getElementById('confirm-view').style.display = 'block'
+    document.getElementById('confirm-email').textContent = email
+  }
+})
+</script>
+
+</body>
+</html>
