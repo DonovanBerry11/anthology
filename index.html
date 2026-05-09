@@ -7,46 +7,148 @@
   <title>Anthology</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page--front">
 
 <div class="container">
 
   <header class="masthead">
-    <div class="masthead__eyebrow">Est. 2026</div>
+    <div class="masthead__top-bar">
+      <span>Est. 2026</span>
+      <span id="masthead-date"></span>
+    </div>
     <a href="/" class="masthead__wordmark">Anthology</a>
     <p class="masthead__tagline">Essays on politics, economics, society, and technology</p>
+    <hr class="masthead__rule">
   </header>
 
-  <div class="index-bar">
-    <span class="index-bar__label">Essays</span>
-    <nav class="index-bar__links">
-      <a href="#">About</a>
-    </nav>
-  </div>
+  <nav class="section-nav">
+    <a href="#notes">Notes</a>
+    <a href="#essays">Essays</a>
+    <a href="about.html">About</a>
+    <a href="/login.html" id="auth-nav-link">Sign in</a>
+  </nav>
 
   <main>
-    <ul class="essay-list">
+
+    <section id="notes">
+      <h2 class="section-header">Notes</h2>
+      <ul class="note-list">
+
+      <li class="note-item">
+        <div class="note-item__meta">May 2026</div>
+        <h2 class="note-item__title">
+          <a href="notes/hostage-infrastructure.html">Hostage Infrastructure</a>
+        </h2>
+        <p class="note-item__standfirst">
+          Gulf sovereign AI investment replicates the petrodollar bargain — resource wealth traded for US protection — but the collateral being offered is fixed infrastructure inside the threat zone, not liquid assets that hold their value in a crisis.
+        </p>
+      </li>
+
+      <li class="note-item">
+        <div class="note-item__meta">May 2026</div>
+        <h2 class="note-item__title">
+          <a href="notes/dollar-friendly-fire.html">Dollar Friendly Fire</a>
+        </h2>
+        <p class="note-item__standfirst">
+          Dollar exclusion is a coercive instrument that depreciates with use: each sanctions episode demonstrates to every state precisely why holding dollar reserves is dangerous, and accelerates the construction of alternatives it was meant to forestall.
+        </p>
+      </li>
+
+      <li class="note-item">
+        <div class="note-item__meta">May 2026</div>
+        <h2 class="note-item__title">
+          <a href="notes/the-ratchet.html">The Ratchet</a>
+        </h2>
+        <p class="note-item__standfirst">
+          Each year, roughly a third of US Treasury debt matures and must be refinanced. The bonds issued at the historic lows of 2020 are now rolling over at rates three to four times higher. The mechanism is arithmetic, not political — and unlike a deficit or a spending increase, it cannot be reversed by any future administration's decisions.
+        </p>
+      </li>
+
+      <li class="note-item">
+        <div class="note-item__meta">May 2026</div>
+        <h2 class="note-item__title">
+          <a href="notes/the-subtraction-problem.html">The Subtraction Problem</a>
+        </h2>
+        <p class="note-item__standfirst">
+          US net migration turned negative in 2025 for the first time in decades. This is being covered as an immigration enforcement story. It is also a structural labour economics story, and the arithmetic has no substitute.
+        </p>
+      </li>
+
+      <!--
+        TO ADD A NEW NOTE:
+        publish_note.py injects <li class="note-item"> blocks above this comment.
+      -->
+
+      </ul>
+    </section>
+
+    <section id="essays">
+      <h2 class="section-header">Essays</h2>
+      <ul class="essay-list">
+
+      <li class="essay-item">
+        <div class="essay-item__meta">2026-05-06</div>
+        <h2 class="essay-item__title">
+          <a href="essays/the-regulatory-sovereign.html">The Regulatory Sovereign</a>
+        </h2>
+        <p class="essay-item__standfirst">
+          Europe has constructed the world's most sophisticated regulatory architecture — the AI Act, the Digital Markets Act, the Carbon Border Adjustment Mechanism — and remains structurally dependent on American compute, American security guarantees, and American capital markets. At the moment when it faces its greatest strategic demands in a generation — rearmament, energy independence, industrial renewal — the EU's fiscal framework makes the capital required structurally impossible to raise. The regulatory sovereign can govern the markets of others; it cannot, by governing alone, become sovereign over the forces that will determine which societies thrive.
+        </p>
+        <a class="essay-item__read" href="essays/the-regulatory-sovereign.html">Read essay</a>
+      </li>
 
       <li class="essay-item">
         <div class="essay-item__meta">May 2026</div>
         <h2 class="essay-item__title">
-          <a href="essays/knowledge-without-stakes.html">Knowledge Without Stakes</a>
+          <a href="essays/the-bluff-that-held.html">The Bluff That Held, The Logic That Didn't</a>
         </h2>
         <p class="essay-item__standfirst">
-          What makes human knowledge trustworthy is not that it is socially produced — it is that it is answerable to consequences. As AI systems become more autonomous, the gap between the surface of accountable knowledge and the absence of its underlying structure is where the real risk lives.
+          Operation Sindoor has been celebrated as proof that nuclear deterrence between India and Pakistan is robust — India struck deep into Pakistani territory, the threshold held, and the crisis was managed. The argument here is that this triumphalist reading is precisely wrong: both states have now learned through practice that limited war under nuclear shadow is manageable, and that belief, rather than the arsenals themselves, is the primary new source of instability in South Asia.
         </p>
-        <a class="essay-item__read" href="essays/knowledge-without-stakes.html">Read essay</a>
+        <a class="essay-item__read" href="essays/the-bluff-that-held.html">Read essay</a>
       </li>
 
-      <!--
-        TO ADD A NEW ESSAY:
-        1. Copy the <li class="essay-item">...</li> block above.
-        2. Paste it above this comment.
-        3. Update the date, title, href, and standfirst.
-        4. Create the corresponding HTML file in the essays/ folder.
-      -->
+        <li class="essay-item">
+          <div class="essay-item__meta">May 2026</div>
+          <h2 class="essay-item__title">
+            <a href="essays/worst-of-both-worlds.html">The Worst of Both Worlds</a>
+          </h2>
+          <p class="essay-item__standfirst">
+            Trump's economic interventionism is not a version of Chinese state capitalism or European industrial policy — it is political capitalism: a patronage system in which state power functions as an instrument of personal deal-making. The result combines the inefficiency risks of state intervention with the concentration risks of unaccountable private power, without the compensating benefits of either. What it produces is not industrial capacity but oligarchic political economy, structured around relationship rather than rule and considerably harder to dismantle than any policy platform.
+          </p>
+          <a class="essay-item__read" href="essays/worst-of-both-worlds.html">Read essay</a>
+        </li>
 
-    </ul>
+        <li class="essay-item">
+          <div class="essay-item__meta">May 2026</div>
+          <h2 class="essay-item__title">
+            <a href="essays/the-ownership-problem.html">The Ownership Problem</a>
+          </h2>
+          <p class="essay-item__standfirst">
+            The AI productivity revolution is a capital distribution event, not primarily a labour market event. The policy debate is asking the wrong question — not how to compensate displaced labour, but who will own the productive capacity of the AI economy.
+          </p>
+          <a class="essay-item__read" href="essays/the-ownership-problem.html">Read essay</a>
+        </li>
+
+        <li class="essay-item">
+          <div class="essay-item__meta">May 2026</div>
+          <h2 class="essay-item__title">
+            <a href="essays/knowledge-without-stakes.html">Knowledge Without Stakes</a>
+          </h2>
+          <p class="essay-item__standfirst">
+            What makes human knowledge trustworthy is not that it is socially produced — it is that it is answerable to consequences. As AI systems become more autonomous, the gap between the surface of accountable knowledge and the absence of its underlying structure is where the real risk lives.
+          </p>
+          <a class="essay-item__read" href="essays/knowledge-without-stakes.html">Read essay</a>
+        </li>
+
+        <!--
+          TO ADD A NEW ESSAY:
+          publish_essay.py injects <li class="essay-item"> blocks above this comment.
+        -->
+
+      </ul>
+    </section>
+
   </main>
 
   <footer class="site-footer">
@@ -54,6 +156,19 @@
   </footer>
 
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+
+<script>
+  const el = document.getElementById('masthead-date');
+  if (el) {
+    el.textContent = new Date().toLocaleDateString('en-GB', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+  }
+</script>
 
 </body>
 </html>
