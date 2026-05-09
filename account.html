@@ -48,17 +48,11 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/auth/auth.js"></script>
 <script>
-// Use INITIAL_SESSION instead of getSession() — with PKCE flow, getSession()
-// can return null before the client has finished restoring from localStorage,
-// causing a redirect loop. INITIAL_SESSION fires once the client has fully
-// resolved the session state, making it the reliable gate for protected pages.
-_supabase.auth.onAuthStateChange((event, session) => {
-  if (event !== 'INITIAL_SESSION') return
+let _accountReady = false
 
-  if (!session) {
-    window.location.href = '/login.html'
-    return
-  }
+function _showAccount(session) {
+  if (_accountReady) return
+  _accountReady = true
 
   const user = session.user
   document.getElementById('loading').style.display = 'none'
@@ -70,12 +64,10 @@ _supabase.auth.onAuthStateChange((event, session) => {
   })
   document.getElementById('account-since').textContent = since
 
-  // Show success message if redirected after password reset
   if (new URLSearchParams(window.location.search).get('reset') === 'success') {
     document.getElementById('reset-success').style.display = 'block'
   }
 
-  // Change password — sends a reset email
   document.getElementById('change-password-btn').addEventListener('click', async () => {
     const btn = document.getElementById('change-password-btn')
     btn.disabled = true
@@ -86,12 +78,41 @@ _supabase.auth.onAuthStateChange((event, session) => {
     btn.textContent = 'Reset link sent — check your email'
   })
 
-  // Sign out
   document.getElementById('signout-btn').addEventListener('click', async () => {
     await _supabase.auth.signOut()
     window.location.href = '/'
   })
+}
+
+// Primary path: onAuthStateChange fires SIGNED_IN when a stored session is
+// restored on page load (or when the user just signed in). SIGNED_OUT means
+// no session — redirect to login.
+_supabase.auth.onAuthStateChange((event, session) => {
+  if (session) {
+    _showAccount(session)
+  } else if (event === 'SIGNED_OUT') {
+    if (!_accountReady) window.location.href = '/login.html'
+  }
 })
+
+// Fallback: getSession() covers the case where the auth state change event
+// fires before our listener was registered, or is delayed by PKCE initialization.
+// Runs after a short tick to let the Supabase client settle.
+setTimeout(async () => {
+  if (_accountReady) return
+  const { data: { session } } = await _supabase.auth.getSession()
+  if (session) {
+    _showAccount(session)
+  } else {
+    // Give onAuthStateChange one more second before giving up
+    setTimeout(async () => {
+      if (_accountReady) return
+      const { data: { session: s2 } } = await _supabase.auth.getSession()
+      if (s2) _showAccount(s2)
+      else window.location.href = '/login.html'
+    }, 1000)
+  }
+}, 200)
 </script>
 
 </body>
