@@ -651,6 +651,109 @@ section#notes:has(ul.note-list:empty) {
   .note-body p { font-size: 17px; }
 }
 
+/* ─── DISPATCH PAGE ──────────────────────────────────────── */
+
+.dispatch-body {
+  padding-bottom: 80px;
+}
+
+.dispatch-body p {
+  font-size: 18.5px;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 1.55em;
+}
+
+.dispatch-body p:first-child::first-letter {
+  font-size: inherit;
+  line-height: inherit;
+  float: none;
+  margin: 0;
+}
+
+.dispatch-body em { font-style: italic; }
+.dispatch-body strong { font-weight: 700; }
+
+.dispatch-body a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.dispatch-body a:hover {
+  opacity: 0.65;
+}
+
+.dispatch-section-header {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 2.2em 0 0.6em;
+}
+
+/* ─── DISPATCH INDEX LIST ─────────────────────────────────── */
+
+.dispatch-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.dispatch-item {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.dispatch-item__meta {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.dispatch-item__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 10px;
+}
+
+.dispatch-item__title a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.dispatch-item__title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.dispatch-item__standfirst {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+
+.dispatch-item__read {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .dispatch-body p { font-size: 17px; }
+}
+
 /* ─── AUTH PAGES ─────────────────────────────────────────── */
 
 .page--auth .container {
