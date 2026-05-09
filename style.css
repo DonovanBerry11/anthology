@@ -417,6 +417,66 @@ a.masthead__wordmark:hover { text-decoration: none; }
 
 .essay-body strong { font-weight: 700; }
 
+.essay-body a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.essay-body a:hover { opacity: 0.65; }
+
+/* Footnote superscripts in body text */
+.essay-body sup {
+  font-size: 0.68em;
+  line-height: 0;
+  vertical-align: super;
+}
+
+.essay-body sup a {
+  color: var(--muted);
+  text-decoration: none;
+  font-family: var(--sans);
+  font-weight: 600;
+}
+
+.essay-body sup a:hover {
+  color: var(--text);
+  opacity: 1;
+}
+
+/* Footnotes section at end of essay/about */
+.footnotes {
+  margin-top: 3em;
+  padding-top: 1.4em;
+  border-top: 1px solid var(--rule);
+}
+
+.footnotes ol {
+  padding-left: 1.4em;
+  margin: 0;
+}
+
+.footnotes li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin-bottom: 0.75em;
+  font-family: var(--sans);
+}
+
+.footnotes li a {
+  color: var(--muted);
+}
+
+.footnotes li .footnote-back {
+  font-size: 12px;
+  margin-left: 4px;
+  text-decoration: none;
+  opacity: 0.5;
+}
+
+.footnotes li .footnote-back:hover { opacity: 1; }
+
 .essay-body hr {
   border: none;
   border-top: 1px solid var(--rule);
