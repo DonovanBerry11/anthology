@@ -48,9 +48,17 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/auth/auth.js"></script>
 <script>
-(async () => {
-  const session = await requireAuth()
-  if (!session) return
+// Use INITIAL_SESSION instead of getSession() — with PKCE flow, getSession()
+// can return null before the client has finished restoring from localStorage,
+// causing a redirect loop. INITIAL_SESSION fires once the client has fully
+// resolved the session state, making it the reliable gate for protected pages.
+_supabase.auth.onAuthStateChange((event, session) => {
+  if (event !== 'INITIAL_SESSION') return
+
+  if (!session) {
+    window.location.href = '/login.html'
+    return
+  }
 
   const user = session.user
   document.getElementById('loading').style.display = 'none'
@@ -83,7 +91,7 @@
     await _supabase.auth.signOut()
     window.location.href = '/'
   })
-})()
+})
 </script>
 
 </body>
