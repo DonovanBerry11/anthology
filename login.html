@@ -93,13 +93,18 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   btn.disabled = true
   btn.textContent = 'Signing in…'
 
-  const { error } = await _supabase.auth.signInWithPassword({ email, password })
+  const { data, error } = await _supabase.auth.signInWithPassword({ email, password })
 
   if (error) {
     // Surface a friendlier message for unconfirmed emails
     errorEl.textContent = error.message.includes('Email not confirmed')
       ? 'Please confirm your email address first — check your inbox.'
       : error.message
+    btn.disabled = false
+    btn.textContent = 'Sign in'
+  } else if (!data.session) {
+    // signInWithPassword succeeded but returned no session — email not confirmed
+    errorEl.textContent = 'Please confirm your email address first — check your inbox.'
     btn.disabled = false
     btn.textContent = 'Sign in'
   } else {

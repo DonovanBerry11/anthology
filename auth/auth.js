@@ -14,7 +14,6 @@ const SUPABASE_KEY = 'sb_publishable_eBmXtZ0QxVcdethdAy2NSg_-izzQaoJ'
 // supabase global is provided by the CDN <script> loaded before this file
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {
-    flowType: 'pkce',
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true

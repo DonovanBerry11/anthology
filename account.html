@@ -84,35 +84,33 @@ function _showAccount(session) {
   })
 }
 
-// Primary path: onAuthStateChange fires SIGNED_IN when a stored session is
-// restored on page load (or when the user just signed in). SIGNED_OUT means
-// no session — redirect to login.
+// onAuthStateChange fires INITIAL_SESSION once the client has resolved the stored
+// session on page load. SIGNED_IN fires after an active sign-in or token refresh.
+// Handle both events: show account if session present, redirect if not.
 _supabase.auth.onAuthStateChange((event, session) => {
-  if (session) {
-    _showAccount(session)
+  if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') {
+    if (session) {
+      _showAccount(session)
+    } else {
+      // No session on page load — not authenticated
+      window.location.href = '/login.html'
+    }
   } else if (event === 'SIGNED_OUT') {
     if (!_accountReady) window.location.href = '/login.html'
   }
 })
 
-// Fallback: getSession() covers the case where the auth state change event
-// fires before our listener was registered, or is delayed by PKCE initialization.
-// Runs after a short tick to let the Supabase client settle.
+// Safety fallback: if onAuthStateChange doesn't fire within 3s,
+// fall back to getSession() directly.
 setTimeout(async () => {
   if (_accountReady) return
   const { data: { session } } = await _supabase.auth.getSession()
   if (session) {
     _showAccount(session)
   } else {
-    // Give onAuthStateChange one more second before giving up
-    setTimeout(async () => {
-      if (_accountReady) return
-      const { data: { session: s2 } } = await _supabase.auth.getSession()
-      if (s2) _showAccount(s2)
-      else window.location.href = '/login.html'
-    }, 1000)
+    window.location.href = '/login.html'
   }
-}, 200)
+}, 3000)
 </script>
 
 </body>
