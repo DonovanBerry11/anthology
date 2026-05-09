@@ -28,9 +28,11 @@ async function requireAuth() {
   return session
 }
 
-// Utility: update nav auth link based on session state
-async function updateAuthNav() {
-  const { data: { session } } = await _supabase.auth.getSession()
+// Utility: update nav auth link based on session state.
+// Accepts an optional session argument (passed from onAuthStateChange) to avoid
+// a redundant getSession() call and ensure the update happens synchronously
+// when the INITIAL_SESSION event fires on page load.
+function updateAuthNav(session) {
   const link = document.getElementById('auth-nav-link')
   if (!link) return
   if (session) {
@@ -41,3 +43,7 @@ async function updateAuthNav() {
     link.href = '/login.html'
   }
 }
+
+// Wire up nav on every auth state change (including INITIAL_SESSION on load).
+// Called here so every page that loads auth.js gets the listener automatically.
+_supabase.auth.onAuthStateChange((_event, session) => updateAuthNav(session))
