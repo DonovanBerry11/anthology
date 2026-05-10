@@ -25,6 +25,22 @@
         <span class="account-value" id="account-since"></span>
       </div>
 
+      <div class="account-interests">
+        <span class="account-interests__label">Reading interests</span>
+        <p class="account-interests__hint">What topics, regions, or questions do you want Anthology to focus on? Up to 300 words.</p>
+        <textarea
+          class="account-interests__textarea"
+          id="interests-textarea"
+          rows="5"
+          placeholder="e.g. UK domestic politics, central bank policy, AI regulation, Premier League football…"
+        ></textarea>
+        <div class="account-interests__footer">
+          <span class="account-interests__wordcount" id="interests-wordcount">0 / 300 words</span>
+          <span class="account-interests__status" id="interests-status"></span>
+          <button class="auth-btn auth-btn--secondary" id="interests-save-btn" disabled>Save</button>
+        </div>
+      </div>
+
       <div class="auth-actions">
         <button class="auth-btn auth-btn--secondary" id="change-password-btn">
           Change password
@@ -68,6 +84,66 @@ function _showAccount(session) {
     document.getElementById('reset-success').style.display = 'block'
   }
 
+  // ── Reading interests ──────────────────────────────────────────────────
+  const textarea    = document.getElementById('interests-textarea')
+  const wordcount   = document.getElementById('interests-wordcount')
+  const statusEl    = document.getElementById('interests-status')
+  const saveBtn     = document.getElementById('interests-save-btn')
+  const MAX_WORDS   = 300
+
+  function countWords(text) {
+    return text.trim() === '' ? 0 : text.trim().split(/\s+/).length
+  }
+
+  // Load saved value from user_metadata
+  const saved = user.user_metadata?.reading_interests || ''
+  textarea.value = saved
+  let lastSaved = saved
+  wordcount.textContent = `${countWords(saved)} / ${MAX_WORDS} words`
+
+  function updateUI() {
+    const words = countWords(textarea.value)
+    const over  = words > MAX_WORDS
+    wordcount.textContent = `${words} / ${MAX_WORDS} words`
+    wordcount.classList.toggle('account-interests__wordcount--over', over)
+    const changed = textarea.value !== lastSaved
+    saveBtn.disabled = !changed || over
+    if (changed) {
+      statusEl.textContent = ''
+      statusEl.className = 'account-interests__status'
+    }
+  }
+
+  textarea.addEventListener('input', updateUI)
+
+  saveBtn.addEventListener('click', async () => {
+    saveBtn.disabled = true
+    saveBtn.textContent = 'Saving…'
+    statusEl.textContent = ''
+
+    const { error } = await _supabase.auth.updateUser({
+      data: { reading_interests: textarea.value.trim() }
+    })
+
+    if (error) {
+      statusEl.textContent = 'Could not save — please try again.'
+      statusEl.className = 'account-interests__status account-interests__status--error'
+      saveBtn.disabled = false
+    } else {
+      lastSaved = textarea.value
+      statusEl.textContent = 'Saved.'
+      statusEl.className = 'account-interests__status account-interests__status--saved'
+      setTimeout(() => {
+        statusEl.textContent = ''
+        statusEl.className = 'account-interests__status'
+      }, 3000)
+    }
+
+    saveBtn.textContent = 'Save'
+    updateUI()
+  })
+  // ── End reading interests ──────────────────────────────────────────────
+
   document.getElementById('change-password-btn').addEventListener('click', async () => {
     const btn = document.getElementById('change-password-btn')
     btn.disabled = true
@@ -84,33 +160,35 @@ function _showAccount(session) {
   })
 }
 
-// onAuthStateChange fires INITIAL_SESSION once the client has resolved the stored
-// session on page load. SIGNED_IN fires after an active sign-in or token refresh.
-// Handle both events: show account if session present, redirect if not.
+// Primary path: onAuthStateChange fires SIGNED_IN when a stored session is
+// restored on page load (or when the user just signed in). SIGNED_OUT means
+// no session — redirect to login.
 _supabase.auth.onAuthStateChange((event, session) => {
-  if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') {
-    if (session) {
-      _showAccount(session)
-    } else {
-      // No session on page load — not authenticated
-      window.location.href = '/login.html'
-    }
+  if (session) {
+    _showAccount(session)
   } else if (event === 'SIGNED_OUT') {
     if (!_accountReady) window.location.href = '/login.html'
   }
 })
 
-// Safety fallback: if onAuthStateChange doesn't fire within 3s,
-// fall back to getSession() directly.
+// Fallback: getSession() covers the case where the auth state change event
+// fires before our listener was registered, or is delayed by PKCE initialization.
+// Runs after a short tick to let the Supabase client settle.
 setTimeout(async () => {
   if (_accountReady) return
   const { data: { session } } = await _supabase.auth.getSession()
   if (session) {
     _showAccount(session)
   } else {
-    window.location.href = '/login.html'
+    // Give onAuthStateChange one more second before giving up
+    setTimeout(async () => {
+      if (_accountReady) return
+      const { data: { session: s2 } } = await _supabase.auth.getSession()
+      if (s2) _showAccount(s2)
+      else window.location.href = '/login.html'
+    }, 1000)
   }
-}, 3000)
+}, 200)
 </script>
 
 </body>

@@ -1059,6 +1059,88 @@ section#notes:has(ul.note-list:empty) {
   font-size: 1rem;
 }
 
+/* ─── ACCOUNT INTERESTS ──────────────────────────────────── */
+
+.account-interests {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.account-interests__label {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.account-interests__hint {
+  font-family: var(--serif);
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+
+.account-interests__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0.65rem 0.75rem;
+  resize: vertical;
+  min-height: 110px;
+  transition: border-color 0.15s;
+  outline: none;
+}
+
+.account-interests__textarea:focus {
+  border-color: var(--text);
+}
+
+.account-interests__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  gap: 1rem;
+}
+
+.account-interests__wordcount {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.account-interests__wordcount--over {
+  color: #c0392b;
+}
+
+.account-interests__status {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--muted);
+  min-height: 1.2em;
+}
+
+.account-interests__status--saved {
+  color: var(--text);
+}
+
+.account-interests__status--error {
+  color: #c0392b;
+}
+
 /* ─── AUTH NAV LINK ──────────────────────────────────────── */
 
 .section-nav a#auth-nav-link {
