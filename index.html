@@ -25,8 +25,6 @@
     <a href="#notes">Notes</a>
     <a href="#essays">Essays</a>
     <a href="#dispatches">Dispatches</a>
-    <a href="#uk-politics">UK Politics</a>
-    <a href="#us-sports">US Sports</a>
     <a href="about.html">About</a>
     <a href="/login.html" id="auth-nav-link">Sign in</a>
   </nav>
@@ -46,16 +44,6 @@
     <section id="dispatches">
       <h2 class="section-header">Dispatches</h2>
       <ul class="dispatch-list" id="dispatches-list"></ul>
-    </section>
-
-    <section id="uk-politics">
-      <h2 class="section-header">UK Politics</h2>
-      <ul class="uk-politics-list" id="uk-politics-list"></ul>
-    </section>
-
-    <section id="us-sports">
-      <h2 class="section-header">US Sports</h2>
-      <ul class="us-sports-list" id="us-sports-list"></ul>
     </section>
 
   </main>
@@ -220,11 +208,26 @@
       bySection[sec].push(p);
     }
 
-    renderSection('notes-list',       bySection['notes']       || [], renderNote,       interestTokens);
-    renderSection('essays-list',      bySection['essays']      || [], renderEssay,      interestTokens);
-    renderSection('dispatches-list',  bySection['dispatches']  || [], renderDispatch,   interestTokens);
-    renderSection('uk-politics-list', bySection['uk-politics'] || [], renderUKPolitics, interestTokens);
-    renderSection('us-sports-list',   bySection['us-sports']   || [], renderUSSports,   interestTokens);
+    // Merge all dispatch-like content into a single list
+    const allDispatches = [
+      ...(bySection['dispatches']  || []).map(p => ({ ...p, _renderer: renderDispatch })),
+      ...(bySection['uk-politics'] || []).map(p => ({ ...p, _renderer: renderUKPolitics })),
+      ...(bySection['us-sports']   || []).map(p => ({ ...p, _renderer: renderUSSports })),
+    ];
+
+    renderSection('notes-list',      bySection['notes']  || [], renderNote,  interestTokens);
+    renderSection('essays-list',     bySection['essays'] || [], renderEssay, interestTokens);
+
+    // Dispatches section: all dispatch types, each rendered with its own renderer
+    const dispatchEl = document.getElementById('dispatches-list');
+    if (dispatchEl) {
+      if (allDispatches.length === 0) {
+        dispatchEl.innerHTML = '';
+      } else {
+        const sorted = sortPieces(allDispatches, interestTokens);
+        dispatchEl.innerHTML = sorted.map(p => p._renderer(p)).join('\n');
+      }
+    }
   }
 
   buildFeed();
