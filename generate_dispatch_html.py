@@ -62,13 +62,15 @@ def md_to_html_body(md_text, dispatch_type):
     Markdown-to-HTML converter for dispatch body.
     Daily: paragraphs, *em*, **strong** only (no subheadings).
     Weekly: also handles ## subheadings → <h2 class="dispatch-section-header">.
-    Both: handles bullet lists (- item).
+    Both: handles bullet lists (- item) and markdown tables (| col | col |).
     """
     lines = md_text.strip().splitlines()
     paragraphs = []
     current = []
     list_items = []
+    table_rows = []
     in_list = False
+    in_table = False
 
     def flush_current():
         if current:
@@ -80,37 +82,74 @@ def md_to_html_body(md_text, dispatch_type):
             paragraphs.append(('list', list(list_items)))
         list_items.clear()
 
+    def flush_table():
+        if table_rows:
+            paragraphs.append(('table', list(table_rows)))
+        table_rows.clear()
+
+    def is_table_separator(s):
+        return bool(re.match(r'^\|[-| :]+\|$', s))
+
+    def parse_table_row(s):
+        # Split on | and strip whitespace; drop empty first/last from surrounding pipes
+        cells = [c.strip() for c in s.split('|')]
+        return [c for c in cells if c != '']
+
     for line in lines:
         stripped = line.strip()
 
         # Skip title line
         if stripped.startswith('# ') and not stripped.startswith('## '):
             flush_current()
-            in_list = False
             flush_list()
+            flush_table()
+            in_list = False
+            in_table = False
             continue
 
-        # Section header (## ) — weekly only, but parse for both
+        # Section header (## )
         if stripped.startswith('## '):
             flush_current()
             flush_list()
+            flush_table()
             in_list = False
+            in_table = False
             heading_text = stripped[3:].strip()
             paragraphs.append(('heading', heading_text))
             continue
 
-        # Horizontal rule — treat as paragraph boundary
+        # Horizontal rule
         if stripped == '---':
             flush_current()
             flush_list()
+            flush_table()
             in_list = False
+            in_table = False
+            continue
+
+        # Table separator row — skip, marks header/body boundary
+        if stripped.startswith('|') and is_table_separator(stripped):
+            continue
+
+        # Table row
+        if stripped.startswith('|') and stripped.endswith('|'):
+            if current:
+                flush_current()
+                in_list = False
+            if in_list:
+                flush_list()
+                in_list = False
+            in_table = True
+            table_rows.append(parse_table_row(stripped))
             continue
 
         # Bullet list item
         if stripped.startswith('- ') or stripped.startswith('* '):
             if current:
                 flush_current()
-                in_list = False
+            if in_table:
+                flush_table()
+                in_table = False
             in_list = True
             list_items.append(stripped[2:])
             continue
@@ -120,6 +159,9 @@ def md_to_html_body(md_text, dispatch_type):
             if in_list:
                 flush_list()
                 in_list = False
+            elif in_table:
+                flush_table()
+                in_table = False
             else:
                 flush_current()
             continue
@@ -128,23 +170,40 @@ def md_to_html_body(md_text, dispatch_type):
         if in_list:
             flush_list()
             in_list = False
+        if in_table:
+            flush_table()
+            in_table = False
         current.append(line)
 
     flush_current()
     flush_list()
+    flush_table()
 
     html_parts = []
     for item_type, content in paragraphs:
         if item_type == 'heading':
             if dispatch_type == 'weekly':
                 html_parts.append(f'<h2 class="dispatch-section-header">{content}</h2>')
-            # For daily, skip headings (they shouldn't appear, but handle gracefully)
         elif item_type == 'list':
             items_html = '\n'.join(f'      <li>{inline(i)}</li>' for i in content)
             html_parts.append(f'<ul class="dispatch-list-items">\n{items_html}\n    </ul>')
+        elif item_type == 'table':
+            rows = content
+            if not rows:
+                continue
+            # First row is header
+            header_html = ''.join(f'<th>{inline(c)}</th>' for c in rows[0])
+            body_rows_html = ''
+            for row in rows[1:]:
+                body_rows_html += '<tr>' + ''.join(f'<td>{inline(c)}</td>' for c in row) + '</tr>\n'
+            html_parts.append(
+                f'<table class="dispatch-table">\n'
+                f'  <thead><tr>{header_html}</tr></thead>\n'
+                f'  <tbody>\n{body_rows_html}  </tbody>\n'
+                f'</table>'
+            )
         elif item_type == 'para':
             text = content.strip()
-            # Skip standalone italic meta lines
             if re.match(r'^\*[^*]+\*$', text):
                 continue
             html_parts.append(f'<p>{inline(text)}</p>')

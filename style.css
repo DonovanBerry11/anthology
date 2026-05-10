@@ -814,6 +814,38 @@ section#notes:has(ul.note-list:empty) {
   .dispatch-body p { font-size: 17px; }
 }
 
+/* ─── DISPATCH TABLE ──────────────────────────────────────────────────────── */
+
+.dispatch-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: 13px;
+  margin: 0.5em 0 1.4em;
+}
+
+.dispatch-table th {
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 10.5px;
+  color: var(--muted);
+  padding: 6px 12px 6px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.dispatch-table td {
+  padding: 8px 12px 8px 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--text);
+  vertical-align: top;
+}
+
+.dispatch-table tr:last-child td {
+  border-bottom: none;
+}
+
 /* ─── UK POLITICS + US SPORTS LISTS (share dispatch-item styles) ─────────── */
 
 .uk-politics-list,
