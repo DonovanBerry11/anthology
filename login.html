@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to Anthology.">
+  <title>Sign in — Anthology</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page--auth">
+
+<div class="container">
+  <div class="auth-box">
+    <a class="auth-back" href="/">← Anthology</a>
+
+    <!-- Sign in view -->
+    <div id="login-view">
+      <h1 class="auth-heading">Sign in</h1>
+
+      <form class="auth-form" id="login-form" novalidate>
+        <div class="auth-field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" required
+                 placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label for="password">
+            Password
+            <button type="button" class="auth-link-btn" id="forgot-btn">Forgot password?</button>
+          </label>
+          <input type="password" id="password" required
+                 placeholder="Your password" autocomplete="current-password">
+        </div>
+        <button type="submit" class="auth-btn" id="login-btn">Sign in</button>
+        <p class="auth-error" id="login-error" role="alert"></p>
+      </form>
+
+      <p class="auth-alt">No account? <a href="/signup.html">Create one</a></p>
+    </div>
+
+    <!-- Forgot password view -->
+    <div id="forgot-view" style="display:none">
+      <h1 class="auth-heading">Reset password</h1>
+      <p class="auth-status">Enter your email and we'll send a reset link.</p>
+
+      <form class="auth-form" id="forgot-form" novalidate>
+        <div class="auth-field">
+          <label for="reset-email">Email address</label>
+          <input type="email" id="reset-email" required
+                 placeholder="you@example.com" autocomplete="email">
+        </div>
+        <button type="submit" class="auth-btn" id="reset-btn">Send reset link</button>
+        <p class="auth-error" id="forgot-error" role="alert"></p>
+      </form>
+
+      <p class="auth-alt"><a href="#" id="back-to-login">Back to sign in</a></p>
+    </div>
+
+    <!-- Reset sent view -->
+    <div id="reset-sent-view" style="display:none">
+      <h1 class="auth-heading">Check your email</h1>
+      <p class="auth-status">
+        We've sent a password reset link to <strong id="reset-email-confirm"></strong>.
+      </p>
+      <p class="auth-alt" style="margin-top:2rem"><a href="/login.html">Back to sign in</a></p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// Redirect if already signed in
+_supabase.auth.getSession().then(({ data: { session } }) => {
+  if (session) window.location.href = '/account.html'
+})
+
+const show = (id) => {
+  ['login-view','forgot-view','reset-sent-view'].forEach(v => {
+    document.getElementById(v).style.display = v === id ? 'block' : 'none'
+  })
+}
+
+// Sign in
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault()
+  const email    = document.getElementById('email').value.trim()
+  const password = document.getElementById('password').value
+  const errorEl  = document.getElementById('login-error')
+  const btn      = document.getElementById('login-btn')
+  errorEl.textContent = ''
+
+  btn.disabled = true
+  btn.textContent = 'Signing in…'
+
+  const { data, error } = await _supabase.auth.signInWithPassword({ email, password })
+
+  if (error) {
+    // Surface a friendlier message for unconfirmed emails
+    errorEl.textContent = error.message.includes('Email not confirmed')
+      ? 'Please confirm your email address first — check your inbox.'
+      : error.message
+    btn.disabled = false
+    btn.textContent = 'Sign in'
+  } else if (!data.session) {
+    // signInWithPassword succeeded but returned no session — email not confirmed
+    errorEl.textContent = 'Please confirm your email address first — check your inbox.'
+    btn.disabled = false
+    btn.textContent = 'Sign in'
+  } else {
+    window.location.href = '/account.html'
+  }
+})
+
+// Toggle to forgot password
+document.getElementById('forgot-btn').addEventListener('click', () => show('forgot-view'))
+document.getElementById('back-to-login').addEventListener('click', (e) => {
+  e.preventDefault()
+  show('login-view')
+})
+
+// Send reset email
+document.getElementById('forgot-form').addEventListener('submit', async (e) => {
+  e.preventDefault()
+  const email   = document.getElementById('reset-email').value.trim()
+  const errorEl = document.getElementById('forgot-error')
+  const btn     = document.getElementById('reset-btn')
+  errorEl.textContent = ''
+
+  btn.disabled = true
+  btn.textContent = 'Sending…'
+
+  const { error } = await _supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: SITE_URL + '/auth/callback.html'
+  })
+
+  if (error) {
+    errorEl.textContent = error.message
+    btn.disabled = false
+    btn.textContent = 'Send reset link'
+  } else {
+    document.getElementById('reset-email-confirm').textContent = email
+    show('reset-sent-view')
+  }
+})
+</script>
+
+</body>
+</html>

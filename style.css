@@ -2,7 +2,7 @@
   --bg:     #fafaf8;
   --text:   #181816;
   --muted:  #888;
-  --rule:   #e0e0db;
+  --rule:   #d8d8d3;
   --sans:   'Helvetica Neue', Helvetica, Arial, sans-serif;
   --serif:  Georgia, 'Times New Roman', serif;
 }
@@ -27,7 +27,12 @@ body {
   padding: 0 28px;
 }
 
-/* ─── MASTHEAD ────────────────────────────────────────── */
+/* Wider canvas for the newspaper front page */
+.page--front .container {
+  max-width: 960px;
+}
+
+/* ─── MASTHEAD (essay pages) ──────────────────────────── */
 
 .masthead {
   padding: 52px 0 28px;
@@ -66,7 +71,82 @@ a.masthead__wordmark:hover { text-decoration: none; }
   line-height: 1.5;
 }
 
-/* ─── INDEX NAV ──────────────────────────────────────── */
+/* ─── MASTHEAD (newspaper front page) ────────────────── */
+
+.page--front .masthead {
+  text-align: center;
+  border-top: 3px solid var(--text);
+  border-bottom: none;
+  padding: 0 0 0;
+}
+
+/* Date bar: est. left, date right */
+.masthead__top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 18px;
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+}
+
+.page--front .masthead__wordmark {
+  font-size: clamp(56px, 10vw, 104px);
+  letter-spacing: -5px;
+  margin: 0 auto 10px;
+  display: block;
+}
+
+.page--front .masthead__tagline {
+  font-size: 11.5px;
+  letter-spacing: 0.2px;
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+/* Double rule — the canonical newspaper masthead separator */
+.masthead__rule {
+  border: none;
+  border-top: 3px double var(--text);
+  margin: 0;
+}
+
+/* ─── SECTION NAV ─────────────────────────────────────── */
+
+.section-nav {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  border-bottom: 1px solid var(--text);
+  margin-bottom: 48px;
+}
+
+.section-nav a {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  padding: 9px 20px;
+  border-right: 1px solid var(--rule);
+  transition: background 0.1s, color 0.1s;
+  white-space: nowrap;
+}
+
+.section-nav a:last-child { border-right: none; }
+
+.section-nav a:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* ─── INDEX NAV (essay pages fallback) ───────────────── */
 
 .index-bar {
   display: flex;
@@ -102,11 +182,9 @@ a.masthead__wordmark:hover { text-decoration: none; }
 
 .index-bar__links a:hover { color: var(--text); }
 
-/* ─── ESSAY LIST ─────────────────────────────────────── */
+/* ─── ESSAY LIST (essay pages, default) ──────────────── */
 
-.essay-list {
-  list-style: none;
-}
+.essay-list { list-style: none; }
 
 .essay-item {
   padding: 36px 0;
@@ -165,6 +243,102 @@ a.masthead__wordmark:hover { text-decoration: none; }
 }
 
 .essay-item__read:hover { opacity: 0.5; }
+
+/* ─── ESSAY LIST (newspaper front page) ──────────────── */
+
+/* Grid: 2 columns, first item spans full width as lead story */
+.page--front .essay-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 0;
+  row-gap: 0;
+  list-style: none;
+}
+
+/* Lead story — first item, full width */
+.page--front .essay-item:first-child {
+  grid-column: 1 / -1;
+  padding: 36px 0 40px;
+  border-bottom: 2px solid var(--text);
+  margin-bottom: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 64px;
+  align-items: start;
+}
+
+/* Lead story meta sits above the left column headline */
+.page--front .essay-item:first-child .essay-item__meta {
+  grid-column: 1 / -1;
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/* Lead headline — left column of the 2-col sub-grid */
+.page--front .essay-item:first-child .essay-item__title {
+  grid-column: 1;
+  font-size: clamp(28px, 3.8vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.5px;
+  margin-bottom: 0;
+  align-self: start;
+}
+
+/* Lead standfirst — right column of the 2-col sub-grid */
+.page--front .essay-item:first-child .essay-item__standfirst {
+  grid-column: 2;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #444;
+  margin-bottom: 0;
+  border-left: 1px solid var(--rule);
+  padding-left: 48px;
+  align-self: start;
+}
+
+/* Hide the "Read essay" button on the front page — headline is the link */
+.page--front .essay-item__read {
+  display: none;
+}
+
+/* Secondary stories — 2-column grid rows */
+.page--front .essay-item:not(:first-child) {
+  padding: 0 40px 36px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 36px;
+}
+
+/* Left column secondary stories (even children: 2nd, 4th…) */
+.page--front .essay-item:nth-child(even) {
+  padding-left: 0;
+  padding-right: 36px;
+  border-right: 1px solid var(--rule);
+}
+
+/* Right column secondary stories (odd non-first: 3rd, 5th…) */
+.page--front .essay-item:nth-child(odd):not(:first-child) {
+  padding-left: 36px;
+  padding-right: 0;
+}
+
+.page--front .essay-item:not(:first-child) .essay-item__title {
+  font-size: clamp(20px, 2.4vw, 26px);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.page--front .essay-item:not(:first-child) .essay-item__standfirst {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #555;
+}
+
+.page--front .essay-item:not(:first-child) .essay-item__meta {
+  margin-bottom: 10px;
+}
 
 /* ─── ESSAY PAGE: HEADER ─────────────────────────────── */
 
@@ -243,6 +417,66 @@ a.masthead__wordmark:hover { text-decoration: none; }
 
 .essay-body strong { font-weight: 700; }
 
+.essay-body a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.essay-body a:hover { opacity: 0.65; }
+
+/* Footnote superscripts in body text */
+.essay-body sup {
+  font-size: 0.68em;
+  line-height: 0;
+  vertical-align: super;
+}
+
+.essay-body sup a {
+  color: var(--muted);
+  text-decoration: none;
+  font-family: var(--sans);
+  font-weight: 600;
+}
+
+.essay-body sup a:hover {
+  color: var(--text);
+  opacity: 1;
+}
+
+/* Footnotes section at end of essay/about */
+.footnotes {
+  margin-top: 3em;
+  padding-top: 1.4em;
+  border-top: 1px solid var(--rule);
+}
+
+.footnotes ol {
+  padding-left: 1.4em;
+  margin: 0;
+}
+
+.footnotes li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin-bottom: 0.75em;
+  font-family: var(--sans);
+}
+
+.footnotes li a {
+  color: var(--muted);
+}
+
+.footnotes li .footnote-back {
+  font-size: 12px;
+  margin-left: 4px;
+  text-decoration: none;
+  opacity: 0.5;
+}
+
+.footnotes li .footnote-back:hover { opacity: 1; }
+
 .essay-body hr {
   border: none;
   border-top: 1px solid var(--rule);
@@ -266,12 +500,678 @@ a.masthead__wordmark:hover { text-decoration: none; }
 
 /* ─── RESPONSIVE ─────────────────────────────────────── */
 
+@media (max-width: 720px) {
+  .page--front .container { padding: 0 20px; }
+
+  /* Stack everything single-column on mobile */
+  .page--front .essay-list {
+    grid-template-columns: 1fr;
+  }
+
+  .page--front .essay-item:first-child {
+    grid-column: 1;
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+
+  .page--front .essay-item:first-child .essay-item__title,
+  .page--front .essay-item:first-child .essay-item__standfirst {
+    grid-column: 1;
+  }
+
+  .page--front .essay-item:first-child .essay-item__standfirst {
+    border-left: none;
+    padding-left: 0;
+    margin-top: 20px;
+  }
+
+  .page--front .essay-item:nth-child(even),
+  .page--front .essay-item:nth-child(odd):not(:first-child) {
+    padding-left: 0;
+    padding-right: 0;
+    border-right: none;
+  }
+
+  .section-nav {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .section-nav a {
+    padding: 8px 14px;
+    font-size: 10px;
+  }
+}
+
 @media (max-width: 600px) {
   .container { padding: 0 20px; }
   .masthead { padding: 36px 0 22px; }
   .essay-body p { font-size: 17px; }
   .essay-page-header { padding: 36px 0 28px; margin-bottom: 36px; }
-  .essay-body p:first-child::first-letter {
-    font-size: 3.2em;
+  .essay-body p:first-child::first-letter { font-size: 3.2em; }
+}
+
+/* ─── SECTION HEADERS (front page) ───────────────────── */
+
+.section-header {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--text);
+  margin-bottom: 40px;
+}
+
+section#notes {
+  margin-bottom: 64px;
+}
+
+/* Hide the notes section entirely when the list is empty */
+section#notes:has(ul.note-list:empty) {
+  display: none;
+}
+
+/* ─── NOTE LIST (front page) ──────────────────────────── */
+
+.note-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 0;
+  list-style: none;
+  margin-bottom: 0;
+}
+
+.note-item {
+  padding: 0 36px 36px;
+  border-right: 1px solid var(--rule);
+}
+
+.note-item:first-child {
+  padding-left: 0;
+}
+
+/* Remove right border from every 3rd item and last item */
+.note-item:nth-child(3n),
+.note-item:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.note-item__meta {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.note-item__title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.note-item__title a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.note-item__title a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.note-item__standfirst {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #555;
+}
+
+/* ─── NOTE PAGE ───────────────────────────────────────── */
+
+.note-body {
+  padding-bottom: 80px;
+}
+
+.note-body p {
+  font-size: 18.5px;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 1.55em;
+}
+
+/* No drop cap on notes — they are too short for one */
+.note-body p:first-child::first-letter {
+  font-size: inherit;
+  line-height: inherit;
+  float: none;
+  margin: 0;
+}
+
+.note-body em { font-style: italic; }
+.note-body strong { font-weight: 700; }
+
+/* ─── RESPONSIVE (notes) ──────────────────────────────── */
+
+@media (max-width: 720px) {
+  .note-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .note-item:nth-child(3n) {
+    border-right: 1px solid var(--rule);
+    padding-right: 36px;
+  }
+
+  .note-item:nth-child(2n),
+  .note-item:last-child {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .note-item:nth-child(2n+1) {
+    padding-left: 0;
+    padding-right: 24px;
+  }
+
+  .note-item:nth-child(2n) {
+    padding-left: 24px;
   }
 }
+
+@media (max-width: 600px) {
+  .note-list {
+    grid-template-columns: 1fr;
+  }
+
+  .note-item,
+  .note-item:nth-child(3n),
+  .note-item:nth-child(2n),
+  .note-item:nth-child(2n+1) {
+    padding-left: 0;
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+  }
+
+  .note-item:last-child {
+    border-bottom: none;
+  }
+
+  .note-body p { font-size: 17px; }
+}
+
+/* ─── DISPATCH PAGE ──────────────────────────────────────── */
+
+.dispatch-body {
+  padding-bottom: 80px;
+}
+
+.dispatch-body p {
+  font-size: 18.5px;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 1.55em;
+}
+
+.dispatch-body p:first-child::first-letter {
+  font-size: inherit;
+  line-height: inherit;
+  float: none;
+  margin: 0;
+}
+
+.dispatch-body em { font-style: italic; }
+.dispatch-body strong { font-weight: 700; }
+
+.dispatch-body a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.dispatch-body a:hover {
+  opacity: 0.65;
+}
+
+.dispatch-section-header {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 2.2em 0 0.6em;
+}
+
+/* ─── DISPATCH INDEX LIST ─────────────────────────────────── */
+
+.dispatch-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.dispatch-item {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.dispatch-item__meta {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.dispatch-item__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 10px;
+}
+
+.dispatch-item__title a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.dispatch-item__title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.dispatch-item__standfirst {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+
+.dispatch-item__read {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .dispatch-body p { font-size: 17px; }
+}
+
+/* ─── DISPATCH TABLE ──────────────────────────────────────────────────────── */
+
+.dispatch-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: 13px;
+  margin: 0.5em 0 1.4em;
+}
+
+.dispatch-table th {
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 10.5px;
+  color: var(--muted);
+  padding: 6px 12px 6px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.dispatch-table td {
+  padding: 8px 12px 8px 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--text);
+  vertical-align: top;
+}
+
+.dispatch-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ─── UK POLITICS + US SPORTS LISTS (share dispatch-item styles) ─────────── */
+
+.uk-politics-list,
+.us-sports-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ─── AUTH PAGES ─────────────────────────────────────────── */
+
+.page--auth .container {
+  max-width: 440px;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.auth-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.auth-wordmark {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: normal;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  text-decoration: none;
+  margin-bottom: 2.5rem;
+  display: block;
+}
+
+.auth-wordmark:hover { opacity: 0.65; }
+
+.auth-heading {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: normal;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.auth-field label {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.auth-field input {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  padding: 0.4rem 0;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.auth-field input:focus {
+  border-bottom-color: var(--text);
+}
+
+.auth-field input::placeholder {
+  color: var(--rule);
+}
+
+.auth-btn {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: opacity 0.15s;
+  align-self: flex-start;
+}
+
+.auth-btn:hover:not(:disabled) { opacity: 0.75; }
+.auth-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.auth-btn--secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--rule);
+}
+
+.auth-btn--secondary:hover:not(:disabled) {
+  border-color: var(--text);
+  opacity: 1;
+}
+
+.auth-btn--ghost {
+  background: transparent;
+  color: var(--muted);
+  border: none;
+  padding-left: 0;
+  text-transform: none;
+  font-size: 0.85rem;
+  letter-spacing: 0;
+}
+
+.auth-btn--ghost:hover:not(:disabled) {
+  color: var(--text);
+  opacity: 1;
+}
+
+.auth-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.auth-error {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: #c0392b;
+  min-height: 1.2rem;
+}
+
+.auth-success {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: #27ae60;
+  margin-top: 1rem;
+}
+
+.auth-status {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.auth-status a, .auth-alt a {
+  color: var(--text);
+}
+
+.auth-alt {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 1.5rem;
+}
+
+.auth-link-btn {
+  background: none;
+  border: none;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--muted);
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.auth-link-btn:hover { color: var(--text); }
+
+/* Account page */
+.account-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule);
+  width: 100%;
+}
+
+.account-label {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.account-value {
+  font-family: var(--serif);
+  font-size: 1rem;
+}
+
+/* ─── ACCOUNT INTERESTS ──────────────────────────────────── */
+
+.account-interests {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.account-interests__label {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.account-interests__hint {
+  font-family: var(--serif);
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+
+.account-interests__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0.65rem 0.75rem;
+  resize: vertical;
+  min-height: 110px;
+  transition: border-color 0.15s;
+  outline: none;
+}
+
+.account-interests__textarea:focus {
+  border-color: var(--text);
+}
+
+.account-interests__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  gap: 1rem;
+}
+
+.account-interests__wordcount {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.account-interests__wordcount--over {
+  color: #c0392b;
+}
+
+.account-interests__status {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--muted);
+  min-height: 1.2em;
+}
+
+.account-interests__status--saved {
+  color: var(--text);
+}
+
+.account-interests__status--error {
+  color: #c0392b;
+}
+
+/* ─── AUTH NAV LINK ──────────────────────────────────────── */
+
+.section-nav a#auth-nav-link {
+  margin-left: auto;
+}
+
+/* ─── AUTH NAVIGATION ────────────────────────────────────── */
+
+.auth-back {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 2.5rem;
+  display: inline-block;
+  transition: color 0.15s;
+}
+
+.auth-back:hover { color: var(--text); }
+
+.auth-browse-link {
+  display: inline-block;
+  margin-top: 2.5rem;
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+  transition: border-color 0.15s;
+}
+
+.auth-browse-link:hover { border-color: var(--text); }

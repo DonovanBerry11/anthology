@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account — Anthology</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page--auth">
+
+<div class="container">
+  <div class="auth-box">
+    <a class="auth-back" href="/">← Anthology</a>
+
+    <div id="account-view" style="display:none">
+      <h1 class="auth-heading">Your account</h1>
+
+      <div class="account-field">
+        <span class="account-label">Email</span>
+        <span class="account-value" id="account-email"></span>
+      </div>
+
+      <div class="account-field">
+        <span class="account-label">Member since</span>
+        <span class="account-value" id="account-since"></span>
+      </div>
+
+      <div class="account-interests">
+        <span class="account-interests__label">Reading interests</span>
+        <p class="account-interests__hint">What topics, regions, or questions do you want Anthology to focus on? Up to 300 words.</p>
+        <textarea
+          class="account-interests__textarea"
+          id="interests-textarea"
+          rows="5"
+          placeholder="e.g. UK domestic politics, central bank policy, AI regulation, Premier League football…"
+        ></textarea>
+        <div class="account-interests__footer">
+          <span class="account-interests__wordcount" id="interests-wordcount">0 / 300 words</span>
+          <span class="account-interests__status" id="interests-status"></span>
+          <button class="auth-btn auth-btn--secondary" id="interests-save-btn" disabled>Save</button>
+        </div>
+      </div>
+
+      <div class="auth-actions">
+        <button class="auth-btn auth-btn--secondary" id="change-password-btn">
+          Change password
+        </button>
+        <button class="auth-btn auth-btn--ghost" id="signout-btn">
+          Sign out
+        </button>
+      </div>
+
+      <p class="auth-success" id="reset-success" role="status" style="display:none">
+        Password updated successfully.
+      </p>
+
+      <a class="auth-browse-link" href="/">Browse Anthology →</a>
+    </div>
+
+    <p class="auth-status" id="loading">Loading…</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+let _accountReady = false
+
+function _showAccount(session) {
+  if (_accountReady) return
+  _accountReady = true
+
+  const user = session.user
+  document.getElementById('loading').style.display = 'none'
+  document.getElementById('account-view').style.display = 'block'
+  document.getElementById('account-email').textContent = user.email
+
+  const since = new Date(user.created_at).toLocaleDateString('en-GB', {
+    year: 'numeric', month: 'long', day: 'numeric'
+  })
+  document.getElementById('account-since').textContent = since
+
+  if (new URLSearchParams(window.location.search).get('reset') === 'success') {
+    document.getElementById('reset-success').style.display = 'block'
+  }
+
+  // ── Reading interests ──────────────────────────────────────────────────
+  const textarea    = document.getElementById('interests-textarea')
+  const wordcount   = document.getElementById('interests-wordcount')
+  const statusEl    = document.getElementById('interests-status')
+  const saveBtn     = document.getElementById('interests-save-btn')
+  const MAX_WORDS   = 300
+
+  function countWords(text) {
+    return text.trim() === '' ? 0 : text.trim().split(/\s+/).length
+  }
+
+  // Load saved value from user_metadata
+  const saved = user.user_metadata?.reading_interests || ''
+  textarea.value = saved
+  let lastSaved = saved
+  wordcount.textContent = `${countWords(saved)} / ${MAX_WORDS} words`
+
+  function updateUI() {
+    const words = countWords(textarea.value)
+    const over  = words > MAX_WORDS
+    wordcount.textContent = `${words} / ${MAX_WORDS} words`
+    wordcount.classList.toggle('account-interests__wordcount--over', over)
+    const changed = textarea.value !== lastSaved
+    saveBtn.disabled = !changed || over
+    if (changed) {
+      statusEl.textContent = ''
+      statusEl.className = 'account-interests__status'
+    }
+  }
+
+  textarea.addEventListener('input', updateUI)
+
+  saveBtn.addEventListener('click', async () => {
+    saveBtn.disabled = true
+    saveBtn.textContent = 'Saving…'
+    statusEl.textContent = ''
+
+    const { error } = await _supabase.auth.updateUser({
+      data: { reading_interests: textarea.value.trim() }
+    })
+
+    if (error) {
+      statusEl.textContent = 'Could not save — please try again.'
+      statusEl.className = 'account-interests__status account-interests__status--error'
+      saveBtn.disabled = false
+    } else {
+      lastSaved = textarea.value
+      statusEl.textContent = 'Saved.'
+      statusEl.className = 'account-interests__status account-interests__status--saved'
+      setTimeout(() => {
+        statusEl.textContent = ''
+        statusEl.className = 'account-interests__status'
+      }, 3000)
+    }
+
+    saveBtn.textContent = 'Save'
+    updateUI()
+  })
+  // ── End reading interests ──────────────────────────────────────────────
+
+  document.getElementById('change-password-btn').addEventListener('click', async () => {
+    const btn = document.getElementById('change-password-btn')
+    btn.disabled = true
+    btn.textContent = 'Sending link…'
+    await _supabase.auth.resetPasswordForEmail(user.email, {
+      redirectTo: SITE_URL + '/auth/callback.html'
+    })
+    btn.textContent = 'Reset link sent — check your email'
+  })
+
+  document.getElementById('signout-btn').addEventListener('click', async () => {
+    await _supabase.auth.signOut()
+    window.location.href = '/'
+  })
+}
+
+// Primary path: onAuthStateChange fires SIGNED_IN when a stored session is
+// restored on page load (or when the user just signed in). SIGNED_OUT means
+// no session — redirect to login.
+_supabase.auth.onAuthStateChange((event, session) => {
+  if (session) {
+    _showAccount(session)
+  } else if (event === 'SIGNED_OUT') {
+    if (!_accountReady) window.location.href = '/login.html'
+  }
+})
+
+// Fallback: getSession() covers the case where the auth state change event
+// fires before our listener was registered, or is delayed by PKCE initialization.
+// Runs after a short tick to let the Supabase client settle.
+setTimeout(async () => {
+  if (_accountReady) return
+  const { data: { session } } = await _supabase.auth.getSession()
+  if (session) {
+    _showAccount(session)
+  } else {
+    // Give onAuthStateChange one more second before giving up
+    setTimeout(async () => {
+      if (_accountReady) return
+      const { data: { session: s2 } } = await _supabase.auth.getSession()
+      if (s2) _showAccount(s2)
+      else window.location.href = '/login.html'
+    }, 1000)
+  }
+}, 200)
+</script>
+
+</body>
+</html>
