@@ -814,6 +814,15 @@ section#notes:has(ul.note-list:empty) {
   .dispatch-body p { font-size: 17px; }
 }
 
+/* ─── UK POLITICS + US SPORTS LISTS (share dispatch-item styles) ─────────── */
+
+.uk-politics-list,
+.us-sports-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 /* ─── AUTH PAGES ─────────────────────────────────────────── */
 
 .page--auth .container {

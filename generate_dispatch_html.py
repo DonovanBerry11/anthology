@@ -36,7 +36,7 @@ HTML_TEMPLATE = """\
 <div class="container">
 
   <header class="essay-page-header">
-    <a class="essay-page-header__back" href="../index.html#dispatches">← Anthology</a>
+    <a class="essay-page-header__back" href="{back_url}">← Anthology</a>
     <div class="essay-page-header__pub">{dispatch_label}</div>
     <h1>{title}</h1>
     <div class="essay-page-header__meta">{date}</div>
@@ -185,9 +185,18 @@ def main():
     parser.add_argument("--date",          required=True, help="Display date, e.g. 'May 2026'")
     parser.add_argument("--dispatch-type", required=True, choices=["daily", "weekly"],
                         help="Dispatch type: daily or weekly")
+    parser.add_argument("--label",         default=None,
+                        help="Override the dispatch label (e.g. 'UK Politics', 'NBA')")
+    parser.add_argument("--back-url",      default=None,
+                        help="Override the back-link URL (default: ../index.html#dispatches)")
     args = parser.parse_args()
 
-    dispatch_label = "Daily Dispatch" if args.dispatch_type == "daily" else "Weekly Dispatch"
+    if args.label:
+        dispatch_label = args.label
+    else:
+        dispatch_label = "Daily Dispatch" if args.dispatch_type == "daily" else "Weekly Dispatch"
+
+    back_url = args.back_url if args.back_url else "../index.html#dispatches"
 
     md_text = Path(args.input).read_text(encoding="utf-8")
     body    = md_to_html_body(md_text, args.dispatch_type)
@@ -199,6 +208,7 @@ def main():
         slug=args.slug,
         dispatch_label=dispatch_label,
         meta_description=meta,
+        back_url=back_url,
         body=body,
     )
 
