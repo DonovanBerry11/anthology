@@ -1,1 +1,3 @@
-analytical-system/pieces/
+.publish-config
+.supabase-config
+.DS_Store

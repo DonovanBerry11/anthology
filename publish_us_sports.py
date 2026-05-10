@@ -3,7 +3,8 @@
 publish_us_sports.py — Publishes a US sports briefing to the Anthology GitHub repo.
 
 Clones the repo into /tmp, generates the briefing HTML (using generate_dispatch_html.py
-with --dispatch-type weekly for subheading support), updates index.html, commits, and pushes.
+with --dispatch-type weekly for subheading support), updates content-catalog.json,
+commits, and pushes.
 
 Usage:
     python publish_us_sports.py \
@@ -29,23 +30,6 @@ import sys
 from pathlib import Path
 
 
-BRIEFING_ITEM_TEMPLATE = """\
-
-      <li class="dispatch-item">
-        <div class="dispatch-item__meta">{date} &middot; {sport}</div>
-        <h2 class="dispatch-item__title">
-          <a href="us-sports/{slug}.html">{title}</a>
-        </h2>
-        <p class="dispatch-item__standfirst">
-          {standfirst}
-        </p>
-        <a class="dispatch-item__read" href="us-sports/{slug}.html">Read briefing</a>
-      </li>
-"""
-
-INDEX_MARKER = '      <ul class="us-sports-list">\n'
-
-
 def run(cmd, cwd=None, check=True):
     result = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)
     if check and result.returncode != 0:
@@ -62,6 +46,8 @@ def main():
     parser.add_argument("--sport",       required=True,
                         help="Sport label for display, e.g. NBA, NFL, MLB, NHL")
     parser.add_argument("--date",        required=True)
+    parser.add_argument("--date-iso",    default=None, help="ISO date YYYY-MM-DD for catalog sorting")
+    parser.add_argument("--sector",      default="sports", help="Sector tag for catalog")
     parser.add_argument("--standfirst",  required=True)
     parser.add_argument("--analysis-md", required=True)
     parser.add_argument("--token-file",  required=True)
@@ -96,26 +82,28 @@ def main():
         f'--back-url "../index.html#us-sports"'
     )
 
-    # 3. Update index.html (inject at top of us-sports list, idempotent)
-    print("Updating index...")
-    index_path = clone_dir / "index.html"
-    index = index_path.read_text()
-    if f'href="us-sports/{args.slug}.html"' not in index:
-        new_item = BRIEFING_ITEM_TEMPLATE.format(
-            slug=args.slug,
-            title=args.title,
-            date=args.date,
-            sport=args.sport,
-            standfirst=args.standfirst,
-        )
-        index = index.replace(INDEX_MARKER, INDEX_MARKER + new_item, 1)
-        index_path.write_text(index)
-    else:
-        print("  (briefing already in index — skipping index update)")
+    # 3. Update content catalog
+    print("Updating content catalog...")
+    sys.path.insert(0, args.scripts_dir)
+    from catalog_utils import update_catalog
+    update_catalog(clone_dir, {
+        "slug": args.slug,
+        "type": "briefing",
+        "section": "us-sports",
+        "domain": "us-sports",
+        "sector": args.sector,
+        "sport": args.sport,
+        "title": args.title,
+        "standfirst": args.standfirst,
+        "date": args.date_iso if args.date_iso else args.date,
+        "date_display": args.date,
+        "url": f"/us-sports/{args.slug}.html",
+        "keywords": [],
+    })
 
     # 4. Commit and push
     print("Committing and pushing...")
-    run(f'git add us-sports/{args.slug}.html index.html', cwd=clone_dir)
+    run(f'git add us-sports/{args.slug}.html content-catalog.json', cwd=clone_dir)
     run(f'git commit -m "Add US sports briefing: {args.title}"', cwd=clone_dir)
     run('git push', cwd=clone_dir)
 

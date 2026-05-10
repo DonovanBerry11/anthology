@@ -24,22 +24,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-ESSAY_ITEM_TEMPLATE = """\
-
-      <li class="essay-item">
-        <div class="essay-item__meta">{date}</div>
-        <h2 class="essay-item__title">
-          <a href="essays/{slug}.html">{title}</a>
-        </h2>
-        <p class="essay-item__standfirst">
-          {standfirst}
-        </p>
-        <a class="essay-item__read" href="essays/{slug}.html">Read essay</a>
-      </li>
-"""
-
-INDEX_MARKER = '      <ul class="essay-list">\n'
-
 
 def run(cmd, cwd=None, check=True):
     result = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)
@@ -55,6 +39,8 @@ def main():
     parser.add_argument("--slug",         required=True)
     parser.add_argument("--title",        required=True)
     parser.add_argument("--date",         required=True)
+    parser.add_argument("--date-iso",     default=None, help="ISO date YYYY-MM-DD for catalog sorting")
+    parser.add_argument("--sector",       default="political-economy", help="Sector tag for catalog")
     parser.add_argument("--standfirst",   required=True)
     parser.add_argument("--analysis-md",  required=True)
     parser.add_argument("--token-file",   required=True)
@@ -86,23 +72,27 @@ def main():
         f'--date "{args.date}"'
     )
 
-    # 3. Update index.html (inject at top of list, idempotent)
-    print("Updating index...")
-    index_path = clone_dir / "index.html"
-    index = index_path.read_text()
-    if f'href="essays/{args.slug}.html"' not in index:
-        new_item = ESSAY_ITEM_TEMPLATE.format(
-            slug=args.slug, title=args.title,
-            date=args.date, standfirst=args.standfirst
-        )
-        index = index.replace(INDEX_MARKER, INDEX_MARKER + new_item, 1)
-        index_path.write_text(index)
-    else:
-        print("  (essay already in index — skipping index update)")
+    # 3. Update content catalog
+    print("Updating content catalog...")
+    sys.path.insert(0, args.scripts_dir)
+    from catalog_utils import update_catalog
+    update_catalog(clone_dir, {
+        "slug": args.slug,
+        "type": "essay",
+        "section": "essays",
+        "domain": "global",
+        "sector": args.sector if hasattr(args, 'sector') and args.sector else "political-economy",
+        "title": args.title,
+        "standfirst": args.standfirst,
+        "date": args.date_iso if hasattr(args, 'date_iso') and args.date_iso else args.date,
+        "date_display": args.date,
+        "url": f"/essays/{args.slug}.html",
+        "keywords": [],
+    })
 
     # 4. Commit and push
     print("Committing and pushing...")
-    run(f'git add essays/{args.slug}.html index.html', cwd=clone_dir)
+    run(f'git add essays/{args.slug}.html content-catalog.json', cwd=clone_dir)
     run(f'git commit -m "Add essay: {args.title}"', cwd=clone_dir)
     run('git push', cwd=clone_dir)
 
