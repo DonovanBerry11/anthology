@@ -31,20 +31,30 @@
 
   <main>
 
-    <section id="notes">
-      <h2 class="section-header">Notes</h2>
-      <ul class="note-list" id="notes-list"></ul>
+    <!-- Edition view: shown when authenticated and edition.json is available -->
+    <section id="edition" style="display:none">
+      <div id="edition-content"></div>
     </section>
 
-    <section id="essays">
-      <h2 class="section-header">Essays</h2>
-      <ul class="essay-list" id="essays-list"></ul>
-    </section>
+    <!-- Catalog view: section-by-section feed -->
+    <div id="catalog-view">
 
-    <section id="dispatches">
-      <h2 class="section-header">Dispatches</h2>
-      <ul class="dispatch-list" id="dispatches-list"></ul>
-    </section>
+      <section id="notes">
+        <h2 class="section-header">Notes</h2>
+        <ul class="note-list" id="notes-list"></ul>
+      </section>
+
+      <section id="essays">
+        <h2 class="section-header">Essays</h2>
+        <ul class="essay-list" id="essays-list"></ul>
+      </section>
+
+      <section id="dispatches">
+        <h2 class="section-header">Dispatches</h2>
+        <ul class="dispatch-list" id="dispatches-list"></ul>
+      </section>
+
+    </div>
 
   </main>
 
@@ -105,6 +115,73 @@
       if (scoreDiff !== 0) return scoreDiff;
       return (b.date || '').localeCompare(a.date || '');
     });
+  }
+
+  // ── Section label helper ──────────────────────────────────────────────────
+
+  function sectionLabel(p) {
+    const sec = p.section || p.type || '';
+    if (sec === 'dispatches') return p.dispatch_type === 'weekly' ? 'Weekly Dispatch' : 'Daily Dispatch';
+    if (sec === 'uk-politics') return 'UK Politics';
+    if (sec === 'us-sports')   return p.sport || 'US Sports';
+    if (sec === 'notes')       return 'Note';
+    if (sec === 'essays')      return 'Essay';
+    return sec;
+  }
+
+  // ── Edition renderer ──────────────────────────────────────────────────────
+
+  function renderEdition(ed) {
+    const lead = ed.lead;
+    const secondary = ed.secondary || [];
+    const further = ed.further_reading || [];
+
+    const leadHtml = `
+      <div class="edition-lead">
+        <div class="edition-lead__label">${sectionLabel(lead)}</div>
+        <h2 class="edition-lead__title"><a href="${lead.url}">${lead.title}</a></h2>
+        <p class="edition-lead__standfirst">${lead.standfirst}</p>
+        <a class="edition-lead__read" href="${lead.url}">Read &rarr;</a>
+      </div>`;
+
+    const secondaryHtml = secondary.length
+      ? `<hr class="edition-rule">
+         <div class="edition-secondary">
+           ${secondary.map(p => `
+             <div class="edition-secondary__item">
+               <div class="edition-secondary__label">${sectionLabel(p)}</div>
+               <h3 class="edition-secondary__title"><a href="${p.url}">${p.title}</a></h3>
+               <p class="edition-secondary__standfirst">${p.standfirst}</p>
+             </div>`).join('')}
+         </div>`
+      : '';
+
+    const furtherHtml = further.length
+      ? `<hr class="edition-rule">
+         <div class="edition-further">
+           <h3 class="edition-further__header">Further Reading</h3>
+           <ul class="edition-further__list">
+             ${further.map(p => `
+               <li class="edition-further__item">
+                 <span class="edition-further__label">${sectionLabel(p)}</span>
+                 <a href="${p.url}" class="edition-further__link">${p.title}</a>
+                 <span class="edition-further__standfirst">${p.standfirst}</span>
+               </li>`).join('')}
+           </ul>
+         </div>`
+      : '';
+
+    return `
+      <div class="edition-dateline">${ed.date_display || ''}</div>
+      ${leadHtml}
+      ${secondaryHtml}
+      ${furtherHtml}
+      <hr class="edition-rule">
+      <p class="edition-browse-all">
+        <a href="#notes">Browse all Notes</a> &middot;
+        <a href="#essays">Browse all Essays</a> &middot;
+        <a href="#dispatches">Browse all Dispatches</a>
+      </p>`;
   }
 
   // ── Item renderers ────────────────────────────────────────────────────────
@@ -182,11 +259,26 @@
   }
 
   async function buildFeed() {
-    // Fetch catalog
+    // Get session first so we can attempt per-user catalog
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    // Fetch catalog — prefer per-user catalog when authenticated
     let catalog;
     try {
-      const resp = await fetch('/content-catalog.json');
-      catalog = await resp.json();
+      let catalogUrl = '/content-catalog.json';
+      if (session?.user?.id) {
+        const perUserUrl = `/users/${session.user.id}/content-catalog.json`;
+        try {
+          const perUserResp = await fetch(perUserUrl);
+          if (perUserResp.ok) {
+            catalog = await perUserResp.json();
+          }
+        } catch (_) { /* fall through to shared catalog */ }
+      }
+      if (!catalog) {
+        const resp = await fetch(catalogUrl);
+        catalog = await resp.json();
+      }
     } catch (e) {
       console.error('Failed to load content catalog:', e);
       return;
@@ -194,11 +286,27 @@
 
     const pieces = catalog.pieces || [];
 
-    // Get session for personalization
-    const { data: { session } } = await _supabase.auth.getSession();
     const interestTokens = session
       ? tokenize(session.user?.user_metadata?.reading_interests || '')
       : new Set();
+
+    // ── Attempt to load edition.json when authenticated ───────────────────
+    if (session?.user?.id) {
+      try {
+        const edResp = await fetch(`/users/${session.user.id}/edition.json`);
+        if (edResp.ok) {
+          const edition = await edResp.json();
+          const edContent = document.getElementById('edition-content');
+          const edSection = document.getElementById('edition');
+          if (edContent && edSection) {
+            edContent.innerHTML = renderEdition(edition);
+            edSection.style.display = '';
+          }
+        }
+      } catch (_) { /* edition not available — catalog view remains primary */ }
+    }
+
+    // ── Catalog view (always populated; shown below edition when auth'd) ──
 
     // Partition by section
     const bySection = {};
