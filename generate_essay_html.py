@@ -9,12 +9,21 @@ Usage:
         --output essays/the-ownership-problem.html \
         --slug the-ownership-problem \
         --title "The Ownership Problem" \
-        --date "May 2026"
+        --date "May 2026" \
+        --pub-datetime "10 May 2026, 3:45 PM"
 """
 
 import argparse
 import re
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
+
+
+def current_est_datetime():
+    """Return current time as a formatted string in EST (UTC-5)."""
+    est = timezone(timedelta(hours=-5))
+    now = datetime.now(est)
+    return now.strftime("%-d %B %Y, %-I:%M %p")
 
 
 HTML_TEMPLATE = """\
@@ -35,7 +44,7 @@ HTML_TEMPLATE = """\
     <a class="essay-page-header__back" href="../index.html">← Anthology</a>
     <div class="essay-page-header__pub">Anthology</div>
     <h1>{title}</h1>
-    <div class="essay-page-header__meta">{date}</div>
+    <div class="essay-page-header__meta">{date_line}</div>
   </header>
 
   <article class="essay-body">
@@ -125,7 +134,13 @@ def main():
     parser.add_argument("--slug", required=True, help="URL slug, e.g. the-ownership-problem")
     parser.add_argument("--title", required=True, help="Essay title")
     parser.add_argument("--date", required=True, help="Display date, e.g. 'May 2026'")
+    parser.add_argument("--pub-datetime", default=None,
+                        help="Publication datetime, e.g. '10 May 2026, 3:45 PM'. "
+                             "Auto-generated from current EST time if omitted.")
     args = parser.parse_args()
+
+    pub_dt = args.pub_datetime if args.pub_datetime else current_est_datetime()
+    date_line = f'{args.date} &middot; Published {pub_dt} EST'
 
     md_text = Path(args.input).read_text(encoding="utf-8")
     body = md_to_html_body(md_text)
@@ -133,7 +148,7 @@ def main():
 
     html = HTML_TEMPLATE.format(
         title=args.title,
-        date=args.date,
+        date_line=date_line,
         slug=args.slug,
         meta_description=meta,
         body=body,

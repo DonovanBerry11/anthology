@@ -13,12 +13,21 @@ Usage:
         --slug my-dispatch \
         --title "My Dispatch Title" \
         --date "May 2026" \
-        --dispatch-type daily
+        --dispatch-type daily \
+        --pub-datetime "10 May 2026, 3:45 PM"
 """
 
 import argparse
 import re
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
+
+
+def current_est_datetime():
+    """Return current time as a formatted string in EST (UTC-5)."""
+    est = timezone(timedelta(hours=-5))
+    now = datetime.now(est)
+    return now.strftime("%-d %B %Y, %-I:%M %p")
 
 
 HTML_TEMPLATE = """\
@@ -39,7 +48,7 @@ HTML_TEMPLATE = """\
     <a class="essay-page-header__back" href="{back_url}">← Anthology</a>
     <div class="essay-page-header__pub">{dispatch_label}</div>
     <h1>{title}</h1>
-    <div class="essay-page-header__meta">{date}</div>
+    <div class="essay-page-header__meta">{date_line}</div>
   </header>
 
   <article class="dispatch-body">
@@ -248,6 +257,9 @@ def main():
                         help="Override the dispatch label (e.g. 'UK Politics', 'NBA')")
     parser.add_argument("--back-url",      default=None,
                         help="Override the back-link URL (default: ../index.html#dispatches)")
+    parser.add_argument("--pub-datetime",  default=None,
+                        help="Publication datetime, e.g. '10 May 2026, 3:45 PM'. "
+                             "Auto-generated from current EST time if omitted.")
     args = parser.parse_args()
 
     if args.label:
@@ -257,13 +269,16 @@ def main():
 
     back_url = args.back_url if args.back_url else "../index.html#dispatches"
 
+    pub_dt = args.pub_datetime if args.pub_datetime else current_est_datetime()
+    date_line = f'{args.date} &middot; Published {pub_dt} EST'
+
     md_text = Path(args.input).read_text(encoding="utf-8")
     body    = md_to_html_body(md_text, args.dispatch_type)
     meta    = extract_meta_description(md_text)
 
     html = HTML_TEMPLATE.format(
         title=args.title,
-        date=args.date,
+        date_line=date_line,
         slug=args.slug,
         dispatch_label=dispatch_label,
         meta_description=meta,

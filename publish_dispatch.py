@@ -23,8 +23,14 @@ import os
 import shutil
 import subprocess
 import sys
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
+
+def current_est_datetime():
+    est = timezone(timedelta(hours=-5))
+    now = datetime.now(est)
+    return now.strftime("%-d %B %Y, %-I:%M %p")
 
 
 def run(cmd, cwd=None, check=True):
@@ -51,6 +57,7 @@ def main():
     parser.add_argument("--scripts-dir",   required=True)
     args = parser.parse_args()
 
+    pub_datetime = current_est_datetime()
     dispatch_label = "Daily Dispatch" if args.dispatch_type == "daily" else "Weekly Dispatch"
     token = Path(args.token_file).read_text().strip()
     clone_dir = Path("/tmp/anthology-dispatch-publish")
@@ -74,7 +81,8 @@ def main():
         f'--slug "{args.slug}" '
         f'--title "{args.title}" '
         f'--date "{args.date}" '
-        f'--dispatch-type "{args.dispatch_type}"'
+        f'--dispatch-type "{args.dispatch_type}" '
+        f'--pub-datetime "{pub_datetime}"'
     )
 
     # 3. Update content catalog
