@@ -1366,3 +1366,46 @@ section#notes:has(ul.note-list:empty) {
 }
 
 .edition-browse-all a:hover { color: var(--text); }
+
+/* ─── EDITION EMPTY STATE ────────────────────────────────────── */
+
+.edition-preparing {
+  padding: 2rem 0;
+  border-top: 2px solid var(--text);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2rem;
+}
+
+.edition-preparing__message {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.edition-preparing__link {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1px;
+  transition: border-color 0.15s;
+}
+
+.edition-preparing__link:hover { border-color: var(--text); }
+
+/* ─── ACCOUNT WELCOME INTRO ──────────────────────────────────── */
+
+.account-welcome-intro {
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+  width: 100%;
+}

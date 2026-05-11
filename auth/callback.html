@@ -82,7 +82,10 @@
     } else if (event === 'SIGNED_IN') {
       redirected = true
       statusEl.textContent = 'Account confirmed — welcome to Anthology.'
-      setTimeout(() => { window.location.href = '../account.html' }, 1200)
+      // Route: first-time confirmation → onboarding; returning sign-in → homepage
+      const isNewUser = !session.user.user_metadata?.onboarded
+      const dest = isNewUser ? '../account.html?welcome=1' : '../'
+      setTimeout(() => { window.location.href = dest }, 1200)
     }
   })
 
@@ -100,7 +103,9 @@
         if (session) {
           redirected = true
           statusEl.textContent = 'Account confirmed — welcome to Anthology.'
-          setTimeout(() => { window.location.href = '../account.html' }, 1200)
+          const isNewUser = !session.user.user_metadata?.onboarded
+          const dest = isNewUser ? '../account.html?welcome=1' : '../'
+          setTimeout(() => { window.location.href = dest }, 1200)
         } else {
           statusEl.innerHTML =
             'This link has expired or is invalid. <a href="../login.html">Return to login</a>'

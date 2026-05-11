@@ -13,7 +13,15 @@
     <a class="auth-back" href="/">← Anthology</a>
 
     <div id="account-view" style="display:none">
-      <h1 class="auth-heading">Your account</h1>
+      <h1 class="auth-heading" id="account-heading">Your account</h1>
+
+      <!-- Shown only during first-time onboarding (?welcome=1) -->
+      <p class="account-welcome-intro" id="welcome-intro" style="display:none">
+        Your account is confirmed. Tell us what you want to read — Anthology will
+        build an editorial profile for you, selecting and framing dispatches, notes,
+        and essays specifically for you. What you read, and how deeply, will refine
+        it over time.
+      </p>
 
       <div class="account-field">
         <span class="account-label">Email</span>
@@ -27,7 +35,7 @@
 
       <div class="account-interests">
         <span class="account-interests__label">Reading interests</span>
-        <p class="account-interests__hint">What topics, regions, or questions do you want Anthology to focus on? Up to 300 words.</p>
+        <p class="account-interests__hint">Your interests are used to calibrate your editorial profile — the pipeline uses them to select topics, calibrate framing, and route content to the right formats for you. This is what drives generation, not just ordering. Up to 300 words.</p>
         <textarea
           class="account-interests__textarea"
           id="interests-textarea"
@@ -54,7 +62,10 @@
         Password updated successfully.
       </p>
 
-      <a class="auth-browse-link" href="/">Browse Anthology →</a>
+      <!-- Standard link for returning users -->
+      <a class="auth-browse-link" id="browse-link" href="/">Browse Anthology →</a>
+      <!-- Shown after interests are saved during first-time onboarding -->
+      <a class="auth-browse-link" id="welcome-cta" href="/" style="display:none">Go to your homepage →</a>
     </div>
 
     <p class="auth-status" id="loading">Loading…</p>
@@ -83,6 +94,17 @@ function _showAccount(session) {
   if (new URLSearchParams(window.location.search).get('reset') === 'success') {
     document.getElementById('reset-success').style.display = 'block'
   }
+
+  // ── Welcome / onboarding mode ──────────────────────────────
+  // Triggered by ?welcome=1, set by callback.html for first-time confirmations.
+  const isWelcome = new URLSearchParams(window.location.search).get('welcome') === '1'
+  if (isWelcome) {
+    document.getElementById('account-heading').textContent = 'Welcome to Anthology'
+    document.getElementById('welcome-intro').style.display = ''
+    document.querySelector('.auth-actions').style.display = 'none'
+    document.getElementById('browse-link').style.display = 'none'
+  }
+  // ── End welcome mode ───────────────────────────────────────
 
   // ── Reading interests ──────────────────────────────────────────────────
   const textarea    = document.getElementById('interests-textarea')
@@ -133,10 +155,19 @@ function _showAccount(session) {
       lastSaved = textarea.value
       statusEl.textContent = 'Saved.'
       statusEl.className = 'account-interests__status account-interests__status--saved'
-      setTimeout(() => {
-        statusEl.textContent = ''
-        statusEl.className = 'account-interests__status'
-      }, 3000)
+
+      if (isWelcome) {
+        // Mark user as onboarded so future confirmations route to homepage
+        await _supabase.auth.updateUser({ data: { onboarded: true } })
+        statusEl.textContent = 'Interests saved — taking you to your homepage…'
+        document.getElementById('welcome-cta').style.display = ''
+        setTimeout(() => { window.location.href = '/' }, 2000)
+      } else {
+        setTimeout(() => {
+          statusEl.textContent = ''
+          statusEl.className = 'account-interests__status'
+        }, 3000)
+      }
     }
 
     saveBtn.textContent = 'Save'

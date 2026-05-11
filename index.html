@@ -292,18 +292,31 @@
 
     // ── Attempt to load edition.json when authenticated ───────────────────
     if (session?.user?.id) {
+      const edContent = document.getElementById('edition-content');
+      const edSection  = document.getElementById('edition');
       try {
         const edResp = await fetch(`/users/${session.user.id}/edition.json`);
         if (edResp.ok) {
           const edition = await edResp.json();
-          const edContent = document.getElementById('edition-content');
-          const edSection = document.getElementById('edition');
           if (edContent && edSection) {
             edContent.innerHTML = renderEdition(edition);
             edSection.style.display = '';
           }
+        } else if (edContent && edSection) {
+          // Edition not yet generated — show a meaningful empty state rather
+          // than leaving #edition silently hidden.
+          const hasInterests = !!(session.user?.user_metadata?.reading_interests?.trim());
+          edContent.innerHTML = hasInterests
+            ? `<div class="edition-preparing">
+                 <p class="edition-preparing__message">Your personalised edition is being prepared. Check back later today.</p>
+               </div>`
+            : `<div class="edition-preparing">
+                 <p class="edition-preparing__message">Set your reading interests and Anthology will build an edition just for you.</p>
+                 <a class="edition-preparing__link" href="/account.html">Set interests &rarr;</a>
+               </div>`;
+          edSection.style.display = '';
         }
-      } catch (_) { /* edition not available — catalog view remains primary */ }
+      } catch (_) { /* network error — catalog view remains primary */ }
     }
 
     // ── Catalog view (always populated; shown below edition when auth'd) ──
