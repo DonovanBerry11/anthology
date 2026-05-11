@@ -265,7 +265,7 @@
     // Fetch catalog — prefer per-user catalog when authenticated
     let catalog;
     try {
-      let catalogUrl = '/content-catalog.json';
+      let catalogUrl = '/shared-catalog.json';
       if (session?.user?.id) {
         const perUserUrl = `/users/${session.user.id}/content-catalog.json`;
         try {

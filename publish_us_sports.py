@@ -60,9 +60,12 @@ def main():
     parser.add_argument("--token-file",  required=True)
     parser.add_argument("--repo",        default="DonovanBerry11/anthology")
     parser.add_argument("--scripts-dir", required=True)
+    parser.add_argument("--user-id",     default=None,
+                        help="Supabase user UUID; routes output to users/{user_id}/ paths")
     args = parser.parse_args()
 
     pub_datetime = current_est_datetime()
+    user_id = args.user_id
     token = Path(args.token_file).read_text().strip()
     clone_dir = Path("/tmp/anthology-ussports-publish")
 
@@ -74,28 +77,49 @@ def main():
     run(f'git config user.email "donovanberry11@gmail.com"', cwd=clone_dir)
     run(f'git config user.name "Donovan Berry"', cwd=clone_dir)
 
-    # 2. Generate briefing HTML (weekly type for subheading support; label set to sport name)
-    print("Generating briefing HTML...")
-    gen_script    = Path(args.scripts_dir) / "generate_dispatch_html.py"
-    briefing_html = clone_dir / "us-sports" / f"{args.slug}.html"
+    gen_script = Path(args.scripts_dir) / "generate_dispatch_html.py"
+    git_add_paths = []
+
+    # 2a. Generate shared briefing HTML
+    print("Generating shared briefing HTML...")
+    shared_html = clone_dir / "us-sports" / f"{args.slug}.html"
     run(
         f'python3 {gen_script} '
         f'--input "{args.analysis_md}" '
-        f'--output "{briefing_html}" '
+        f'--output "{shared_html}" '
         f'--slug "{args.slug}" '
         f'--title "{args.title}" '
         f'--date "{args.date}" '
         f'--dispatch-type "weekly" '
         f'--label "{args.sport}" '
-        f'--back-url "../index.html#us-sports" '
+        f'--back-url "../index.html#dispatches" '
         f'--pub-datetime "{pub_datetime}"'
     )
+    git_add_paths.append(f'us-sports/{args.slug}.html')
 
-    # 3. Update content catalog
+    # 2b. Per-user HTML if user_id provided
+    if user_id:
+        print(f"Generating per-user briefing HTML for {user_id}...")
+        user_html = clone_dir / "users" / user_id / "us-sports" / f"{args.slug}.html"
+        run(
+            f'python3 {gen_script} '
+            f'--input "{args.analysis_md}" '
+            f'--output "{user_html}" '
+            f'--slug "{args.slug}" '
+            f'--title "{args.title}" '
+            f'--date "{args.date}" '
+            f'--dispatch-type "weekly" '
+            f'--label "{args.sport}" '
+            f'--back-url "../../../../index.html#dispatches" '
+            f'--pub-datetime "{pub_datetime}"'
+        )
+        git_add_paths.append(f'users/{user_id}/us-sports/{args.slug}.html')
+
+    # 3. Update catalogs
     print("Updating content catalog...")
     sys.path.insert(0, args.scripts_dir)
     from catalog_utils import update_catalog
-    update_catalog(clone_dir, {
+    entry = {
         "slug": args.slug,
         "type": "briefing",
         "section": "us-sports",
@@ -108,11 +132,15 @@ def main():
         "date_display": args.date,
         "url": f"/us-sports/{args.slug}.html",
         "keywords": [],
-    })
+    }
+    update_catalog(clone_dir, entry, user_id=user_id)
+    git_add_paths.append("shared-catalog.json")
+    if user_id:
+        git_add_paths.append(f"users/{user_id}/content-catalog.json")
 
     # 4. Commit and push
     print("Committing and pushing...")
-    run(f'git add us-sports/{args.slug}.html content-catalog.json', cwd=clone_dir)
+    run(f'git add {" ".join(git_add_paths)}', cwd=clone_dir)
     run(f'git commit -m "Add US sports briefing: {args.title}"', cwd=clone_dir)
     run('git push', cwd=clone_dir)
 

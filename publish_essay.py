@@ -53,9 +53,12 @@ def main():
     parser.add_argument("--token-file",   required=True)
     parser.add_argument("--repo",         default="DonovanBerry11/anthology")
     parser.add_argument("--scripts-dir",  required=True)
+    parser.add_argument("--user-id",      default=None,
+                        help="Supabase user UUID; routes output to users/{user_id}/ paths")
     args = parser.parse_args()
 
     pub_datetime = current_est_datetime()
+    user_id = args.user_id
     token = Path(args.token_file).read_text().strip()
     clone_dir = Path("/tmp/anthology-publish")
 
@@ -67,45 +70,69 @@ def main():
     run(f'git config user.email "donovanberry11@gmail.com"', cwd=clone_dir)
     run(f'git config user.name "Donovan Berry"', cwd=clone_dir)
 
-    # 2. Generate essay HTML
-    print("Generating essay HTML...")
     gen_script = Path(args.scripts_dir) / "generate_essay_html.py"
-    essay_html = clone_dir / "essays" / f"{args.slug}.html"
+    git_add_paths = []
+
+    # 2a. Generate shared essay HTML
+    print("Generating shared essay HTML...")
+    shared_html = clone_dir / "essays" / f"{args.slug}.html"
     run(
         f'python3 {gen_script} '
         f'--input "{args.analysis_md}" '
-        f'--output "{essay_html}" '
+        f'--output "{shared_html}" '
         f'--slug "{args.slug}" '
         f'--title "{args.title}" '
         f'--date "{args.date}" '
         f'--pub-datetime "{pub_datetime}"'
     )
+    git_add_paths.append(f'essays/{args.slug}.html')
 
-    # 3. Update content catalog
+    # 2b. Per-user HTML if user_id provided
+    if user_id:
+        print(f"Generating per-user essay HTML for {user_id}...")
+        user_html = clone_dir / "users" / user_id / "essays" / f"{args.slug}.html"
+        run(
+            f'python3 {gen_script} '
+            f'--input "{args.analysis_md}" '
+            f'--output "{user_html}" '
+            f'--slug "{args.slug}" '
+            f'--title "{args.title}" '
+            f'--date "{args.date}" '
+            f'--pub-datetime "{pub_datetime}"'
+        )
+        git_add_paths.append(f'users/{user_id}/essays/{args.slug}.html')
+
+    # 3. Update catalogs
     print("Updating content catalog...")
     sys.path.insert(0, args.scripts_dir)
     from catalog_utils import update_catalog
-    update_catalog(clone_dir, {
+    entry = {
         "slug": args.slug,
         "type": "essay",
         "section": "essays",
         "domain": "global",
-        "sector": args.sector if hasattr(args, 'sector') and args.sector else "political-economy",
+        "sector": args.sector if args.sector else "political-economy",
         "title": args.title,
         "standfirst": args.standfirst,
-        "date": args.date_iso if hasattr(args, 'date_iso') and args.date_iso else args.date,
+        "date": args.date_iso if args.date_iso else args.date,
         "date_display": args.date,
         "url": f"/essays/{args.slug}.html",
         "keywords": [],
-    })
+    }
+    update_catalog(clone_dir, entry, user_id=user_id)
+    git_add_paths.append("shared-catalog.json")
+    if user_id:
+        git_add_paths.append(f"users/{user_id}/content-catalog.json")
 
     # 4. Commit and push
     print("Committing and pushing...")
-    run(f'git add essays/{args.slug}.html content-catalog.json', cwd=clone_dir)
+    run(f'git add {" ".join(git_add_paths)}', cwd=clone_dir)
     run(f'git commit -m "Add essay: {args.title}"', cwd=clone_dir)
     run('git push', cwd=clone_dir)
 
     print(f"\n✅ Published: https://anthology-weld.vercel.app/essays/{args.slug}.html")
+    if user_id:
+        print(f"   Per-user: https://anthology-weld.vercel.app/users/{user_id}/essays/{args.slug}.html")
     print("   (Vercel deployment typically takes under 60 seconds)")
 
 

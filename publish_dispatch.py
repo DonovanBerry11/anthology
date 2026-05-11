@@ -15,7 +15,8 @@ Usage:
         --analysis-md path/to/analysis.md \
         --token-file path/to/.publish-config \
         --repo DonovanBerry11/anthology \
-        --scripts-dir path/to/anthology/
+        --scripts-dir path/to/anthology/ \
+        --user-id 94baf514-f988-464f-8de1-56c29d4597ee
 """
 
 import argparse
@@ -55,9 +56,12 @@ def main():
     parser.add_argument("--token-file",    required=True)
     parser.add_argument("--repo",          default="DonovanBerry11/anthology")
     parser.add_argument("--scripts-dir",   required=True)
+    parser.add_argument("--user-id",       default=None,
+                        help="Supabase user UUID; routes output to users/{user_id}/ paths")
     args = parser.parse_args()
 
     pub_datetime = current_est_datetime()
+    user_id = args.user_id
     dispatch_label = "Daily Dispatch" if args.dispatch_type == "daily" else "Weekly Dispatch"
     token = Path(args.token_file).read_text().strip()
     clone_dir = Path("/tmp/anthology-dispatch-publish")
@@ -70,26 +74,46 @@ def main():
     run(f'git config user.email "donovanberry11@gmail.com"', cwd=clone_dir)
     run(f'git config user.name "Donovan Berry"', cwd=clone_dir)
 
-    # 2. Generate dispatch HTML
-    print("Generating dispatch HTML...")
-    gen_script  = Path(args.scripts_dir) / "generate_dispatch_html.py"
-    dispatch_html = clone_dir / "dispatches" / f"{args.slug}.html"
+    gen_script    = Path(args.scripts_dir) / "generate_dispatch_html.py"
+    git_add_paths = []
+
+    # 2a. Generate shared dispatch HTML (serves unauthenticated / archive view)
+    print("Generating shared dispatch HTML...")
+    shared_html = clone_dir / "dispatches" / f"{args.slug}.html"
     run(
         f'python3 {gen_script} '
         f'--input "{args.analysis_md}" '
-        f'--output "{dispatch_html}" '
+        f'--output "{shared_html}" '
         f'--slug "{args.slug}" '
         f'--title "{args.title}" '
         f'--date "{args.date}" '
         f'--dispatch-type "{args.dispatch_type}" '
         f'--pub-datetime "{pub_datetime}"'
     )
+    git_add_paths.append(f'dispatches/{args.slug}.html')
 
-    # 3. Update content catalog
+    # 2b. If user_id provided, also generate per-user HTML
+    if user_id:
+        print(f"Generating per-user dispatch HTML for {user_id}...")
+        user_html = clone_dir / "users" / user_id / "dispatches" / f"{args.slug}.html"
+        run(
+            f'python3 {gen_script} '
+            f'--input "{args.analysis_md}" '
+            f'--output "{user_html}" '
+            f'--slug "{args.slug}" '
+            f'--title "{args.title}" '
+            f'--date "{args.date}" '
+            f'--dispatch-type "{args.dispatch_type}" '
+            f'--back-url "../../../index.html#dispatches" '
+            f'--pub-datetime "{pub_datetime}"'
+        )
+        git_add_paths.append(f'users/{user_id}/dispatches/{args.slug}.html')
+
+    # 3. Update catalogs
     print("Updating content catalog...")
     sys.path.insert(0, args.scripts_dir)
     from catalog_utils import update_catalog
-    update_catalog(clone_dir, {
+    entry = {
         "slug": args.slug,
         "type": "dispatch",
         "section": "dispatches",
@@ -102,15 +126,21 @@ def main():
         "date_display": args.date,
         "url": f"/dispatches/{args.slug}.html",
         "keywords": [],
-    })
+    }
+    update_catalog(clone_dir, entry, user_id=user_id)
+    git_add_paths.append("shared-catalog.json")
+    if user_id:
+        git_add_paths.append(f"users/{user_id}/content-catalog.json")
 
     # 4. Commit and push
     print("Committing and pushing...")
-    run(f'git add dispatches/{args.slug}.html content-catalog.json', cwd=clone_dir)
+    run(f'git add {" ".join(git_add_paths)}', cwd=clone_dir)
     run(f'git commit -m "Add dispatch: {args.title}"', cwd=clone_dir)
     run('git push', cwd=clone_dir)
 
     print(f"\n✅ Published: https://anthology-weld.vercel.app/dispatches/{args.slug}.html")
+    if user_id:
+        print(f"   Per-user: https://anthology-weld.vercel.app/users/{user_id}/dispatches/{args.slug}.html")
     print("   (Vercel deployment typically takes under 60 seconds)")
 
 

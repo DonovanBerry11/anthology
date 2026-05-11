@@ -131,8 +131,8 @@ def main():
     # Resolve paths
     if args.repo_dir:
         repo = Path(args.repo_dir)
-        per_user_catalog = repo / "users" / args.user_id / "content-catalog.json"
-        shared_catalog   = repo / "content-catalog.json"
+        per_user_catalog = repo / "users" / args.user_id / "shared-catalog.json"
+        shared_catalog   = repo / "shared-catalog.json"
         catalog_path     = per_user_catalog if per_user_catalog.exists() else shared_catalog
         output_path      = repo / "users" / args.user_id / "edition.json"
     else:
