@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The reconciliation bill's primary fiscal consequence is not its distributional costs in the current decade but its permanent alteration of the fiscal space available to all governments that follow — a">
+  <title>The Permanent Deficit — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Permanent Deficit</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 11 May 2026, 12:45 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The reconciliation bill's primary fiscal consequence is not its distributional costs in the current decade but its permanent alteration of the fiscal space available to all governments that follow — a pre-commitment device that binds successor administrations through debt service obligations no electoral outcome can rescind.</p>
+<p>According to <a href="https://www.cbo.gov">Congressional Budget Office preliminary estimates</a>, the bill adds approximately $3.8 trillion to the federal deficit over ten years, extending and expanding the 2017 tax cuts while cutting Medicaid by an estimated $700 billion, SNAP by hundreds of billions, and student loan programmes substantially. At prevailing interest rates, that additional principal generates roughly $200 billion in new annual debt service payments within a decade. Interest on federal debt is not a discretionary line item. It is constitutionally prior to all other appropriations — paid before Congress votes on a dollar of anything else, before defence, before social programmes, before research. A future government that wanted to expand healthcare coverage, reverse science funding cuts, or invest in housing would begin with approximately $200 billion less in available fiscal capacity than any government operating today. That reduction is permanent and irreversible by any electoral outcome short of restructuring.</p>
+<p>This is not the accidental consequence of fiscal inattention. The intellectual genealogy of the reconciliation bill runs through a four-decade argument on the American right that deficits large enough to crowd out future discretionary spending are the most durable available constraint on welfare state expansion — more durable than legislation, which can be repealed, and more reliable than electoral victory, which can be reversed. The $700 billion in Medicaid cuts are visible, contested, and central to public debate. The interest obligations those cuts help finance are less visible and considerably more durable. Debt service is not subject to appropriations votes. It is owed. No future appropriations process can reclassify it.</p>
+<p>The constitutional comparison is precise rather than rhetorical. Amending the US Constitution to prohibit Congress from expanding Medicaid requires two-thirds majorities in both houses and ratification by thirty-eight states. Embedding a $200 billion annual first-prior charge on federal revenues requires a simple majority in both chambers and a presidential signature. The constraint on future governance is functionally comparable. The democratic legitimation required to impose it is not.</p>
+<p>The distributional analysis of the bill — who pays, who benefits in the current decade — is correct and important. It is also incomplete. The CBO projections establishing the long-run fiscal impact are not contested estimates. They follow directly from the principal added and the rate environment in which it will be serviced. What is rarely stated plainly is that the primary significance of the bill runs not to who gains in the current Congress but to what is available to govern in the next decade.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-permanent-deficit";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

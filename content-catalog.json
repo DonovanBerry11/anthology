@@ -1,6 +1,19 @@
 {
-  "generated": "2026-05-10T12:14:07Z",
+  "generated": "2026-05-11T05:45:53Z",
   "pieces": [
+    {
+      "slug": "the-permanent-deficit",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Permanent Deficit",
+      "standfirst": "The Republican reconciliation bill is being assessed as a tax cut and a distributional event. Its more consequential effect is architectural: roughly $200 billion in new annual debt service payments that are constitutionally prior to all discretionary spending, binding every successor government without requiring anything like the supermajority a constitutional amendment would demand.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/notes/the-permanent-deficit.html",
+      "keywords": []
+    },
     {
       "slug": "hormuz-tanker-strikes",
       "type": "dispatch",
