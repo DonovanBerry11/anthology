@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Senate voted [49-44 on Monday to invoke cloture](https://rollcall.com/2026/05/11/warsh-moves-closer-to-fed-role-with-senate-cloture-vote/) on Kevin Warsh's nomination to the Federal Reserve Board,">
+  <title>Warsh Clears Cloture as Partisan Fed Confirmation Concludes — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#dispatches">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Warsh Clears Cloture as Partisan Fed Confirmation Concludes</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 12 May 2026, 12:13 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>The Senate voted <a href="https://rollcall.com/2026/05/11/warsh-moves-closer-to-fed-role-with-senate-cloture-vote/">49-44 on Monday to invoke cloture</a> on Kevin Warsh's nomination to the Federal Reserve Board, clearing the way for final votes on his confirmation to both the board and the chair before Jerome Powell's chair term expires on May 15. A separate cloture and confirmation vote on the chair nomination is expected later this week.</p>
+<p>The procedural posture caps the most strictly partisan Fed chair confirmation process in the institution's history. On April 29, the Senate Banking Committee advanced Warsh on a <a href="https://www.cnbc.com/2026/04/29/trump-fed-nominee-kevin-warsh-senate-approval.html">13-11 party-line vote</a> — every Republican in favour, every Democrat opposed. Senator Elizabeth Warren noted on the floor that no previous Fed chair nominee had received a fully partisan committee vote. The earlier holdout — Senator Thom Tillis of North Carolina — withdrew his block on April 24 after <a href="https://www.cnbc.com/2026/04/29/trump-fed-nominee-kevin-warsh-senate-approval.html">US Attorney Jeanine Pirro closed her office's investigation</a> into the Fed's headquarters renovation, the probe Tillis had wanted concluded before Powell's term ended. Republicans hold a 53-seat majority, and Warsh needs only a simple majority on the floor. Powell has confirmed he will <a href="https://www.npr.org/2026/04/29/nx-s1-5802911/federal-reserve-meeting-jerome-powell-kevin-warsh">remain on the Fed Board</a> until his governor term ends in 2028, while stepping down as chair.</p>
+<p>Warsh inherits a position pinned between two divergent pressures. The Federal Open Market Committee voted at its April 29 meeting to hold the federal funds rate at <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260429a.htm">3.5% to 3.75%</a> for a third consecutive meeting. Headline CPI ran at <a href="https://www.bls.gov/opub/ted/2026/consumer-prices-up-3-3-percent-over-the-year-0-9-percent-over-the-month-in-march-2026.htm">3.3% in March</a> — the highest reading since May 2024 — driven by a 21.2% monthly jump in gasoline prices, the largest monthly increase in that series since BLS began publishing it in 1967, on Iran-war energy pass-through. Core inflation was steadier at 2.6%. The April CPI release is due Tuesday May 12; forecasters expect headline inflation closer to 4%, with one-off methodological adjustments to rent and owners' equivalent rent to correct for last autumn's government-shutdown data gap likely to swing the core print.</p>
+<p>The chair vote, the April CPI print, and the June 17 FOMC meeting form the next sequence; the FOMC's June statement will be the first to be issued under Warsh.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "warsh-fed-confirmation";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

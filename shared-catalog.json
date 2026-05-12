@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-12T05:12:27Z",
+  "generated": "2026-05-12T05:13:53Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -40,6 +40,20 @@
       "date": "2026-05-12",
       "date_display": "May 2026",
       "url": "/dispatches/ai-hardware-rotation.html",
+      "keywords": []
+    },
+    {
+      "slug": "warsh-fed-confirmation",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "fiscal",
+      "dispatch_type": "daily",
+      "title": "Warsh Clears Cloture as Partisan Fed Confirmation Concludes",
+      "standfirst": "The Senate's Monday cloture vote on Kevin Warsh's Fed nomination — 49-44 on party lines — caps the most strictly partisan confirmation process in Fed Chair history. Warsh inherits a Fed pinned between an Iran-war energy shock and a shutdown-distorted core inflation print due Tuesday.",
+      "date": "2026-05-12",
+      "date_display": "May 2026",
+      "url": "/dispatches/warsh-fed-confirmation.html",
       "keywords": []
     },
     {
