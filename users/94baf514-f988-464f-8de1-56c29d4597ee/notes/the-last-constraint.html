@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Central bank independence is the last remaining check that imposes a binding fiscal cost on elected governments, and the campaign to subordinate it is therefore not a dispute about interest rates — it">
+  <title>The Last Constraint — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Last Constraint</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 12 May 2026, 12:21 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>Central bank independence is the last remaining check that imposes a binding fiscal cost on elected governments, and the campaign to subordinate it is therefore not a dispute about interest rates — it is an attempt to remove the last actor outside the electoral cycle that can make fiscal incontinence expensive while it is happening rather than after. The point is easily missed because the political fight presents itself as a rate fight. A president demands lower rates; the chair says no; the press writes the story as Powell-versus-Trump or Lagarde-versus-Meloni. The deeper claim is plainer. Modern democracies have, one by one, allowed every other binding constraint on permanent deficits to lapse. Balanced-budget amendments were either never adopted or so loosely worded they impose nothing; fiscal rules are routinely suspended; debt-ceiling fights end in raises; supreme courts rule on procedural rather than fiscal grounds. What remains is one body — the central bank — whose statutory mandate gives it the right to raise the cost of borrowing when politicians refuse to. That right is the only fiscal price-signal that arrives during the term of the government setting the policy, rather than after it. Take it away and there is no other left. The IMF's March 2026 working paper on central bank independence found that politically motivated governor appointments are statistically associated with both higher and more volatile inflation across a cross-section of countries — a finding the paper itself notes has been published, in different forms, for thirty years, and has changed no political behaviour. That tells you the political calculation is not made on the empirical case. It is made on the fact that an independent central bank is the one body that can credibly impose a cost on a government in office, and removing that cost is, for the government, worth what removing it would cost the economy. The standard defence of independence — unelected technocrats, distributional consequences, democratic accountability — has merit and is not the point. The point is that nothing else is left. Subordinate the central bank and sovereign debt markets will price the missing constraint themselves, which means panic rather than tightening, with the discontinuity arriving suddenly and at an undefined moment. Independence resolves nothing about the underlying fiscal position; it disciplines the rate at which the position is allowed to deteriorate. Without it, the deterioration runs at whatever pace electoral politics finds tolerable, which has consistently turned out to be faster than the bond market can absorb in an orderly way. The argument over the chair, in country after country, is therefore not really about a person, or a quarter point, or even a doctrine. It is about whether the political class will retain any pre-commitment device at all, after spending forty years allowing the others to lapse.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-last-constraint";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

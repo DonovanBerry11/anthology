@@ -81,7 +81,20 @@
       "date_display": "May 2026",
       "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/the-housing-compact.html",
       "keywords": []
+    },
+    {
+      "slug": "the-last-constraint",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "fiscal",
+      "title": "The Last Constraint",
+      "standfirst": "The political fight over central bank independence presents itself as a quarrel over rates. It is something else — the contest over whether the last binding fiscal check on elected governments survives, after every other constraint has been allowed to lapse.",
+      "date": "2026-05-12",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/the-last-constraint.html",
+      "keywords": []
     }
   ],
-  "generated": "2026-05-12T05:20:24Z"
+  "generated": "2026-05-12T05:21:36Z"
 }
