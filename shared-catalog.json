@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-12T05:21:36Z",
+  "generated": "2026-05-12T05:23:03Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -107,6 +107,19 @@
       "date": "2026-05-12",
       "date_display": "May 2026",
       "url": "/notes/the-last-constraint.html",
+      "keywords": []
+    },
+    {
+      "slug": "the-precariat-firm",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Precariat Firm",
+      "standfirst": "The consequential effect of AI on labour is not that it is replacing workers — it is that firms are using AI adoption as the political cover to dissolve the employment relationship itself. The displacement is from employee to contractor to agent, not from human to machine.",
+      "date": "2026-05-12",
+      "date_display": "May 2026",
+      "url": "/notes/the-precariat-firm.html",
       "keywords": []
     },
     {

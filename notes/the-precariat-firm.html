@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The most consequential effect of AI on labour is not that it replaces workers — it is that firms are using AI adoption as the political cover for dissolving the employment relationship itself, in ways">
+  <title>The Precariat Firm — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Precariat Firm</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 12 May 2026, 12:23 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The most consequential effect of AI on labour is not that it replaces workers — it is that firms are using AI adoption as the political cover for dissolving the employment relationship itself, in ways that automation alone would not justify and that would have been politically harder to defend without an inevitability story attached. Read the corporate announcements carefully and the pattern is plain. The cuts run heavily through full-time employee headcount, while contractor spend, platform-mediated freelance work, and "agentic workflow" budgets rise. The same task is not being automated out of existence; it is being repriced. The employee version of the role carried health insurance, paid leave, severance accrual, equity vesting, bargaining cover, and a degree of legal recourse. The contractor version carries none of those, plus a billable hour rate that, on paper, may be higher. The agent-mediated version carries none of those, plus a fractional usage fee with no human-side counterparty at all. The shift from the first form to the third does not require the underlying work to disappear. It requires only that the firm has a permissible reason to refuse to employ anyone to do it. AI provides that reason. Cloudflare's May 7 announcement, which paired 1,100 layoffs with record quarterly revenue and a stated intent to be "agentic AI-first," is the cleanest publicly documented instance of the form to date, but the same pattern shows up across the <a href="https://tech.yahoo.com/general/article/tech-layoffs-2026-more-than-128000-people-have-been-laid-off-this-year-from-companies-like-paypal-meta-cloudflare-and-more-144545060.html">128,000 tech-sector job losses</a> recorded year-to-date by industry trackers, against a backdrop of <a href="https://invezz.com/news/2026/05/04/is-big-techs-725b-ai-splurge-being-funded-by-mass-layoffs/">$725 billion in announced 2026 AI capex</a> by the four largest hyperscalers. The mass-automation reading of these numbers treats the question as one of total labour demand. The political-economy reading treats it as one of employment form. The category of worker most affected — entry-level and early-career knowledge workers — is also the cohort whose social protection turns most acutely on the employer relationship; it is the cohort with the thinnest savings, the largest student debt, and the most need of employment as a training and credentialing route into mid-career. Move that cohort out of employee status and into contracting or platform work and the displacement is visible only in the labour-force statistics that record the consequences after the fact. The framing of AI as technological inevitability is doing work that should be done by an argument about which employment relations the firm is choosing to maintain and which it is choosing to dissolve under cover of the new vocabulary. Pose the question that way and the relevant policy levers — the legal definition of an employee, the portability of benefits, the threshold at which agent-mediated workflow crosses into a managed labour relation — become visible as choices a polity is in fact making. Pose the question in the AI-versus-jobs frame and those levers vanish behind a story about machines doing what humans used to do, which is rarely the right description of what is occurring.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-precariat-firm";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
