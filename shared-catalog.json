@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-12T05:10:58Z",
+  "generated": "2026-05-12T05:12:27Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -26,6 +26,20 @@
       "date": "2026-05-12",
       "date_display": "May 2026",
       "url": "/dispatches/cloudflare-ai-layoffs.html",
+      "keywords": []
+    },
+    {
+      "slug": "ai-hardware-rotation",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "technology",
+      "dispatch_type": "daily",
+      "title": "Wall Street's AI Chip Rotation",
+      "standfirst": "AMD, Intel, and Micron have outrun Nvidia by orders of magnitude year-to-date as Wall Street rotates AI-hardware capital from training GPUs to inference-era CPUs and memory. Nvidia's counter-move is a 0 billion equity-investment campaign across its own customer base.",
+      "date": "2026-05-12",
+      "date_display": "May 2026",
+      "url": "/dispatches/ai-hardware-rotation.html",
       "keywords": []
     },
     {

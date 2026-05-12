@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Wall Street's AI-hardware trade has rotated.">
+  <title>Wall Street's AI Chip Rotation — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#dispatches">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Wall Street's AI Chip Rotation</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 12 May 2026, 12:12 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>Wall Street's AI-hardware trade has rotated. CNBC reported on Friday that AMD, Intel, and Micron have each surged into double-digit weekly gains while Nvidia — the four-year dominant beneficiary of AI compute capital — has lagged the broader Nasdaq, prompting analysts to describe a <a href="https://www.cnbc.com/2026/05/08/wall-street-ai-chip-love-moves-from-nvidia-to-intel-amd-and-micron.html">changing of the guard in AI</a>. For the year to date, AMD is up approximately 112%, Intel up roughly 240%, and Micron has reached new highs, while Nvidia is up <a href="https://www.cnbc.com/2026/05/08/wall-street-ai-chip-love-moves-from-nvidia-to-intel-amd-and-micron.html">about 15%</a>, barely ahead of the index.</p>
+<p>The repositioning has a specific mechanism. The earlier phase of the AI build-out concentrated capital in GPU training infrastructure, where Nvidia is structurally dominant. The current phase — driven by the production deployment of agentic AI and inference workloads — runs through CPUs and high-bandwidth memory. Bank of America projects the data-center CPU market more than doubling from <a href="https://www.cnbc.com/2026/05/08/wall-street-ai-chip-love-moves-from-nvidia-to-intel-amd-and-micron.html">$27 billion in 2025 to $60 billion in 2030</a>, and Micron's CEO told CNBC in March that major customers are receiving only half to two-thirds of the high-bandwidth memory they have ordered. AMD's <a href="https://ir.amd.com/news-events/press-releases/detail/1284/amd-reports-first-quarter-2026-financial-results">Q1 2026 results on May 5</a> gave the rotation an earnings anchor: revenue of $10.3 billion (+38% year-on-year), data-centre revenue of <a href="https://www.datacenterdynamics.com/en/news/amd-posts-q1-2026-data-center-revenue-of-58bn-forecasts-120bn-server-cpu-income-by-2030/">$5.8 billion (+57%)</a>, and a revised forecast lifting expected server-CPU market growth from 18% to 35% annually through 2030 — implying a $120 billion server-CPU revenue pool by decade's end. AMD CEO Lisa Su described the quarter as "a structural shift in our business."</p>
+<p>Nvidia's response, disclosed in the same window, is a pivot to becoming the AI sector's largest equity backer rather than just its hardware supplier. The company has now committed <a href="https://www.cnbc.com/2026/05/09/nvidia-embraces-ai-investor-topping-40-billion-in-equity-bets-2026.html">more than $40 billion in AI equity investments</a> in the first four months of 2026, anchored by a $30 billion stake in OpenAI announced in late February, followed by deals for up to $3.2 billion in Corning and up to $2.1 billion in IREN, alongside an earlier $2 billion CoreWeave position now valued at roughly $4.4 billion. The strategy moves Nvidia upstream of its customers: financing the data-centre buildout and memory supply chain that must consume its GPUs.</p>
+<p>Nvidia reports fiscal Q1 2027 earnings on May 28 — the next test of whether the rotation reflects a durable shift in where AI margins accrue or a temporary repricing of laggards against an outsized incumbent.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "ai-hardware-rotation";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
