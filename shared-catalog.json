@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-12T05:15:55Z",
+  "generated": "2026-05-12T05:18:42Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -67,6 +67,20 @@
       "date": "2026-05-12",
       "date_display": "May 2026",
       "url": "/uk-politics/westminster-starmer-survival.html",
+      "keywords": []
+    },
+    {
+      "slug": "nba-may11",
+      "type": "briefing",
+      "section": "us-sports",
+      "domain": "us-sports",
+      "sector": "sports",
+      "sport": "NBA",
+      "title": "NBA Conference Semifinals — 11 May 2026",
+      "standfirst": "The Knicks complete a four-game sweep of the 76ers behind a postseason three-point barrage; Donovan Mitchell ties an NBA playoff record with 39 second-half points to drag Cleveland back to 2-2 against Detroit. The Thunder were in Los Angeles overnight chasing a sweep of the Lakers.",
+      "date": "2026-05-12",
+      "date_display": "May 2026",
+      "url": "/us-sports/nba-may11.html",
       "keywords": []
     },
     {
