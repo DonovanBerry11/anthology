@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The housing affordability crisis is not a supply problem; it is a political compact in which the cohort with the highest electoral turnout benefits, financially, from scarcity, and the supply-side con">
+  <title>The Housing Compact — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Housing Compact</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 12 May 2026, 12:20 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The housing affordability crisis is not a supply problem; it is a political compact in which the cohort with the highest electoral turnout benefits, financially, from scarcity, and the supply-side consensus that now dominates housing policy debate is an ideologically convenient way of avoiding that fact. The compact is not concealed. Homeowners over fifty vote at the highest rates of any age cohort in every comparable democracy; their household wealth is overwhelmingly stored in the one asset whose price rises with the absence of new building; and any genuine intervention to expand supply at the rate required to lower real prices would operate as a direct, large, and durable transfer of capital away from this cohort. Politicians are not stupid; they understand which side of the transfer their re-election depends on. So they pass plans, publish strategies, liberalise the easy bits of zoning, and accept that the rest will fail at local-government level, because the rest failing is the point of the arrangement. The supply framing has the additional analytical defect of being wrong on its own terms. A <em>Fortune</em> analysis published in February 2026 found that house prices in the United States track mean household income, not median — meaning the price level reflects the resources of the affluent tail rather than the typical household. If the problem were a shortage, prices would track the median; the fact that they track the mean is the data point most consistent with rising inequality, not insufficient construction, being the price driver. In the United Kingdom the picture is starker: more than half of first-time buyers now rely on parental support, converting homeownership from an earned asset into an inherited one in the course of a single generation. None of this is reducible to ordinary supply. None of it is solvable by a planning reform that leaves the prior arrangement — mortgage interest deductibility, capital-gains exemption on primary residences, the asset-pricing consequences of treating housing as the principal household savings vehicle — untouched. The hard part of housing reform is not zoning. The hard part is the choice to redistribute capital away from the median voter aged sixty and above, in a regime that requires their consent. Until that choice is named in the language of who pays, the policy debate will continue to recycle technical fixes for a problem that is not technical, and the affordability metrics will continue to drift further from any standard a reasonable society would set. The compact persists because, electorally, it works for the side that decides elections. It breaks only when a generation that has been priced out of the asset class becomes large enough, and votes consistently enough, to outweigh the cohort that holds it. That moment is being approached in several democracies; it has not yet arrived in any. The way to hasten it is to make the cost of preserving the compact electorally legible — to name the transfer, in pounds and dollars and votes, that the current arrangement represents.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-housing-compact";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

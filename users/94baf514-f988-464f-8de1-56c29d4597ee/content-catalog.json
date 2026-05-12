@@ -68,7 +68,20 @@
       "date_display": "May 2026",
       "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/us-sports/nba-may11.html",
       "keywords": []
+    },
+    {
+      "slug": "the-housing-compact",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Housing Compact",
+      "standfirst": "Housing affordability is not a supply problem. It is a political compact whose beneficiaries are also the cohort with the highest electoral turnout — and the supply-side consensus that now dominates the policy debate is an ideologically convenient way of avoiding that fact.",
+      "date": "2026-05-12",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/the-housing-compact.html",
+      "keywords": []
     }
   ],
-  "generated": "2026-05-12T05:18:42Z"
+  "generated": "2026-05-12T05:20:24Z"
 }
