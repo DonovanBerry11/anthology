@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-12T05:13:53Z",
+  "generated": "2026-05-12T05:15:55Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -54,6 +54,19 @@
       "date": "2026-05-12",
       "date_display": "May 2026",
       "url": "/dispatches/warsh-fed-confirmation.html",
+      "keywords": []
+    },
+    {
+      "slug": "westminster-starmer-survival",
+      "type": "briefing",
+      "section": "uk-politics",
+      "domain": "uk-politics",
+      "sector": "politics",
+      "title": "Westminster Briefing — 11 May 2026: Starmer's Survival Week",
+      "standfirst": "Sir Keir Starmer survives Monday without an immediate leadership challenge but with 77 Labour MPs publicly demanding his resignation timetable. The reset speech committed to British Steel nationalisation and a Europe-facing reset; gilts sold off regardless.",
+      "date": "2026-05-12",
+      "date_display": "May 2026",
+      "url": "/uk-politics/westminster-starmer-survival.html",
       "keywords": []
     },
     {
