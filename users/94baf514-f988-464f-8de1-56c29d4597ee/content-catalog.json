@@ -1,0 +1,19 @@
+{
+  "pieces": [
+    {
+      "slug": "cloudflare-ai-layoffs",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "technology",
+      "dispatch_type": "daily",
+      "title": "Cloudflare Cuts 1,100 Jobs at Record Revenue",
+      "standfirst": "Cloudflare announced its first mass layoff in sixteen years on May 7 — 1,100 jobs eliminated alongside record quarterly revenue — and explicitly attributed the cut to internal AI agent adoption. The move is the clearest disclosed case yet of AI displacement at a growing company.",
+      "date": "2026-05-12",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/dispatches/cloudflare-ai-layoffs.html",
+      "keywords": []
+    }
+  ],
+  "generated": "2026-05-12T05:10:58Z"
+}

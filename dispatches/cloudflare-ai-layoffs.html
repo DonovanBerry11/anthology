@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cloudflare disclosed on Wednesday that it is cutting [1,100 jobs — roughly 20% of its workforce](https://blog.cloudflare.com/building-for-the-future/) — the first mass layoff in the company's sixteen-">
+  <title>Cloudflare Cuts 1,100 Jobs at Record Revenue — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#dispatches">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Cloudflare Cuts 1,100 Jobs at Record Revenue</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 12 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>Cloudflare disclosed on Wednesday that it is cutting <a href="https://blog.cloudflare.com/building-for-the-future/">1,100 jobs — roughly 20% of its workforce</a> — the first mass layoff in the company's sixteen-year history, announced alongside record Q1 2026 revenue of <a href="https://techcrunch.com/2026/05/08/cloudflare-says-ai-made-1100-jobs-obsolete-even-as-revenue-hit-a-record-high/">$639.8 million, up 34% year-on-year</a>.</p>
+<p>The framing in the joint memo from co-founders Matthew Prince and Michelle Zatlyn was explicit and unusual: the cuts are not a response to financial distress but a deliberate move to an "agentic AI-first operating model." Internal AI agent usage at Cloudflare has <a href="https://blog.cloudflare.com/building-for-the-future/">risen more than 600% in the past three months</a>, spanning engineering, finance, HR, and marketing. Cuts are being made in every department except revenue-quota-carrying sales. Affected staff will receive base pay through the end of 2026, US healthcare through year-end, and accelerated equity vesting to August 15, 2026 — terms more typical of a strategic restructuring than a cost-driven retrenchment. Investors read the underlying disclosure differently: Cloudflare shares fell <a href="https://www.cnbc.com/2026/05/07/cloudflare-net-q1-2026-stock-earnings-layoffs.html">about 24% the day after earnings</a>, the steepest single-day drop in the stock's history.</p>
+<p>The announcement lands in a sector where the pattern is now generalised. Industry trackers cited by <em>Yahoo Tech</em> put 2026 tech-sector job losses at <a href="https://tech.yahoo.com/general/article/tech-layoffs-2026-more-than-128000-people-have-been-laid-off-this-year-from-companies-like-paypal-meta-cloudflare-and-more-144545060.html">more than 128,000 through early May</a>; Meta has confirmed roughly 8,000 cuts beginning May 20, Amazon has eliminated approximately 30,000 corporate and tech roles since October, and Microsoft has opened a voluntary-exit route targeting around 8,750 long-tenured US employees. <em>Nikkei Asia</em>'s tally attributes <a href="https://invezz.com/news/2026/05/04/is-big-techs-725b-ai-splurge-being-funded-by-mass-layoffs/">47.9% of Q1 tech layoffs to AI and automation</a>, against a backdrop of $725 billion in projected 2026 capex from Alphabet, Amazon, Microsoft, and Meta — a 77% increase on 2025. Cloudflare is distinctive not in scale but in specificity: a publicly disclosed, AI-attributed cut at a company simultaneously printing record revenue. Prince's prediction — that Cloudflare will have more employees at some point in 2027 than at any point in 2026 — leaves open whether the displacement is composition or contraction.</p>
+<p>The Bureau of Labor Statistics releases the April employment situation revisions next week, and Meta's announced layoff start date of May 20 will be the next disclosure point on the trajectory.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "cloudflare-ai-layoffs";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
