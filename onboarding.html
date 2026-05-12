@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Masthead ── */
+    .onb-masthead {
+      text-align: center;
+      padding: 2.25rem 1rem 1.25rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .onb-masthead a {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Layout ── */
+    .onb-outer {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.25rem 4rem;
+    }
+    .onb-card {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    /* ── Progress bar ── */
+    .onb-progress-track {
+      width: 100%;
+      height: 1px;
+      background: var(--rule);
+      margin-bottom: 2.75rem;
+      position: relative;
+    }
+    .onb-progress-fill {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      background: var(--text);
+      transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── Steps ── */
+    .onb-step { display: none; }
+    .onb-step.active {
+      display: block;
+      animation: onb-fade-up 0.28s ease both;
+    }
+    @keyframes onb-fade-up {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .onb-step-label {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+    .onb-step h2 {
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      font-weight: 400;
+      line-height: 1.22;
+      margin: 0 0 0.45rem 0;
+      color: var(--text);
+    }
+    .onb-step-hint {
+      font-family: var(--sans);
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0 0 1.75rem 0;
+    }
+
+    /* ── Searchable dropdown ── */
+    .onb-select-wrap { position: relative; width: 100%; }
+    .onb-select-input {
+      width: 100%;
+      padding: 0.72rem 2.2rem 0.72rem 0.95rem;
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.18s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .onb-select-input:focus,
+    .onb-select-input.has-value { border-color: var(--text); }
+
+    .onb-select-wrap::after {
+      content: '';
+      pointer-events: none;
+      position: absolute;
+      right: 0.85rem; top: 50%;
+      transform: translateY(-50%);
+      width: 0; height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid var(--muted);
+      transition: transform 0.18s;
+    }
+    .onb-select-wrap.open::after {
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .onb-dropdown {
+      position: absolute;
+      top: calc(100% + 2px); left: 0; right: 0;
+      background: var(--bg);
+      border: 1px solid var(--text);
+      border-radius: 2px;
+      max-height: 220px;
+      overflow-y: auto;
+      z-index: 200;
+      display: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .onb-dropdown.open { display: block; }
+
+    .onb-dropdown-item {
+      padding: 0.58rem 0.95rem;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.1s;
+      line-height: 1.4;
+    }
+    .onb-dropdown-item:hover,
+    .onb-dropdown-item.highlighted { background: var(--rule); }
+    .onb-dropdown-item.item-other {
+      color: var(--muted);
+      border-top: 1px solid var(--rule);
+      font-style: italic;
+    }
+    .onb-dropdown-empty {
+      padding: 0.58rem 0.95rem;
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .onb-other-input {
+      display: none;
+      width: 100%;
+      margin-top: 0.65rem;
+      padding: 0.72rem 0.95rem;
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.18s;
+    }
+    .onb-other-input.visible { display: block; }
+    .onb-other-input:focus { border-color: var(--text); }
+
+    /* ── Validation error ── */
+    .onb-error {
+      display: none;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      color: #b94040;
+      margin-top: 0.5rem;
+    }
+    .onb-error.visible { display: block; }
+
+    /* ── Interests grid ── */
+    .onb-interests-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+    .onb-interest-tile {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.8rem 0.95rem;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      cursor: pointer;
+      user-select: none;
+      transition: border-color 0.15s, background 0.15s;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+    .onb-interest-tile:hover { border-color: var(--text); }
+    .onb-interest-tile.selected {
+      border-color: var(--text);
+      background: var(--rule);
+    }
+    .onb-check-box {
+      flex-shrink: 0;
+      width: 15px; height: 15px;
+      border: 1.5px solid var(--muted);
+      border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.12s, border-color 0.12s;
+    }
+    .onb-interest-tile.selected .onb-check-box {
+      background: var(--text);
+      border-color: var(--text);
+    }
+    .onb-check-box svg { display: none; }
+    .onb-interest-tile.selected .onb-check-box svg { display: block; }
+
+    /* ── Additional textarea ── */
+    .onb-textarea {
+      width: 100%;
+      min-height: 130px;
+      padding: 0.72rem 0.95rem;
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      resize: vertical;
+      line-height: 1.55;
+      transition: border-color 0.18s;
+    }
+    .onb-textarea:focus { border-color: var(--text); }
+    .onb-char-count {
+      font-family: var(--sans);
+      font-size: 0.73rem;
+      color: var(--muted);
+      text-align: right;
+      margin-top: 0.35rem;
+    }
+
+    /* ── Navigation ── */
+    .onb-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+    .onb-btn-primary {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.7rem 1.75rem;
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: opacity 0.18s;
+    }
+    .onb-btn-primary:hover { opacity: 0.78; }
+    .onb-btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+    .onb-btn-secondary {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.15s;
+    }
+    .onb-btn-secondary:hover { color: var(--text); }
+    .onb-nav-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.4rem;
+    }
+
+    /* ── Saving state ── */
+    #step-saving {
+      text-align: center;
+      padding: 3rem 0;
+    }
+    #step-saving p {
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="onb-masthead">
+    <a href="/">Anthology</a>
+  </div>
+
+  <div class="onb-outer">
+    <div class="onb-card">
+
+      <div class="onb-progress-track">
+        <div class="onb-progress-fill" id="onbProgress"></div>
+      </div>
+
+      <!-- Step 1: Country of residence -->
+      <div class="onb-step active" id="step-1">
+        <div class="onb-step-label">Step 1 of 5</div>
+        <h2>What country do you live in?</h2>
+        <p class="onb-step-hint">These questions help us calibrate the content we deliver to you — your edition is personalised to your perspective and interests.</p>
+        <div class="onb-select-wrap" id="wrap-country-res">
+          <input class="onb-select-input" id="inp-country-res" type="text"
+                 placeholder="Search countries…" autocomplete="off" readonly>
+          <div class="onb-dropdown" id="drop-country-res"></div>
+        </div>
+        <input class="onb-other-input" id="other-country-res" type="text"
+               placeholder="Please specify your country…">
+        <div class="onb-error" id="err-country-res">Please select a country to continue.</div>
+        <div class="onb-nav">
+          <span></span>
+          <button class="onb-btn-primary" onclick="validateAndNext(1)">Continue</button>
+        </div>
+      </div>
+
+      <!-- Step 2: City -->
+      <div class="onb-step" id="step-2">
+        <div class="onb-step-label">Step 2 of 5</div>
+        <h2>What city do you live in?</h2>
+        <p class="onb-step-hint">Helps us include locally relevant context where appropriate.</p>
+        <div class="onb-select-wrap" id="wrap-city">
+          <input class="onb-select-input" id="inp-city" type="text"
+                 placeholder="Search cities…" autocomplete="off" readonly>
+          <div class="onb-dropdown" id="drop-city"></div>
+        </div>
+        <input class="onb-other-input" id="other-city" type="text"
+               placeholder="Please specify your city…">
+        <div class="onb-error" id="err-city">Please select a city to continue.</div>
+        <div class="onb-nav">
+          <button class="onb-btn-secondary" onclick="goBack(2)">← Back</button>
+          <button class="onb-btn-primary" onclick="validateAndNext(2)">Continue</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Country of origin -->
+      <div class="onb-step" id="step-3">
+        <div class="onb-step-label">Step 3 of 5</div>
+        <h2>What country are you from?</h2>
+        <p class="onb-step-hint">Your national background shapes how you read events — we factor this in when framing stories.</p>
+        <div class="onb-select-wrap" id="wrap-country-ori">
+          <input class="onb-select-input" id="inp-country-ori" type="text"
+                 placeholder="Search countries…" autocomplete="off" readonly>
+          <div class="onb-dropdown" id="drop-country-ori"></div>
+        </div>
+        <input class="onb-other-input" id="other-country-ori" type="text"
+               placeholder="Please specify your country…">
+        <div class="onb-error" id="err-country-ori">Please select a country to continue.</div>
+        <div class="onb-nav">
+          <button class="onb-btn-secondary" onclick="goBack(3)">← Back</button>
+          <button class="onb-btn-primary" onclick="validateAndNext(3)">Continue</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Interests -->
+      <div class="onb-step" id="step-4">
+        <div class="onb-step-label">Step 4 of 5</div>
+        <h2>What are you interested in?</h2>
+        <p class="onb-step-hint">Select all that apply. This shapes what we prioritise in your daily edition.</p>
+        <div class="onb-interests-grid">
+          <div class="onb-interest-tile" data-value="Politics" onclick="toggleInterest(this)">
+            <div class="onb-check-box">
+              <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                <path d="M1 3.5L3.5 6L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>Politics</span>
+          </div>
+          <div class="onb-interest-tile" data-value="Foreign Affairs" onclick="toggleInterest(this)">
+            <div class="onb-check-box">
+              <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                <path d="M1 3.5L3.5 6L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>Foreign Affairs</span>
+          </div>
+          <div class="onb-interest-tile" data-value="Economics" onclick="toggleInterest(this)">
+            <div class="onb-check-box">
+              <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                <path d="M1 3.5L3.5 6L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>Economics</span>
+          </div>
+          <div class="onb-interest-tile" data-value="Finance" onclick="toggleInterest(this)">
+            <div class="onb-check-box">
+              <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                <path d="M1 3.5L3.5 6L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>Finance</span>
+          </div>
+          <div class="onb-interest-tile" data-value="Tech" onclick="toggleInterest(this)">
+            <div class="onb-check-box">
+              <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                <path d="M1 3.5L3.5 6L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>Tech</span>
+          </div>
+          <div class="onb-interest-tile" data-value="Sports" onclick="toggleInterest(this)">
+            <div class="onb-check-box">
+              <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                <path d="M1 3.5L3.5 6L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>Sports</span>
+          </div>
+          <div class="onb-interest-tile" data-value="Entertainment" onclick="toggleInterest(this)">
+            <div class="onb-check-box">
+              <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                <path d="M1 3.5L3.5 6L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>Entertainment</span>
+          </div>
+        </div>
+        <div class="onb-error" id="err-interests">Please select at least one interest.</div>
+        <div class="onb-nav">
+          <button class="onb-btn-secondary" onclick="goBack(4)">← Back</button>
+          <button class="onb-btn-primary" onclick="validateAndNext(4)">Continue</button>
+        </div>
+      </div>
+
+      <!-- Step 5: Additional info -->
+      <div class="onb-step" id="step-5">
+        <div class="onb-step-label">Step 5 of 5</div>
+        <h2>Anything specific you'd like us to know?</h2>
+        <p class="onb-step-hint">Optional. Your professional background, specific areas of focus, or anything else that helps us understand your perspective.</p>
+        <textarea class="onb-textarea" id="inp-additional"
+                  maxlength="500"
+                  placeholder="E.g. I work in finance and follow central bank policy closely. Particularly interested in the intersection of geopolitics and energy markets…"></textarea>
+        <div class="onb-char-count"><span id="charCount">0</span> / 500</div>
+        <div class="onb-nav">
+          <button class="onb-btn-secondary" onclick="goBack(5)">← Back</button>
+          <div class="onb-nav-right">
+            <button class="onb-btn-primary" onclick="submitOnboarding()">Go to Anthology</button>
+            <button class="onb-btn-secondary" onclick="submitOnboarding()">Skip this step</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Saving -->
+      <div class="onb-step" id="step-saving">
+        <p>Setting up your edition…</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/auth/auth.js"></script>
+  <script>
+
+  /* ════════════════════ DATA ════════════════════ */
+
+  const COUNTRIES = [
+    "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda",
+    "Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain",
+    "Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan",
+    "Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria",
+    "Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada",
+    "Central African Republic","Chad","Chile","China","Colombia","Comoros",
+    "Congo (Brazzaville)","Congo (Kinshasa)","Costa Rica","Croatia","Cuba",
+    "Cyprus","Czech Republic","Denmark","Djibouti","Dominica",
+    "Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea",
+    "Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France",
+    "Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada",
+    "Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras",
+    "Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland",
+    "Israel","Italy","Ivory Coast","Jamaica","Japan","Jordan","Kazakhstan",
+    "Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia",
+    "Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania",
+    "Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta",
+    "Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia",
+    "Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique",
+    "Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand",
+    "Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway",
+    "Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea",
+    "Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania",
+    "Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia",
+    "Saint Vincent and the Grenadines","Samoa","San Marino",
+    "São Tomé and Príncipe","Saudi Arabia","Senegal","Serbia","Seychelles",
+    "Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands",
+    "Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka",
+    "Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan",
+    "Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago",
+    "Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine",
+    "United Arab Emirates","United Kingdom","United States","Uruguay",
+    "Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen",
+    "Zambia","Zimbabwe"
+  ];
+
+  const CITIES = [
+    "Abidjan","Abuja","Accra","Addis Ababa","Adelaide","Ahmedabad","Alexandria",
+    "Algiers","Almaty","Amman","Amsterdam","Ankara","Antananarivo","Asunción",
+    "Athens","Auckland","Baghdad","Baku","Baltimore","Bamako","Bangalore",
+    "Bangkok","Barcelona","Beijing","Beirut","Belgrade","Belo Horizonte",
+    "Berlin","Birmingham","Bogotá","Bologna","Boston","Brisbane","Brussels",
+    "Bucharest","Budapest","Buenos Aires","Busan","Cairo","Calgary","Cali",
+    "Cape Town","Caracas","Casablanca","Changsha","Chengdu","Chicago",
+    "Chongqing","Colombo","Copenhagen","Dakar","Dallas","Damascus",
+    "Dar es Salaam","Delhi","Denver","Detroit","Dhaka","Doha","Dubai",
+    "Dublin","Durban","Edinburgh","Florence","Fortaleza","Frankfurt",
+    "Fukuoka","Geneva","Glasgow","Guadalajara","Guangzhou","Guatemala City",
+    "Hamburg","Hanoi","Harare","Havana","Helsinki","Ho Chi Minh City",
+    "Hong Kong","Houston","Hyderabad","Islamabad","Istanbul","Jakarta",
+    "Jaipur","Jeddah","Johannesburg","Kabul","Kampala","Karachi",
+    "Kathmandu","Khartoum","Kinshasa","Kolkata","Kuala Lumpur",
+    "Kuwait City","Kyiv","Lagos","Lahore","Las Vegas","Lima","Lisbon",
+    "London","Los Angeles","Luanda","Lusaka","Lyon","Madrid","Manchester",
+    "Mandalay","Manila","Maputo","Medellín","Melbourne","Mexico City",
+    "Miami","Milan","Minneapolis","Minsk","Mogadishu","Monterrey",
+    "Montevideo","Montreal","Moscow","Mumbai","Munich","Nairobi","Nanjing",
+    "Naples","New York City","Niamey","Osaka","Oslo","Ottawa",
+    "Ouagadougou","Paris","Perth","Philadelphia","Phoenix","Port-au-Prince",
+    "Port Harcourt","Porto","Porto Alegre","Prague","Pune","Pyongyang",
+    "Quito","Rabat","Recife","Rio de Janeiro","Riyadh","Rome",
+    "San Diego","San Francisco","San José","Santiago","São Paulo",
+    "Sapporo","Seattle","Seoul","Shanghai","Shenzhen","Singapore",
+    "Sofia","Stockholm","Sydney","Taipei","Tashkent","Tbilisi","Tehran",
+    "Tel Aviv","Tianjin","Tokyo","Toronto","Tunis","Valencia","Vancouver",
+    "Vienna","Warsaw","Washington D.C.","Wuhan","Xi'an","Yangon",
+    "Yaoundé","Yerevan","Yokohama","Zagreb","Zürich"
+  ];
+
+  /* ════════════════════ STATE ════════════════════ */
+
+  const answers = {
+    countryOfResidence: '',
+    city: '',
+    countryOfOrigin: '',
+    interests: [],
+    additionalInfo: ''
+  };
+
+  /* ════════════════════ SEARCHABLE SELECT ════════════════════ */
+
+  class SearchableSelect {
+    constructor({ wrapperId, inputId, dropdownId, otherId, dataset }) {
+      this.wrap     = document.getElementById(wrapperId);
+      this.input    = document.getElementById(inputId);
+      this.dropdown = document.getElementById(dropdownId);
+      this.otherInp = document.getElementById(otherId);
+      this.dataset  = dataset;
+      this.selected = '';
+      this.isOther  = false;
+      this.hIdx     = -1;
+      this._bind();
+    }
+
+    _bind() {
+      this.input.addEventListener('click', () => this._open());
+      this.input.addEventListener('keydown', e => this._onKey(e));
+      document.addEventListener('click', e => {
+        if (!this.wrap.contains(e.target) && !this.otherInp.contains(e.target))
+          this._close();
+      });
+    }
+
+    _open() {
+      this.input.removeAttribute('readonly');
+      if (this.selected && !this.isOther) this.input.value = '';
+      this._render(this.dataset);
+      this.dropdown.classList.add('open');
+      this.wrap.classList.add('open');
+      this.input.focus();
+      this.hIdx = -1;
+      this.input.oninput = () => {
+        const q = this.input.value.trim().toLowerCase();
+        const filtered = q ? this.dataset.filter(d => d.toLowerCase().includes(q)) : this.dataset;
+        this._render(filtered);
+        this.hIdx = -1;
+        this.selected = '';
+        this.isOther = false;
+        this.otherInp.classList.remove('visible');
+      };
+    }
+
+    _close() {
+      this.dropdown.classList.remove('open');
+      this.wrap.classList.remove('open');
+      this.input.setAttribute('readonly', true);
+      this.input.oninput = null;
+      if (this.isOther) this.input.value = 'Other — please specify';
+      else if (this.selected) this.input.value = this.selected;
+      else this.input.value = '';
+    }
+
+    _render(items) {
+      this.dropdown.innerHTML = '';
+      if (items.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'onb-dropdown-empty';
+        empty.textContent = 'No results — use "Other" below';
+        this.dropdown.appendChild(empty);
+      } else {
+        items.slice(0, 60).forEach(item => {
+          const el = document.createElement('div');
+          el.className = 'onb-dropdown-item';
+          el.textContent = item;
+          el.addEventListener('mousedown', e => { e.preventDefault(); this._select(item); });
+          this.dropdown.appendChild(el);
+        });
+      }
+      const other = document.createElement('div');
+      other.className = 'onb-dropdown-item item-other';
+      other.textContent = 'Other — please specify';
+      other.addEventListener('mousedown', e => { e.preventDefault(); this._selectOther(); });
+      this.dropdown.appendChild(other);
+    }
+
+    _select(value) {
+      this.selected = value;
+      this.isOther  = false;
+      this.input.classList.add('has-value');
+      this.otherInp.classList.remove('visible');
+      this.otherInp.value = '';
+      this._close();
+    }
+
+    _selectOther() {
+      this.selected = '';
+      this.isOther  = true;
+      this.input.value = 'Other — please specify';
+      this.input.classList.add('has-value');
+      this.otherInp.classList.add('visible');
+      this._close();
+      setTimeout(() => this.otherInp.focus(), 50);
+    }
+
+    _onKey(e) {
+      const items = this.dropdown.querySelectorAll('.onb-dropdown-item:not(.item-other)');
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        this.hIdx = Math.min(this.hIdx + 1, items.length - 1);
+        this._highlight(items);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        this.hIdx = Math.max(this.hIdx - 1, 0);
+        this._highlight(items);
+      } else if (e.key === 'Enter' && this.hIdx >= 0) {
+        e.preventDefault();
+        items[this.hIdx].dispatchEvent(new Event('mousedown'));
+      } else if (e.key === 'Escape') {
+        this._close();
+      }
+    }
+
+    _highlight(items) {
+      items.forEach((el, i) => el.classList.toggle('highlighted', i === this.hIdx));
+      if (items[this.hIdx]) items[this.hIdx].scrollIntoView({ block: 'nearest' });
+    }
+
+    getValue() {
+      if (this.isOther) return this.otherInp.value.trim();
+      return this.selected;
+    }
+  }
+
+  /* ════════════════════ INIT SELECTS ════════════════════ */
+
+  const selCountryRes = new SearchableSelect({
+    wrapperId:'wrap-country-res', inputId:'inp-country-res',
+    dropdownId:'drop-country-res', otherId:'other-country-res',
+    dataset: COUNTRIES
+  });
+  const selCity = new SearchableSelect({
+    wrapperId:'wrap-city', inputId:'inp-city',
+    dropdownId:'drop-city', otherId:'other-city',
+    dataset: CITIES
+  });
+  const selCountryOri = new SearchableSelect({
+    wrapperId:'wrap-country-ori', inputId:'inp-country-ori',
+    dropdownId:'drop-country-ori', otherId:'other-country-ori',
+    dataset: COUNTRIES
+  });
+
+  /* ════════════════════ NAVIGATION ════════════════════ */
+
+  const TOTAL_STEPS = 5;
+
+  function setProgress(step) {
+    document.getElementById('onbProgress').style.width =
+      (((step - 1) / TOTAL_STEPS) * 100) + '%';
+  }
+
+  function showStep(id) {
+    document.querySelectorAll('.onb-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step-' + id).classList.add('active');
+    if (typeof id === 'number') setProgress(id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack(fromStep) { showStep(fromStep - 1); }
+
+  function showError(id)  { document.getElementById(id).classList.add('visible'); }
+  function clearError(id) { document.getElementById(id).classList.remove('visible'); }
+
+  function validateAndNext(step) {
+    if (step === 1) {
+      const val = selCountryRes.getValue();
+      if (!val) { showError('err-country-res'); return; }
+      clearError('err-country-res');
+      answers.countryOfResidence = val;
+      showStep(2);
+    } else if (step === 2) {
+      const val = selCity.getValue();
+      if (!val) { showError('err-city'); return; }
+      clearError('err-city');
+      answers.city = val;
+      showStep(3);
+    } else if (step === 3) {
+      const val = selCountryOri.getValue();
+      if (!val) { showError('err-country-ori'); return; }
+      clearError('err-country-ori');
+      answers.countryOfOrigin = val;
+      showStep(4);
+    } else if (step === 4) {
+      if (answers.interests.length === 0) { showError('err-interests'); return; }
+      clearError('err-interests');
+      showStep(5);
+    }
+  }
+
+  /* ════════════════════ INTERESTS ════════════════════ */
+
+  function toggleInterest(tile) {
+    const value = tile.dataset.value;
+    tile.classList.toggle('selected');
+    if (tile.classList.contains('selected')) {
+      if (!answers.interests.includes(value)) answers.interests.push(value);
+    } else {
+      answers.interests = answers.interests.filter(v => v !== value);
+    }
+  }
+
+  /* ════════════════════ CHAR COUNT ════════════════════ */
+
+  document.getElementById('inp-additional').addEventListener('input', function () {
+    document.getElementById('charCount').textContent = this.value.length;
+  });
+
+  /* ════════════════════ SUBMIT ════════════════════ */
+
+  async function submitOnboarding() {
+    answers.additionalInfo = document.getElementById('inp-additional').value.trim();
+
+    // Build reading_interests string (consumed by pipeline keyword-scorer)
+    const parts = [];
+    if (answers.countryOfResidence) {
+      const loc = answers.city
+        ? `${answers.city}, ${answers.countryOfResidence}`
+        : answers.countryOfResidence;
+      parts.push(`Based in ${loc}.`);
+    }
+    if (answers.countryOfOrigin && answers.countryOfOrigin !== answers.countryOfResidence) {
+      parts.push(`Originally from ${answers.countryOfOrigin}.`);
+    }
+    if (answers.interests.length > 0) {
+      parts.push(`Interested in: ${answers.interests.join(', ')}.`);
+    }
+    if (answers.additionalInfo) parts.push(answers.additionalInfo);
+    const readingInterests = parts.join(' ').trim();
+
+    showStep('saving');
+
+    try {
+      const { data: { user }, error: userErr } = await _supabase.auth.getUser();
+      if (userErr || !user) throw userErr || new Error('No session');
+
+      const { error } = await _supabase.auth.updateUser({
+        data: {
+          country_of_residence: answers.countryOfResidence,
+          city:                 answers.city,
+          country_of_origin:    answers.countryOfOrigin,
+          interests:            answers.interests,
+          additional_info:      answers.additionalInfo,
+          reading_interests:    readingInterests,
+          onboarding_complete:  true
+        }
+      });
+
+      if (error) throw error;
+    } catch (err) {
+      console.error('Onboarding save failed:', err);
+      // Non-fatal — proceed to homepage
+    }
+
+    window.location.href = '/';
+  }
+
+  /* ════════════════════ AUTH GUARD ════════════════════ */
+
+  (async () => {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session) { window.location.href = '/login.html'; return; }
+    if (session.user.user_metadata?.onboarding_complete) {
+      window.location.href = '/'; return;
+    }
+    setProgress(1);
+  })();
+
+  </script>
+</body>
+</html>

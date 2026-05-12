@@ -83,8 +83,8 @@
       redirected = true
       statusEl.textContent = 'Account confirmed — welcome to Anthology.'
       // Route: first-time confirmation → onboarding; returning sign-in → homepage
-      const isNewUser = !session.user.user_metadata?.onboarded
-      const dest = isNewUser ? '../account.html?welcome=1' : '../'
+      const isNewUser = !session.user.user_metadata?.onboarding_complete
+      const dest = isNewUser ? '../onboarding.html' : '../'
       setTimeout(() => { window.location.href = dest }, 1200)
     }
   })
@@ -103,8 +103,8 @@
         if (session) {
           redirected = true
           statusEl.textContent = 'Account confirmed — welcome to Anthology.'
-          const isNewUser = !session.user.user_metadata?.onboarded
-          const dest = isNewUser ? '../account.html?welcome=1' : '../'
+          const isNewUser = !session.user.user_metadata?.onboarding_complete
+          const dest = isNewUser ? '../onboarding.html' : '../'
           setTimeout(() => { window.location.href = dest }, 1200)
         } else {
           statusEl.innerHTML =
