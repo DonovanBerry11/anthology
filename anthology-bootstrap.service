@@ -1,0 +1,18 @@
+[Unit]
+Description=Anthology Bootstrap API Server
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/pipeline
+EnvironmentFile=/root/.anthology.env
+ExecStart=/root/anthology-env/bin/python /root/pipeline/bootstrap_server.py
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=anthology-bootstrap
+
+[Install]
+WantedBy=multi-user.target

@@ -814,6 +814,26 @@
       // Non-fatal — proceed to homepage
     }
 
+    // Trigger orientation bootstrap (fire-and-forget — does not block redirect)
+    (async () => {
+      try {
+        const session = await _supabase.auth.getSession();
+        const accessToken = session.data.session.access_token;
+        const userId = session.data.session.user.id;
+        await fetch('http://159.65.80.203:5050/bootstrap', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          body: JSON.stringify({ user_id: userId })
+        });
+      } catch (e) {
+        // Non-blocking — failure here does not prevent redirect
+        console.warn('Bootstrap request failed:', e);
+      }
+    })();
+
     window.location.href = '/';
   }
 
