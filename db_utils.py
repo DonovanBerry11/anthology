@@ -211,7 +211,7 @@ def upsert_piece(
     Args:
         db          — SupabaseClient from get_db_client()
         slug        — Unique piece identifier, e.g. "fed-rate-decision-may-2026"
-        piece_type  — "essay" | "note" | "dispatch" | "uk-politics" | "us-sports"
+        piece_type  — "essay" | "note" | "dispatch"
         title       — Piece title
         body        — Full HTML or Markdown body
         user_id     — Supabase UUID string, or None for shared pieces
@@ -226,7 +226,7 @@ def upsert_piece(
     Returns:
         True on success, False on failure (unless raise_errors=True).
     """
-    valid_types = ("essay", "note", "dispatch", "uk-politics", "us-sports")
+    valid_types = ("essay", "note", "dispatch")
     if piece_type not in valid_types:
         msg = f"upsert_piece: invalid type '{piece_type}'. Must be one of {valid_types}"
         logger.warning(msg)

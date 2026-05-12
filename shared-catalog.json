@@ -150,56 +150,6 @@
       ]
     },
     {
-      "slug": "westminster-may10",
-      "type": "briefing",
-      "section": "uk-politics",
-      "domain": "uk-politics",
-      "sector": "politics",
-      "title": "Westminster Briefing: 10 May 2026",
-      "standfirst": "Reform surges in English local elections as Starmer faces leadership pressure; King's Speech legislative programme previewed ahead of Tuesday's state opening.",
-      "date": "2026-05-10",
-      "date_display": "May 2026",
-      "url": "/uk-politics/westminster-may10.html",
-      "keywords": [
-        "UK",
-        "United Kingdom",
-        "politics",
-        "elections",
-        "Reform",
-        "Labour",
-        "Starmer",
-        "Westminster",
-        "King's Speech",
-        "local elections",
-        "parliament",
-        "history"
-      ]
-    },
-    {
-      "slug": "nba-may10",
-      "type": "briefing",
-      "section": "us-sports",
-      "domain": "us-sports",
-      "sector": "sports",
-      "title": "NBA Playoffs: 10 May 2026",
-      "standfirst": "Thunder go 3-0 over the Lakers as Ajay Mitchell posts 24 points and 10 assists with zero turnovers. Oklahoma City are 7-0 in these playoffs.",
-      "date": "2026-05-10",
-      "date_display": "May 2026",
-      "url": "/us-sports/nba-may10.html",
-      "keywords": [
-        "NBA",
-        "basketball",
-        "sports",
-        "Thunder",
-        "Lakers",
-        "playoffs",
-        "Oklahoma City",
-        "Los Angeles",
-        "Mitchell",
-        "conference semifinals"
-      ]
-    },
-    {
       "slug": "section-122-tariff-ruling",
       "type": "dispatch",
       "section": "dispatches",

@@ -127,7 +127,7 @@ def main():
     run(f'git config user.name "Donovan Berry"', cwd=clone_dir)
 
     # 2. Identify all HTML files in the content directories
-    sections = ["essays", "notes", "dispatches", "uk-politics", "us-sports"]
+    sections = ["essays", "notes", "dispatches"]
     html_files = []
     for section in sections:
         section_dir = clone_dir / section

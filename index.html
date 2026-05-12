@@ -122,9 +122,7 @@
   function sectionLabel(p) {
     const sec = p.section || p.type || '';
     if (sec === 'dispatches') return p.dispatch_type === 'weekly' ? 'Weekly Dispatch' : 'Daily Dispatch';
-    if (sec === 'uk-politics') return 'UK Politics';
-    if (sec === 'us-sports')   return p.sport || 'US Sports';
-    if (sec === 'notes')       return 'Note';
+if (sec === 'notes')       return 'Note';
     if (sec === 'essays')      return 'Essay';
     return sec;
   }
@@ -220,32 +218,7 @@
     </li>`;
   }
 
-  function renderUKPolitics(p) {
-    const meta = `${p.date_display || p.date} &middot; UK Politics`;
-    return `<li class="dispatch-item">
-      <div class="dispatch-item__meta">${meta}</div>
-      <h2 class="dispatch-item__title">
-        <a href="${p.url}">${p.title}</a>
-      </h2>
-      <p class="dispatch-item__standfirst">${p.standfirst}</p>
-      <a class="dispatch-item__read" href="${p.url}">Read briefing</a>
-    </li>`;
-  }
-
-  function renderUSSports(p) {
-    const sportLabel = p.sport || 'US Sports';
-    const meta = `${p.date_display || p.date} &middot; ${sportLabel}`;
-    return `<li class="dispatch-item">
-      <div class="dispatch-item__meta">${meta}</div>
-      <h2 class="dispatch-item__title">
-        <a href="${p.url}">${p.title}</a>
-      </h2>
-      <p class="dispatch-item__standfirst">${p.standfirst}</p>
-      <a class="dispatch-item__read" href="${p.url}">Read briefing</a>
-    </li>`;
-  }
-
-  // ── Main render ───────────────────────────────────────────────────────────
+// ── Main render ───────────────────────────────────────────────────────────
 
   function renderSection(listId, pieces, renderFn, interestTokens) {
     const el = document.getElementById(listId);
@@ -329,11 +302,9 @@
       bySection[sec].push(p);
     }
 
-    // Merge all dispatch-like content into a single list
+    // Dispatch content
     const allDispatches = [
-      ...(bySection['dispatches']  || []).map(p => ({ ...p, _renderer: renderDispatch })),
-      ...(bySection['uk-politics'] || []).map(p => ({ ...p, _renderer: renderUKPolitics })),
-      ...(bySection['us-sports']   || []).map(p => ({ ...p, _renderer: renderUSSports })),
+      ...(bySection['dispatches'] || []).map(p => ({ ...p, _renderer: renderDispatch })),
     ];
 
     renderSection('notes-list',      bySection['notes']  || [], renderNote,  interestTokens);

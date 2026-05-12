@@ -54,8 +54,6 @@ def section_priority(piece):
     section = piece.get("section") or piece.get("type", "")
     priority_map = {
         "dispatches":  0,
-        "uk-politics": 0,
-        "us-sports":   0,
         "notes":       1,
         "essays":      2,
     }

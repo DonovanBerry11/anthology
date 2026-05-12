@@ -846,14 +846,6 @@ section#notes:has(ul.note-list:empty) {
   border-bottom: none;
 }
 
-/* ─── UK POLITICS + US SPORTS LISTS (share dispatch-item styles) ─────────── */
-
-.uk-politics-list,
-.us-sports-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
 
 /* ─── AUTH PAGES ─────────────────────────────────────────── */
 

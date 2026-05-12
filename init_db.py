@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS content_pieces (
   id            uuid        DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id       uuid        NOT NULL,
   slug          text        NOT NULL UNIQUE,
-  type          text        NOT NULL CHECK (type IN ('essay', 'note', 'dispatch', 'uk-politics', 'us-sports')),
+  type          text        NOT NULL CHECK (type IN ('essay', 'note', 'dispatch')),
   title         text        NOT NULL,
   body          text        NOT NULL,
   standfirst    text,
