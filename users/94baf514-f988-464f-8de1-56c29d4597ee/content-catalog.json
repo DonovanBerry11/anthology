@@ -96,6 +96,19 @@
       "keywords": []
     },
     {
+      "slug": "the-watt-constraint",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Watt Constraint",
+      "standfirst": "The contest over AI capacity will be decided on the electricity grid, and the United States — with four-to-seven-year interconnection queues and a fractured permitting regime — is losing on that layer for reasons no level of chip or capital investment can override.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/the-watt-constraint.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -204,5 +217,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-13T05:18:42Z"
+  "generated": "2026-05-13T05:19:36Z"
 }

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The contest over AI capacity will be decided on the electricity grid, and the United States is losing on that layer for reasons the chips-and-capital framing of the race cannot reach.">
+  <title>The Watt Constraint — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Watt Constraint</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 13 May 2026, 12:19 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The contest over AI capacity will be decided on the electricity grid, and the United States is losing on that layer for reasons the chips-and-capital framing of the race cannot reach. Global data-centre power demand is running toward roughly 1,100 TWh in 2026; Gartner projects that grid constraints will restrict 40 percent of new AI data centres by 2027. American utilities cannot deliver interconnection inside the timelines hyperscaler buildouts require — interconnection queues in PJM and ERCOT now run four to seven years, and in some service territories longer. Over the same period, China is expanding generating capacity at three to four times the US rate under centralised planning, with ultra-high-voltage transmission lines being permitted, sited, and built on schedules that the American grid cannot match at any price. The chips, the capex, the export controls — all are downstream of whether the watts exist where the racks are. Compute without electricity is metal sitting in a warehouse, and warehouses full of metal is what the next phase of this competition looks like in the United States.</p>
+<p>The American disadvantage is not technical. It is geographic and political. American grid governance is fractured across regional transmission organisations, state utility commissions, and a permitting regime designed for an era of static load growth. A new transmission line in Virginia requires approvals from the federal government, the state, the county, every affected landowner, and a court system that treats challenges as standard procedure. A new line in Sichuan requires approval from Beijing. The result, observable now in the Northern Virginia data centre corridor — the largest concentration of compute infrastructure in the world — is that hyperscalers have begun building on-site gas turbines and signing direct power purchase agreements with operators outside the regulated grid, because the regulated grid will not deliver power inside the build window. The privatisation of grid infrastructure that follows from this — every hyperscaler now its own utility — fragments the system further and exits the one regulatory mechanism by which the buildout could be coordinated at scale.</p>
+<p>The political contradiction inside the federal response makes this worse. The administration has declared AI supremacy a strategic goal while cancelling the federal permitting reforms — transmission siting authority, NEPA streamlining for grid projects — that the buildout requires. Energy abundance is being promoted in the form of visible production (oil drilling permits, coal plant lifeline contracts) while the enabling infrastructure that actually constrains compute, transmission and substation expansion, attracts none of the policy attention or capital flows. The watt is the binding constraint. No industrial policy that does not begin with the watt — and follow through on the permitting reform that the watt requires — can produce the outcome it claims to want.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-watt-constraint";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
