@@ -43,6 +43,19 @@
       "keywords": []
     },
     {
+      "slug": "starmer-cabinet-mutiny",
+      "type": "briefing",
+      "section": "uk-politics",
+      "domain": "uk-politics",
+      "sector": "politics",
+      "title": "Starmer Loses Four Junior Ministers as Leadership Threshold Looms",
+      "standfirst": "Four junior ministers resigned May 12, with at least 83 Labour MPs publicly calling for Starmer to go — within striking distance of the 81-MP threshold to trigger a formal contest — as the State Opening of Parliament proceeds on May 13.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/uk-politics/starmer-cabinet-mutiny.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -151,5 +164,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-13T05:14:06Z"
+  "generated": "2026-05-13T05:15:34Z"
 }

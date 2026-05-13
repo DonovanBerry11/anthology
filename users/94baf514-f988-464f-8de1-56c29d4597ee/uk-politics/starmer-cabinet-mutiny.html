@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Four junior ministers resigned from Sir Keir Starmer's government on May 12 in a coordinated move that has pushed Labour to within striking distance of the formal threshold needed to trigger a leaders">
+  <title>Starmer Loses Four Junior Ministers as Leadership Threshold Looms — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../../../../index.html#dispatches">← Anthology</a>
+    <div class="essay-page-header__pub">UK Politics</div>
+    <h1>Starmer Loses Four Junior Ministers as Leadership Threshold Looms</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 13 May 2026, 12:15 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>Four junior ministers resigned from Sir Keir Starmer's government on May 12 in a coordinated move that has pushed Labour to within striking distance of the formal threshold needed to trigger a leadership challenge. Miatta Fahnbulleh (devolution, faith and communities), <a href="https://www.washingtonpost.com/world/2026/05/12/starmer-resign-fahnbulleh-politics-britain/b87fbfec-4ddf-11f1-97e7-22c6c29ff0d8_story.html">Jess Phillips (safeguarding), Alex Davies-Jones (victims), and Zubir Ahmed (junior health)</a> all cited a loss of confidence in the prime minister. Fahnbulleh's resignation letter said the government had not acted "with the vision, pace and ambition that our mandate for change demands." Ahmed, a Streeting ally, framed his exit around Scottish Labour and devolved electoral risk.</p>
+<p>The trigger is the May 8 local elections, in which Labour lost approximately <a href="https://www.npr.org/2026/05/10/nx-s1-5817491/uk-elections-keir-starmer-resign-reform-green">1,500 council seats</a> while Reform UK gained around 1,454 — figures based on media tallies on results night and subject to certification. <em>LabourList</em>'s public tracker put <a href="https://labourlist.org/2026/05/labourlist-labour-mp-starmer-resignation-tracker/">at least 83 of Labour's 403 MPs</a> on record calling for Starmer to stand down by Tuesday evening, with <em>ITV News</em> counting 92 prepared to back an ouster. A formal Labour leadership challenge requires 81 MPs — 20 percent of the parliamentary party — to nominate a challenger. The threshold is now within range of the public tally.</p>
+<p>Starmer remains defiant. At Tuesday's cabinet he told colleagues the country "expects us to get on with governing" and described his government as a "10-year project of renewal." David Lammy is publicly backing him; <em>ITV News</em> reports more than 100 MPs have signed a letter saying "this is no time for a leadership contest." Wes Streeting, the most-named potential successor, is meeting Starmer on Wednesday. Junior-minister vacancies have been filled — Nesil Caliskan, Natalie Fleet, Catherine Atkinson and Preet Kaur Gill all confirmed Tuesday evening — preserving the appearance of a functioning government for the State Opening.</p>
+<p>That State Opening is today. The <a href="https://en.wikipedia.org/wiki/2026_State_Opening_of_Parliament">King's Speech is scheduled for approximately 11:30am</a> in the Lords and is expected to set out more than 35 bills, including measures on immigration, public services, and what the <em>House of Commons Library</em> describes as a refresh of the government's economic-growth agenda. Lords debates on the speech run May 14–21, with foreign affairs and defence scheduled for May 21.</p>
+<p>Watch the count: if the public 83 becomes a private 81 nomination, the contest mechanism activates regardless of how the King's Speech lands. The next visible test is the May 14 Commons debate on the address.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "starmer-cabinet-mutiny";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
