@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-13T05:16:40Z",
+  "generated": "2026-05-13T05:17:46Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -81,6 +81,19 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/us-sports/nba-semifinals-week.html",
+      "keywords": []
+    },
+    {
+      "slug": "deterrence-against-attrition",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "Deterrence Against Attrition",
+      "standfirst": "The US deterrence posture in the Taiwan Strait is built to prevent an amphibious invasion, but Beijing's lead instrument is coercive attrition — a campaign whose visible operations are commercial, against which no element of the deterrence kit is responsive.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/notes/deterrence-against-attrition.html",
       "keywords": []
     },
     {

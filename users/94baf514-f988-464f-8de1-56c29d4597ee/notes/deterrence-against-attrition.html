@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The American deterrence posture in the Taiwan Strait is built to prevent the wrong war.">
+  <title>Deterrence Against Attrition — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Deterrence Against Attrition</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 13 May 2026, 12:17 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The American deterrence posture in the Taiwan Strait is built to prevent the wrong war. Carrier groups, arms sales, security commitments, semiconductor export controls — every visible instrument of the architecture is calibrated for a Chinese amphibious invasion. Beijing has spent twenty years signalling that an invasion is not its preferred path. The People's Liberation Army Navy continues to expand the platforms needed to make invasion credible, because it must, but the People's Liberation Army is not the lead instrument of Beijing's Taiwan strategy. The lead instrument is patience. Coercive attrition — sustained economic pressure, information operations targeting Taiwanese opinion, the gradual capture of Taiwanese supply-chain dependence on the mainland, diaspora networks, and the steady erosion of Taipei's diplomatic recognition — is the strategy, and against that strategy nothing in the deterrence kit is responsive. You cannot deter a campaign whose visible operations are commercial.</p>
+<p>This is the architecture's defining asymmetry. The harder the United States works to prevent invasion, the more attractive Beijing finds the strategy that bypasses invasion. Carrier presence raises the cost of military action and lowers, by exactly the same logic, the relative cost of every other instrument Beijing can wield: undersea cable cuts framed as accidents, customs delays framed as inspections, military exercises framed as routine, recognition switches framed as bilateral diplomacy. Each of these has occurred. None triggers the Taiwan Relations Act's military commitments. None mobilises G7 capitals. The threshold below which Beijing operates is precisely the threshold the deterrence architecture has implicitly conceded by drawing its red line at amphibious force.</p>
+<p>The democratic vulnerability compounds this. Taiwan's elections, its press, its judicial independence, its protest tolerance — the features that make Taiwan worth defending — are the same features attrition exploits. Authoritarian regimes are not the ones that fracture under sustained economic coercion and disinformation; democracies are. The PLA does not need to land a single soldier to produce a Taiwanese government that accommodates Beijing's preferred outcome. It needs only enough time, enough commercial pressure, and enough recognition switches to make accommodation the rational choice of a future cabinet operating under the constraints any small open economy facing a 60-mile neighbour with a hostile veto over its trade routes would face.</p>
+<p>The semiconductor argument cuts the same way. Taiwan produces around 60 percent of the world's advanced chips and almost all the cutting edge. A blockade or invasion that damages TSMC fabs is self-destructive for Beijing. A long political squeeze that ends with a Taiwanese government granting Chinese-owned firms preferential treatment is not. The chips remain operational. The geopolitical position changes anyway. American deterrence has no answer for that, because deterrence theory has never had an answer for an opponent who can win without firing.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "deterrence-against-attrition";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
