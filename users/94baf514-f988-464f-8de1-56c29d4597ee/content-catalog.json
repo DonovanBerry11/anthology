@@ -83,6 +83,19 @@
       "keywords": []
     },
     {
+      "slug": "the-processing-layer",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Processing Layer",
+      "standfirst": "US critical minerals policy funds the visible part of the supply chain — mining — and leaves untouched the part Beijing actually dominates: refining, which controls between 60 and 93 percent of global processing depending on the mineral.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/the-processing-layer.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -191,5 +204,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-13T05:17:46Z"
+  "generated": "2026-05-13T05:18:42Z"
 }

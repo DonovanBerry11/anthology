@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-13T05:17:46Z",
+  "generated": "2026-05-13T05:18:42Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -94,6 +94,19 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/notes/deterrence-against-attrition.html",
+      "keywords": []
+    },
+    {
+      "slug": "the-processing-layer",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Processing Layer",
+      "standfirst": "US critical minerals policy funds the visible part of the supply chain — mining — and leaves untouched the part Beijing actually dominates: refining, which controls between 60 and 93 percent of global processing depending on the mineral.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/notes/the-processing-layer.html",
       "keywords": []
     },
     {

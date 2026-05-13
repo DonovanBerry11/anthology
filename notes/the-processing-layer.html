@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="American critical minerals policy is engineered to fail at the layer where it matters.">
+  <title>The Processing Layer — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Processing Layer</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 13 May 2026, 12:18 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>American critical minerals policy is engineered to fail at the layer where it matters. Project Vault, the $10B EXIM facility, the February 2026 Critical Minerals Ministerial, the White House January executive order on processed mineral imports — every visible instrument funds extraction. Mining is what photographs well. Mining is what state governors cut ribbons in front of. Mining is also not where Chinese dominance sits. Beijing's near-monopoly is in refining: separating mined ore into purified metal, alloying it, manufacturing the magnets and electrodes and battery cathodes the finished products require. Depending on the mineral, China controls between 60 and 93 percent of global processing capacity. Mined ore extracted in Australia, in Brazil, in Greenland or in California still travels to China to be refined into something useful, and then re-enters global supply chains, including the supply chains that produce US fighter aircraft. A policy that subsidises the part of the chain China doesn't dominate, while leaving the part it does untouched, replicates the original dependency at a higher cost basis and is structurally guaranteed to fail.</p>
+<p>The reason refining is not subsidised is the same reason it left in the first place. Refining is dirty. Separating rare earths from ore generates thorium tailings — radioactive — and acidic effluent at industrial scale. The American political coalition that supports onshoring critical minerals is the same coalition that, across thirty years of state-level environmental rule-making, made refining domestically uneconomic. The Mountain Pass mine in California still ships its concentrate to China for separation because the only US separation facility, in Texas, runs at a fraction of the scale required and is operating under emergency Defense Production Act authorities. Rebuilding the refining base at industrial scale means either accepting the environmental costs the political system spent three decades rejecting, or funding process innovation at a level no public capital programme is currently providing — perhaps an order of magnitude beyond the current $10B EXIM facility, sustained for a decade. Neither is happening.</p>
+<p>The expertise lag is the secondary failure point. US universities have produced fewer than two dozen PhDs in rare earth metallurgy across the past decade combined. Hydrometallurgy, separation chemistry, materials science as applied to magnetic alloys — these are decade-build disciplines. They were allowed to atrophy alongside the industry. China's processing dominance is not principally about lower environmental standards or cheap labour; it is about an accumulated thirty-year base of practical knowledge in plants that operate at scale. Domestic refining, even if the political consensus reversed tomorrow and the capital arrived tomorrow, lags any politically tolerable timeline by ten to fifteen years on the talent pipeline alone. The current policy assumes that lag does not exist, which is why the current policy will produce ribbon-cuttings and not supply security.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-processing-layer";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
