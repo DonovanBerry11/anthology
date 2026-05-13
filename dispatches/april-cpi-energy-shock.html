@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="[The Bureau of Labor Statistics' April CPI release](https://www.bls.gov/news.release/pdf/cpi.pdf) on May 12 showed headline inflation at 3.8% year-over-year, the highest annual print since May 2023, a">
+  <title>April CPI Reaccelerates to 3.8% as Energy Shock Hits Headline — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#dispatches">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>April CPI Reaccelerates to 3.8% as Energy Shock Hits Headline</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 13 May 2026, 12:12 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p><a href="https://www.bls.gov/news.release/pdf/cpi.pdf">The Bureau of Labor Statistics' April CPI release</a> on May 12 showed headline inflation at 3.8% year-over-year, the highest annual print since May 2023, and 0.6% month-over-month against a consensus 3.7%. The energy index rose 3.8% on the month and 17.9% on the year, accounting for roughly forty percent of the all-items increase; gasoline alone was up 28.4% year-over-year, with the national average at the pump above $4.50.</p>
+<p>Underneath the energy shock, core CPI — which strips out food and energy — rose 0.4% in April and 2.8% on the year, a tenth above consensus and 0.2 percentage points above March, undermining the read that the inflation is purely supply-driven. <em>CNBC</em> and <em>CNN</em> both note that <a href="https://www.cnbc.com/2026/05/12/cpi-inflation-april-2026-.html">real average hourly wages slipped 0.5% on the month and 0.3% on the year</a>, meaning that for the first time in three years nominal wage growth is no longer outrunning consumer prices.</p>
+<p>The print lands with the Federal Reserve already in an extended hold. The <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260429a.htm">FOMC's April 28–29 decision</a> kept the federal funds rate at 3.5–3.75% with four dissents — the most since 1992 — split between Governor Stephen Miran calling for a quarter-point cut and Hammack, Kashkari, and Logan resisting the inclusion of an easing bias. The median Summary of Economic Projections released in March penciled in one cut for 2026; fed funds futures on CME's FedWatch tool now imply none. The Yahoo Finance composite of post-CPI commentary notes that some Fed watchers are explicitly raising the probability of a rate hike rather than a cut.</p>
+<p>The political pressure runs in the opposite direction. Trump has spent the spring publicly demanding lower rates, framing the energy-driven inflation as a supply problem the central bank should "look through." The April data make that posture costlier: core inflation has reaccelerated, and the headline is now far enough above target that the credibility cost of cutting into a 3.8% print would be substantial.</p>
+<p>The next data points are the <a href="https://www.bea.gov/news/schedule">April PCE release on May 30</a> and the FOMC's June 16–17 meeting; the Cleveland Fed's Inflation Nowcasting model is currently tracking May CPI a tenth above April's headline.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "april-cpi-energy-shock";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

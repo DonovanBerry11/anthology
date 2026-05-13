@@ -15,6 +15,20 @@
       "keywords": []
     },
     {
+      "slug": "april-cpi-energy-shock",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "April CPI Reaccelerates to 3.8% as Energy Shock Hits Headline",
+      "standfirst": "Headline CPI rose to 3.8% in April — the highest since May 2023 — driven by a 17.9% annual energy surge, but core inflation also reaccelerated to 2.8%, complicating the Fed's three-meeting hold and the White House's push for cuts.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/dispatches/april-cpi-energy-shock.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -123,5 +137,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-13T05:11:55Z"
+  "generated": "2026-05-13T05:12:59Z"
 }
