@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-12T05:23:03Z",
+  "generated": "2026-05-13T05:11:55Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -12,6 +12,20 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/notes/the-permanent-deficit.html",
+      "keywords": []
+    },
+    {
+      "slug": "trump-xi-beijing-summit",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Trump-Xi Beijing Summit Opens Under Iran Shadow",
+      "standfirst": "Trump arrived in Beijing on May 12 for a state visit whose formal agenda — tariffs, rare earths, Taiwan, AI — has been crowded by an Iran ceasefire Trump himself called 'on massive life support,' with Xi holding more diplomatic leverage on Tehran than the White House had planned for.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/dispatches/trump-xi-beijing-summit.html",
       "keywords": []
     },
     {

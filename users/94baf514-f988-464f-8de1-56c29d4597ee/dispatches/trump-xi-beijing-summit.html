@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="President Donald Trump arrived in Beijing on May 12 for a [three-day state visit](https://en.wikipedia.org/wiki/2026_state_visit_by_Donald_Trump_to_China), the first by a sitting US president since hi">
+  <title>Trump-Xi Beijing Summit Opens Under Iran Shadow — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../../../index.html#dispatches">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Trump-Xi Beijing Summit Opens Under Iran Shadow</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 13 May 2026, 12:11 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>President Donald Trump arrived in Beijing on May 12 for a <a href="https://en.wikipedia.org/wiki/2026_state_visit_by_Donald_Trump_to_China">three-day state visit</a>, the first by a sitting US president since his own 2017 trip, with the agenda formally listing trade, tariffs, rare earths, Taiwan, and artificial intelligence — but in practice dominated by the Iran war that has consumed seventy-plus days of his second term. The Iran ceasefire reached on April 8 is, in Trump's own words at his Andrews departure, "on massive life support" after he rejected Tehran's latest counter-proposal earlier this week. <em>CNN</em>'s live coverage reported <a href="https://www.cnn.com/2026/05/11/world/live-news/iran-war-proposal-trump">three US warships were targeted by Iranian missiles</a> transiting the Strait of Hormuz on May 7; none were struck.</p>
+<p>China is the only outside actor with material leverage on Tehran, and senior administration officials confirmed to <em>NPR</em> that Trump has <a href="https://www.npr.org/2026/05/12/nx-s1-5818529/trump-china-iran-war">tasked Xi with pressing Iran</a> to accept terms that would reopen Hormuz. <em>Chatham House</em> and <em>CSIS</em> analysts cited in pre-summit briefings note the inversion this represents: Xi enters the meeting with diplomatic capital the White House had not expected him to hold when the visit was first scheduled for April, before being postponed because of the war. The White House has <a href="https://www.washingtonpost.com/politics/2026/05/12/trump-xi-summit-economy/">played down breakthrough expectations</a>, with one official telling the <em>Washington Post</em> the administration would consider the summit a success if it produces a tariff-truce extension and any movement on rare earth export licensing.</p>
+<p>Concrete deliverables on the China side of the ledger are narrower than the agenda suggests. Trump's delegation includes Tim Cook and Elon Musk, which <em>Bloomberg</em> and <em>CNBC</em> identify as positioning for <a href="https://www.bloomberg.com/news/articles/2026-05-12/trump-xi-summit-in-beijing-what-lies-ahead-for-us-china-relations">announcements on Boeing aircraft orders, agricultural purchases, and fentanyl-precursor controls</a> rather than structural change in the bilateral relationship. Taiwan was elevated as an issue when Trump said on May 11 he would raise arms sales with Xi directly; Wang Yi told Secretary of State Marco Rubio on April 30 that Taiwan remained "the biggest point of risk."</p>
+<p>Rare earths are the leverage point Beijing has been most willing to display since suspending triple-digit US tariffs in February. China holds an effective monopoly on the magnets that go into US fighter aircraft, EV motors, and wind turbines, and the export-licensing regime introduced in April remains the operative lever even after the tariff truce.</p>
+<p>The summit's joint readout is scheduled for May 15. The Iran ceasefire's next test is the May 18 deadline on the US 14-point MOU Tehran has yet to formally answer.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "trump-xi-beijing-summit";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
