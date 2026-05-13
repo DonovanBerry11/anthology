@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The [US-brokered three-day ceasefire between Russia and Ukraine](https://www.cbsnews.com/news/trump-announces-three-day-ceasefire-and-prisoner-swap-russia-ukraine-war/) ran from May 9 through May 11, ">
+  <title>Victory Day Ceasefire Expires; Putin Floats Third-Country Meeting — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../../../index.html#dispatches">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Victory Day Ceasefire Expires; Putin Floats Third-Country Meeting</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 13 May 2026, 12:14 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>The <a href="https://www.cbsnews.com/news/trump-announces-three-day-ceasefire-and-prisoner-swap-russia-ukraine-war/">US-brokered three-day ceasefire between Russia and Ukraine</a> ran from May 9 through May 11, scheduled to cover Russia's Victory Day commemorations and to enable a 1,000-for-1,000 prisoner exchange. It expired Monday with both sides accusing each other of breaching it from the outset. Russia's defence ministry claimed Ukrainian forces committed 16,071 ceasefire violations in the final 24 hours; Ukraine's general staff said Russian troops launched <a href="https://www.pbs.org/newshour/world/russia-and-ukraine-accuse-each-other-of-violating-u-s-brokered-three-day-ceasefire">around 60 attacks on Ukrainian positions</a> during the same period, describing the pause as "largely ineffective on the front lines."</p>
+<p>The prisoner swap itself appears to have moved forward in part: Ukraine formally <a href="https://www.pravda.com.ua/eng/news/2026/05/10/8034106/">handed Russia a list of 1,000 detainees</a> on May 10 — compiled, <em>Ukrainska Pravda</em> reported, by length of captivity — and Russian presidential aide Yuri Ushakov confirmed Moscow's acceptance of the format. Neither government has yet published a final exchange tally for the truce window.</p>
+<p>The political signal was more substantive than the kinetic pause. Speaking on May 10, Putin told reporters the war "may be coming to an end" and said he was open to <a href="https://www.aljazeera.com/news/2026/5/10/putin-suggests-russias-war-on-ukraine-coming-to-an-end">meeting Zelenskyy in a third country</a> — but only after a long-term peace treaty had been finalised by negotiators. The conditional matters: it preserves Russia's pre-summit demands as the price of any leaders-level meeting. Zelenskyy responded the same day saying Putin was "finally ready for real meetings" and that a format needed to be found, framing the opening as the product of Ukrainian and US pressure rather than a Russian concession.</p>
+<p>The substantive bilateral positions have not moved. Neither side has shifted on territorial control of the Donbas oblasts, on Crimea, or on the security architecture that would govern any post-war Ukraine. The 1,000-prisoner exchange operating across a contested ceasefire is the practical opposite of what either side claims it accomplished: a humanitarian transaction running while combat operations continued.</p>
+<p>The next scheduled diplomatic milestone is the <a href="https://www.consilium.europa.eu/">European Political Community meeting in Tirana on May 16</a> — the largest gathering of European leaders since the truce expiry — at which both Zelenskyy and US envoys are expected to press for a longer-duration ceasefire framework.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "russia-ukraine-ceasefire-expiry";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
