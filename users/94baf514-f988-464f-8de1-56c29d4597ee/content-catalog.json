@@ -56,6 +56,20 @@
       "keywords": []
     },
     {
+      "slug": "nba-semifinals-week",
+      "type": "briefing",
+      "section": "us-sports",
+      "domain": "us-sports",
+      "sector": "sports",
+      "sport": "NBA",
+      "title": "NBA Semifinals: Knicks and Thunder Sweep In; Spurs Take 3-2 Lead",
+      "standfirst": "Three of four conference semifinals series effectively decided: Knicks and Thunder sweep into the conference finals, Spurs lead Timberwolves 3-2 with Wembanyama dominant, and Cavs-Pistons stays level entering Game 5 on May 13.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/us-sports/nba-semifinals-week.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -164,5 +178,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-13T05:15:34Z"
+  "generated": "2026-05-13T05:16:40Z"
 }

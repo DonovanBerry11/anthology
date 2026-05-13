@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The No.">
+  <title>NBA Semifinals: Knicks and Thunder Sweep In; Spurs Take 3-2 Lead — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#dispatches">← Anthology</a>
+    <div class="essay-page-header__pub">NBA</div>
+    <h1>NBA Semifinals: Knicks and Thunder Sweep In; Spurs Take 3-2 Lead</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 13 May 2026, 12:16 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<h2 class="dispatch-section-header">Eastern Conference</h2>
+<p>The No. 2 New York Knicks completed a 4-0 <a href="https://www.nba.com/news/knicks-76ers-2026-playoffs-game-4-takeaways">sweep of the No. 7 Philadelphia 76ers</a> with a 144-114 Game 4 win in Philadelphia on May 10, the franchise's first best-of-seven sweep since the 1999 East semis against Atlanta. New York hit 25 three-pointers on 44 attempts, tying the NBA single-game playoff record for makes. Deuce McBride, starting for the injured OG Anunoby, went 4-for-4 from deep in a first quarter in which the Knicks made 11 three-pointers — also a playoff record for a single period. Jalen Brunson and Josh Hart led the floor; the Knicks advance to a second straight Eastern Conference Finals, awaiting the Cleveland–Detroit winner.</p>
+<p>The No. 1 Cleveland Cavaliers and No. 6 Detroit Pistons are tied 2-2 heading into <a href="https://www.nba.com/news/live-updates-2026-nba-playoffs-conference-semifinals-cavaliers-look-to-tie-series-versus-pistons">Game 5 on May 13</a>, 8 p.m. ET on ESPN at Rocket Mortgage FieldHouse. Donovan Mitchell scored 35 in a 112-103 Cavaliers win in Game 4, with Cleveland opening the second half on a 23-0 run that decided the game.</p>
+<h2 class="dispatch-section-header">Western Conference</h2>
+<p>The No. 1 Oklahoma City Thunder swept the No. 4 Los Angeles Lakers 4-0, closing the series 115-110 on the road Monday night. With OKC's first-round sweep of Phoenix included, Mark Daigneault's team has won eight consecutive playoff games entering the conference finals — the longest streak by a No. 1 seed through two rounds since the 2017 Warriors.</p>
+<p>The No. 2 San Antonio Spurs took a 3-2 series lead over the No. 6 Minnesota Timberwolves with a <a href="https://www.espn.com/nba/story/_/id/48676289/2026-nba-playoffs-conference-semifinals-round-2-takeaways">126-97 home win on May 12</a> after Minnesota had levelled the series Sunday. Victor Wembanyama finished with 27 points and 17 rebounds in the Game 5 rout; Anthony Edwards was held to 18 on 7-of-22 shooting. Game 6 is in Minneapolis on May 14, with Game 7 — if necessary — back in San Antonio on May 16.</p>
+<h2 class="dispatch-section-header">What to Watch</h2>
+<p>Cavs–Pistons Game 5: tonight, May 13, 8 p.m. ET, ESPN. Wolves–Spurs Game 6: May 14, Target Center. If the Cavs win, the East Finals could open as early as May 17. The Thunder, idle since Monday, will have rest as a structural advantage against either Spurs or Wolves; OKC's last competitive game was three days before the Western Conference Finals tipoff window opens.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "nba-semifinals-week";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

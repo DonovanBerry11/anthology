@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-13T05:15:34Z",
+  "generated": "2026-05-13T05:16:40Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -67,6 +67,20 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/uk-politics/starmer-cabinet-mutiny.html",
+      "keywords": []
+    },
+    {
+      "slug": "nba-semifinals-week",
+      "type": "briefing",
+      "section": "us-sports",
+      "domain": "us-sports",
+      "sector": "sports",
+      "sport": "NBA",
+      "title": "NBA Semifinals: Knicks and Thunder Sweep In; Spurs Take 3-2 Lead",
+      "standfirst": "Three of four conference semifinals series effectively decided: Knicks and Thunder sweep into the conference finals, Spurs lead Timberwolves 3-2 with Wembanyama dominant, and Cavs-Pistons stays level entering Game 5 on May 13.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/us-sports/nba-semifinals-week.html",
       "keywords": []
     },
     {
