@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-14T05:13:22Z",
+  "generated": "2026-05-14T05:14:42Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -162,6 +162,20 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/dispatches/trump-xi-day-one-deliverables.html",
+      "keywords": []
+    },
+    {
+      "slug": "house-discharge-ukraine",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "House Discharge Petition Forces Ukraine Aid and Sanctions Vote Over Trump",
+      "standfirst": "Independent Kevin Kiley delivered the 218th signature Wednesday on a discharge petition that bypasses Speaker Johnson and the President to force a June floor vote on Ukraine aid, lend-lease, sanctions, and a 500% tariff on Russian goods.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/dispatches/house-discharge-ukraine.html",
       "keywords": []
     },
     {
