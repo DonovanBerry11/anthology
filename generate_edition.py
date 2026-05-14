@@ -25,8 +25,57 @@ When --repo-dir is provided, --catalog and --output are resolved automatically:
 
 import argparse
 import json
+import re
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+
+_MONTH_MAP = {
+    "january": "01", "february": "02", "march": "03", "april": "04",
+    "may": "05", "june": "06", "july": "07", "august": "08",
+    "september": "09", "october": "10", "november": "11", "december": "12",
+}
+
+
+def normalize_date(date_str):
+    """
+    Convert any date string to a sortable ISO-ish string (YYYY-MM-DD).
+    Handles:
+      - "2026-05-14"      → "2026-05-14"   (already ISO)
+      - "14 May 2026"     → "2026-05-14"
+      - "May 14, 2026"    → "2026-05-14"
+      - "May 2026"        → "2026-05-01"   (month-only → first of month)
+      - "2026"            → "2026-01-01"
+      - anything else     → "0000-00-00"   (sort last)
+    """
+    if not date_str:
+        return "0000-00-00"
+    s = date_str.strip()
+    # Already ISO YYYY-MM-DD
+    if re.match(r"^\d{4}-\d{2}-\d{2}$", s):
+        return s
+    # "14 May 2026" or "4 May 2026"
+    m = re.match(r"^(\d{1,2})\s+(\w+)\s+(\d{4})$", s)
+    if m:
+        month = _MONTH_MAP.get(m.group(2).lower())
+        if month:
+            return f"{m.group(3)}-{month}-{int(m.group(1)):02d}"
+    # "May 14, 2026"
+    m = re.match(r"^(\w+)\s+(\d{1,2}),?\s+(\d{4})$", s)
+    if m:
+        month = _MONTH_MAP.get(m.group(1).lower())
+        if month:
+            return f"{m.group(3)}-{month}-{int(m.group(2)):02d}"
+    # "May 2026" (month + year only)
+    m = re.match(r"^(\w+)\s+(\d{4})$", s)
+    if m:
+        month = _MONTH_MAP.get(m.group(1).lower())
+        if month:
+            return f"{m.group(2)}-{month}-01"
+    # "2026" (year only)
+    m = re.match(r"^(\d{4})$", s)
+    if m:
+        return f"{m.group(1)}-01-01"
+    return "0000-00-00"
 
 
 def current_est_datetime():
@@ -67,23 +116,13 @@ def build_edition(pieces, user_id):
     if not pieces:
         return None
 
-    # Sort: by section priority (dispatches first), then date descending
-    ranked = sorted(
-        pieces,
-        key=lambda p: (section_priority(p)[0], ""),
-        # secondary key: date descending within each priority tier
-    )
-    # Re-sort properly: primary = section priority, secondary = date desc
-    ranked = sorted(
-        pieces,
-        key=lambda p: (section_priority(p)[0], "".join(["z"] if not p.get("date") else []) + p.get("date", "")),
-        reverse=False
-    )
-    # Within each tier, sort by date descending
+    # Sort: by section priority (dispatches first), then date descending.
+    # normalize_date() handles mixed formats ("May 2026", "2026-05-14", etc.)
     from itertools import groupby
+    ranked = sorted(pieces, key=lambda p: section_priority(p)[0])
     final = []
     for _, group in groupby(ranked, key=lambda p: section_priority(p)[0]):
-        tier = sorted(group, key=lambda p: p.get("date", ""), reverse=True)
+        tier = sorted(group, key=lambda p: normalize_date(p.get("date", "")), reverse=True)
         final.extend(tier)
 
     lead = final[0]
