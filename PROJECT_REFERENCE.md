@@ -1,6 +1,6 @@
 # Anthology — Project Reference
 
-*Current as of 14 May 2026 (first-dispatch endpoint added — POST /first-dispatch on port 5050 generates and publishes a personalised dispatch for new users immediately after onboarding, closing the 24-hour content gap). Use this document when starting a new context window.*
+*Current as of 14 May 2026 (dispatch format redesign — both the daily pipeline and the first-dispatch endpoint now publish one combined dispatch post (5 demarcated sections) plus 5 individual companion notes per run. Each section in the combined dispatch links to its corresponding note via "Read more →"). Use this document when starting a new context window.*
 
 ---
 
@@ -272,9 +272,23 @@ The server runs the same pipeline as the Cowork scheduled tasks but fully autono
 | `run_topic_scout.sh` | 4:19 AM | Calls Claude Code with web search to find 4–5 analytical directives; appends to `DIRECTIVE_QUEUE.md`. Skips if ≥10 PENDING. |
 | `run_register_users.sh` | 4:38 AM | Runs `register_new_users.py --env /root/.anthology.env` — syncs confirmed Supabase users into registry. |
 | `run_update_orientations.sh` | 4:41 AM | Reads registry for active users, runs `update_orientation.py` with `SUPABASE_SERVICE_KEY` for each. |
-| `run_dispatch.sh` | 5:07 AM | Main pipeline: queue depth check → topic selection → 5 dispatches + 3 notes per user → publish → regenerate edition.json → update tracking files. |
+| `run_dispatch.sh` | 5:07 AM | Wrapper: activates venv and calls `run_combined_dispatch.py`. Produces 1 combined dispatch + 5 notes per user per run. |
 
 All cron logs append to `/root/anthology-system/logs/cron-[task].log`. Per-run structured logs go to `/root/anthology-system/logs/[task]-YYYY-MM-DD.md`.
+
+#### Dispatch Pipeline — Combined Format (updated 2026-05-14)
+
+The daily dispatch pipeline now produces **per user per run**:
+- **1 combined dispatch HTML page** containing 5 demarcated sections (I.–V.), each covering a different topic drawn from `NEWS_TOPIC_QUEUE.md` (or web search if the queue has fewer than 5 PENDING)
+- **5 note HTML pages**, one per section, each providing deeper analysis of the same topic
+- Each section in the combined dispatch ends with a "Read more →" link to its note at `/users/{id}/notes/{slug}.html`
+
+The same structure applies to first-dispatch (post-onboarding). New users land on a homepage with 1 combined dispatch + 5 notes rather than 1 standalone dispatch.
+
+**Piece directory convention for combined dispatches:**
+- Combined dispatch: `pieces/dispatches/d[NNN]-daily-edition-YYYY-MM-DD/` (one dir per edition)
+- Per-section analysis files: `pieces/dispatches/d[NNN]-[topic-slug]-[1-5]/analysis.md`
+- Companion notes: `pieces/notes/n[NNN]-[note-slug]/analysis.md`
 
 #### Claude Code Permission Mode
 
@@ -349,9 +363,11 @@ These tasks remain configured in Cowork but should be **disabled** once the serv
 | `style.css` | All CSS — CSS variables: `--bg`, `--text`, `--muted`, `--rule`, `--sans`, `--serif` |
 | `vercel.json` | `cleanUrls`, `trailingSlash: false`, rewrites for `/users/:id/{section}/:slug` → `…/:slug.html` for all five content types: `essays`, `notes`, `dispatches`, `uk-politics`, `us-sports`. If a new content type is added under `users/`, add a matching rewrite rule or clean URLs for that type will 404. |
 | `bootstrap_server.py` | Source for the droplet's Bootstrap API server — deploy via `deploy_bootstrap.command`. Now includes `/first-dispatch` endpoint. |
-| `first_dispatch.py` | Deploy to `/root/pipeline/`. Generates and publishes a personalised dispatch for a new user immediately after onboarding. Called by `/first-dispatch` endpoint. Args: `--user-id` `--env`. Uses Anthropic API directly with `web_search_20250305` tool (model: `claude-sonnet-4-20250514`). Writes piece to `anthology-system/pieces/dispatches/d[NNN]-[slug]/`, publishes via `publish_dispatch.py`, regenerates `edition.json`. |
+| `first_dispatch.py` | Deploy to `/root/pipeline/`. Generates and publishes a **combined 5-section dispatch + 5 companion notes** for a new user immediately after onboarding. Called by `/first-dispatch` endpoint. Args: `--user-id` `--env`. Uses Anthropic API directly with web search. Steps: (1) find 5 topics, (2) draft 5 dispatches, (3) QC pass, (4) draft 5 notes, (5) publish notes via `publish_note.py`, (6) publish combined dispatch via `publish_dispatch.py --combined-dispatches`, (7) regenerate `edition.json`. |
+| `run_combined_dispatch.py` | Deploy to `/root/pipeline/`. Daily autonomous pipeline — called by `run_dispatch.sh`. Handles all users in registry. Same generation flow as `first_dispatch.py` but uses `NEWS_TOPIC_QUEUE.md` for topic selection (web search fallback if queue < 5 PENDING). Marks used topics COMPLETE in the queue. Args: `--env` `--dry-run`. |
 | `anthology-bootstrap.service` | Systemd unit source — deploy via `deploy_bootstrap.command` |
 | `deploy_bootstrap.command` | Double-click to deploy bootstrap server to the droplet (installs Flask, copies files, enables service) |
+| `deploy_dispatch_redesign.command` | Double-click (or `bash`) to deploy the dispatch format redesign: SCPs updated scripts to server, rewrites `run_dispatch.sh`, restarts `anthology-bootstrap`, smoke-tests combined HTML generator, pushes to GitHub. |
 
 ### Content Directories (in GitHub repo)
 ```
@@ -376,14 +392,14 @@ shared-catalog.json       shared catalog (all pieces, all users; serves unauthen
 |---|---|
 | `generate_essay_html.py` | Markdown → styled essay HTML. Args: `--input --output --slug --title --date [--pub-datetime]` |
 | `generate_note_html.py` | Same for notes. PIECE_TYPE=`note` in beacon. |
-| `generate_dispatch_html.py` | Same for dispatches. Extra args: `--dispatch-type [daily\|weekly] [--label] [--back-url]`. PIECE_TYPE=`dispatch`. |
+| `generate_dispatch_html.py` | Markdown → styled dispatch HTML. Two modes: (1) **normal** — `--input analysis.md --dispatch-type [daily\|weekly] [--label] [--back-url]`; (2) **combined** — `--combined-dispatches dispatches.json` accepts a JSON array of 5 `{label, title, body_md, note_url}` objects and renders a single newspaper-style page with 5 demarcated sections + "Read more →" links. PIECE_TYPE=`dispatch` in beacon. |
 
 **HTML generator conventions (do not regress):** All three generators use `href="/style.css"` (absolute path) for the stylesheet and `href="/"` for the back-link. Do not change these to relative paths — relative paths break at different directory depths (shared content is 1 level deep; per-user content is 3 levels deep). The absolute form works correctly at all depths. `publish_dispatch.py` passes `--back-url "/"` explicitly for per-user HTML; the generator default is also `"/"`. |
 | `generate_edition.py` | Builds `edition.json` from catalog. Args: `--user-id --repo-dir` (or `--catalog --output`). Selects lead, 2-3 secondary, up to 8 further reading. |
 | `catalog_utils.py` | Shared helper. `update_catalog(repo_dir, entry, user_id=None)` — upserts shared + per-user catalog. |
 | `publish_essay.py` | Clones repo → generates HTML (shared + per-user) → updates catalogs → commits/pushes. Args: `--slug --title --date --standfirst --analysis-md --token-file --scripts-dir [--repo] [--user-id] [--date-iso] [--sector]` |
 | `publish_note.py` | Same pattern as essay. |
-| `publish_dispatch.py` | Same + `--dispatch-type`. |
+| `publish_dispatch.py` | Same + `--dispatch-type`. Now also accepts optional `--combined-dispatches <json_path>` — when provided, passes it to `generate_dispatch_html.py` combined mode instead of `--input`. `--analysis-md` is optional when `--combined-dispatches` is used. |
 | `publish_uk_politics.py` | Same + `--sector politics`. |
 | `publish_us_sports.py` | Same + `--sport [NBA\|NFL\|etc]`. |
 
@@ -531,6 +547,7 @@ Previously resolved gaps:
 - ~~Edition empty state missing~~ — `#edition` shows message with link to set interests (2026-05-11)
 - ~~No onboarding redirect~~ — full 5-step onboarding questionnaire at `/onboarding.html`; `callback.html` routes new users there post-verification; structured `user_metadata` written to Supabase; `register_new_users.py` reads fields into orientation files (2026-05-12)
 - ~~1 dispatch + 1 note per user per morning~~ — 5 dispatches + 3 notes with inline QC (2026-05-11)
+- ~~5 separate dispatch posts + 3 separate notes~~ — redesigned to 1 combined dispatch (5 sections) + 5 linked notes per run; applies to both daily pipeline and first-dispatch (2026-05-14)
 - ~~Pipeline only runs when laptop is on~~ — Digital Ocean server pipeline operational (2026-05-12)
 - ~~Orientation generation delayed until 4:38 AM cron~~ — Bootstrap API server on port 5050 generates orientation immediately after onboarding completes (2026-05-12)
 - ~~New user homepage empty for up to 24 hours~~ — `/first-dispatch` endpoint generates and publishes a personalised dispatch immediately after onboarding; `first_dispatch.py` uses web search to find a current story tailored to the user's interests (2026-05-14)
