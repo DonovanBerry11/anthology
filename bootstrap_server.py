@@ -21,6 +21,10 @@ from dotenv import load_dotenv
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 ENV_FILE         = '/root/.anthology.env'
 BOOTSTRAP_SCRIPT = '/root/anthology/bootstrap_orientation.py'
 SYSTEM_DIR       = '/root/anthology-system'
@@ -30,6 +34,22 @@ PORT             = 5050
 SUBPROCESS_TIMEOUT = 30
 RATE_LIMIT_MAX   = 3
 RATE_LIMIT_WINDOW = 3600  # seconds
+<<<<<<< Updated upstream
+=======
+=======
+ENV_FILE               = '/root/.anthology.env'
+BOOTSTRAP_SCRIPT       = '/root/anthology/bootstrap_orientation.py'
+FIRST_DISPATCH_SCRIPT  = '/root/pipeline/first_dispatch.py'
+SYSTEM_DIR             = '/root/anthology-system'
+LOG_FILE               = '/root/anthology-system/logs/bootstrap-server.log'
+VENV_PYTHON            = '/root/anthology-env/bin/python3'
+PORT                   = 5050
+SUBPROCESS_TIMEOUT     = 30
+RATE_LIMIT_MAX         = 3
+RATE_LIMIT_WINDOW      = 3600  # seconds
+FIRST_DISPATCH_RATE_MAX = 1    # per hour per user
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 ALLOWED_ORIGINS = [
     'https://anthology-weld.vercel.app',
@@ -61,6 +81,14 @@ logger = logging.getLogger('bootstrap-server')
 # ── Rate limiting (in-memory) ─────────────────────────────────────────────────
 
 _rate_store: dict = defaultdict(list)
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+_first_dispatch_rate_store: dict = defaultdict(list)
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 def is_rate_limited(user_id: str) -> bool:
     """Return True (and do NOT record) if user has hit the limit; else record and return False."""
@@ -72,6 +100,25 @@ def is_rate_limited(user_id: str) -> bool:
     _rate_store[user_id].append(now)
     return False
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+
+def is_first_dispatch_rate_limited(user_id: str) -> bool:
+    """Rate-limit /first-dispatch to 1 request per user per hour."""
+    now = time.time()
+    window_start = now - RATE_LIMIT_WINDOW
+    _first_dispatch_rate_store[user_id] = [
+        t for t in _first_dispatch_rate_store[user_id] if t > window_start
+    ]
+    if len(_first_dispatch_rate_store[user_id]) >= FIRST_DISPATCH_RATE_MAX:
+        return True
+    _first_dispatch_rate_store[user_id].append(now)
+    return False
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 # ── Flask app ─────────────────────────────────────────────────────────────────
 
 app = Flask(__name__)
@@ -168,6 +215,66 @@ def bootstrap():
         return jsonify({'status': 'error', 'message': result.stderr}), 500
 
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+@app.route('/first-dispatch', methods=['POST'])
+def first_dispatch():
+    ts = __import__('datetime').datetime.utcnow().isoformat()
+
+    # 1. Parse body
+    try:
+        body = request.get_json(force=True, silent=True)
+        if not body or 'user_id' not in body:
+            raise ValueError('Missing user_id')
+        user_id = str(body['user_id']).strip()
+        if not user_id:
+            raise ValueError('Empty user_id')
+    except Exception as exc:
+        logger.warning(f'[{ts}] /first-dispatch 400 bad body: {exc}')
+        return jsonify({'status': 'error', 'message': 'Missing or malformed request body'}), 400
+
+    # 2. Auth header
+    auth_header = request.headers.get('Authorization', '')
+    if not auth_header.startswith('Bearer '):
+        logger.warning(f'[{ts}] /first-dispatch 401 no bearer token user={user_id}')
+        return jsonify({'status': 'error', 'message': 'Missing Authorization header'}), 401
+    token = auth_header[len('Bearer '):]
+
+    # 3. Rate limit (1 request per user per hour)
+    if is_first_dispatch_rate_limited(user_id):
+        logger.warning(f'[{ts}] /first-dispatch 429 rate limited user={user_id}')
+        return jsonify({'status': 'error', 'message': 'Rate limit exceeded — max 1 request per hour'}), 429
+
+    # 4. Validate JWT
+    if not validate_jwt(token, user_id):
+        logger.warning(f'[{ts}] /first-dispatch 401 JWT invalid user={user_id}')
+        return jsonify({'status': 'error', 'message': 'Unauthorized'}), 401
+
+    # 5. Script exists?
+    if not os.path.isfile(FIRST_DISPATCH_SCRIPT):
+        logger.error(f'[{ts}] /first-dispatch 500 script not found: {FIRST_DISPATCH_SCRIPT}')
+        return jsonify({'status': 'error', 'message': f'first_dispatch.py not found at {FIRST_DISPATCH_SCRIPT}'}), 500
+
+    # 6. Spawn non-blocking — return 202 immediately
+    logger.info(f'[{ts}] /first-dispatch accepted user={user_id}')
+    subprocess.Popen(
+        [
+            VENV_PYTHON,
+            FIRST_DISPATCH_SCRIPT,
+            '--user-id', user_id,
+            '--env',     ENV_FILE,
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+    return jsonify({'status': 'accepted', 'message': 'First dispatch generation started'}), 202
+
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 @app.route('/health', methods=['GET'])
 def health():
     return jsonify({'status': 'ok'}), 200

@@ -814,12 +814,24 @@
       // Non-fatal — proceed to homepage
     }
 
+<<<<<<< Updated upstream
     // Trigger orientation bootstrap (fire-and-forget — does not block redirect)
+=======
+<<<<<<< Updated upstream
+    // Trigger orientation bootstrap (fire-and-forget — does not block redirect)
+=======
+    // Fire both server calls (fire-and-forget — neither blocks the redirect)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     (async () => {
       try {
         const session = await _supabase.auth.getSession();
         const accessToken = session.data.session.access_token;
         const userId = session.data.session.user.id;
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
         await fetch('http://159.65.80.203:5050/bootstrap', {
           method: 'POST',
           headers: {
@@ -831,6 +843,28 @@
       } catch (e) {
         // Non-blocking — failure here does not prevent redirect
         console.warn('Bootstrap request failed:', e);
+<<<<<<< Updated upstream
+=======
+=======
+        const body    = JSON.stringify({ user_id: userId });
+        const headers = {
+          'Content-Type':  'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        };
+
+        // Trigger orientation bootstrap
+        fetch('http://159.65.80.203:5050/bootstrap', { method: 'POST', headers, body })
+          .catch(e => console.warn('Bootstrap request failed:', e));
+
+        // Trigger first dispatch generation (returns 202 immediately; runs async on server)
+        fetch('http://159.65.80.203:5050/first-dispatch', { method: 'POST', headers, body })
+          .catch(e => console.warn('First dispatch request failed:', e));
+
+      } catch (e) {
+        // Non-blocking — failure here does not prevent redirect
+        console.warn('Server fire-and-forget setup failed:', e);
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
       }
     })();
 

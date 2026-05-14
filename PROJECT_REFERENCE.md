@@ -1,6 +1,14 @@
 # Anthology — Project Reference
 
+<<<<<<< Updated upstream
 *Current as of 12 May 2026 (bootstrap API server added — Flask endpoint on port 5050 triggers orientation generation immediately after onboarding). Use this document when starting a new context window.*
+=======
+<<<<<<< Updated upstream
+*Current as of 12 May 2026 (bootstrap API server added — Flask endpoint on port 5050 triggers orientation generation immediately after onboarding). Use this document when starting a new context window.*
+=======
+*Current as of 13 May 2026 (first-dispatch endpoint added — POST /first-dispatch on port 5050 generates and publishes a personalised dispatch for new users immediately after onboarding, closing the 24-hour content gap). Use this document when starting a new context window.*
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 ---
 
@@ -197,6 +205,26 @@ A lightweight Flask server running continuously on the droplet. Called by `onboa
 | **CORS** | `https://anthology-weld.vercel.app`, `http://localhost` |
 | **Rate limit** | 3 requests per `user_id` per hour (in-memory dict — resets on server restart) |
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+**`/first-dispatch` endpoint** — fired by `onboarding.html` immediately after `/bootstrap`; generates a personalised dispatch for the new user so their homepage is not empty.
+
+| Property | Value |
+|---|---|
+| **Endpoint** | `POST http://159.65.80.203:5050/first-dispatch` |
+| **Auth** | Same Bearer token validation as `/bootstrap` |
+| **Request body** | `{"user_id": "<supabase uuid>"}` |
+| **Success response** | HTTP 202 `{"status": "accepted", "message": "First dispatch generation started"}` |
+| **Error responses** | 400 bad body · 401 unauthorized · 429 rate limited · 500 script not found |
+| **Rate limit** | 1 request per `user_id` per hour (separate in-memory store) |
+| **Behaviour** | Spawns `first_dispatch.py` via `subprocess.Popen` (non-blocking) and returns immediately |
+| **Script** | `/root/pipeline/first_dispatch.py` |
+| **Run log** | `/root/anthology-system/logs/first-dispatch-YYYY-MM-DD.md` |
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 **Initial deployment:** Run `~/Desktop/anthology/deploy_bootstrap.command` (double-click in Finder, or `bash ~/Desktop/anthology/deploy_bootstrap.command` in Terminal). Installs Flask/flask-cors into the venv, deploys `bootstrap_server.py` and the systemd unit, enables and starts the service.
 
 **After updating `bootstrap_server.py`:**
@@ -334,7 +362,16 @@ These tasks remain configured in Cowork but should be **disabled** once the serv
 | `auth/callback.html` | PKCE redirect handler post-email-confirmation. New users (no `onboarding_complete` flag) → `/onboarding.html`; returning users → `/`. |
 | `style.css` | All CSS — CSS variables: `--bg`, `--text`, `--muted`, `--rule`, `--sans`, `--serif` |
 | `vercel.json` | `cleanUrls`, `trailingSlash: false`, rewrites for `/users/:id/{section}/:slug` |
+<<<<<<< Updated upstream
 | `bootstrap_server.py` | Source for the droplet's Bootstrap API server — deploy via `deploy_bootstrap.command` |
+=======
+<<<<<<< Updated upstream
+| `bootstrap_server.py` | Source for the droplet's Bootstrap API server — deploy via `deploy_bootstrap.command` |
+=======
+| `bootstrap_server.py` | Source for the droplet's Bootstrap API server — deploy via `deploy_bootstrap.command`. Now includes `/first-dispatch` endpoint. |
+| `first_dispatch.py` | Deploy to `/root/pipeline/`. Generates and publishes a personalised dispatch for a new user immediately after onboarding. Called by `/first-dispatch` endpoint. Args: `--user-id` `--env`. Uses Anthropic API directly with `web_search_20250305` tool (model: `claude-sonnet-4-20250514`). Writes piece to `anthology-system/pieces/dispatches/d[NNN]-[slug]/`, publishes via `publish_dispatch.py`, regenerates `edition.json`. |
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 | `anthology-bootstrap.service` | Systemd unit source — deploy via `deploy_bootstrap.command` |
 | `deploy_bootstrap.command` | Double-click to deploy bootstrap server to the droplet (installs Flask, copies files, enables service) |
 
@@ -506,7 +543,15 @@ Each piece dir contains: `analysis.md`, `log.md`, `review.md` (post quality cycl
 4. **Shared file race conditions (multi-user)** — `shared-catalog.json` is written by individual publish scripts, creating a concurrent write risk at scale. Acceptable now; centralise at scale.
 5. **`DISPATCHES_ORIENTATION.md` missing** — referenced by interactive `news-scout` skill but does not exist. Scheduled task is unaffected (criteria embedded inline).
 6. **Note directive reuse window** — no mechanism prevents reuse after the 3-day window expires. Resolves naturally with a deep queue (target: 15+ PENDING).
+<<<<<<< Updated upstream
 7. **Bootstrap server rate-limit is in-memory** — resets on service restart. Acceptable at current scale; use Redis if multi-process/multi-server deployment needed.
+=======
+<<<<<<< Updated upstream
+7. **Bootstrap server rate-limit is in-memory** — resets on service restart. Acceptable at current scale; use Redis if multi-process/multi-server deployment needed.
+=======
+7. **Bootstrap/first-dispatch server rate-limits are in-memory** — reset on service restart. Acceptable at current scale; use Redis if multi-process/multi-server deployment needed.
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 Previously resolved gaps:
 - ~~No signup → registry automation~~ — `register_new_users.py` handles this (2026-05-11)
@@ -515,6 +560,13 @@ Previously resolved gaps:
 - ~~1 dispatch + 1 note per user per morning~~ — 5 dispatches + 3 notes with inline QC (2026-05-11)
 - ~~Pipeline only runs when laptop is on~~ — Digital Ocean server pipeline operational (2026-05-12)
 - ~~Orientation generation delayed until 4:38 AM cron~~ — Bootstrap API server on port 5050 generates orientation immediately after onboarding completes (2026-05-12)
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+- ~~New user homepage empty for up to 24 hours~~ — `/first-dispatch` endpoint generates and publishes a personalised dispatch immediately after onboarding; `first_dispatch.py` uses web search to find a current story tailored to the user's interests (2026-05-13)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 ---
 
