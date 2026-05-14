@@ -40,7 +40,7 @@ from dotenv import load_dotenv
 # ── Constants ─────────────────────────────────────────────────────────────────
 
 VENV_PYTHON  = '/root/anthology-env/bin/python3'
-MODEL        = 'claude-sonnet-4-20250514'
+MODEL        = 'claude-sonnet-4-6'
 N_DISPATCHES = 5
 ROMAN_LABELS = ['I.', 'II.', 'III.', 'IV.', 'V.']
 
