@@ -137,6 +137,20 @@
       "keywords": []
     },
     {
+      "slug": "trump-xi-day-one-deliverables",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Trump-Xi Open at the Great Hall; Deliverables Narrow as Truce Hangs",
+      "standfirst": "The Beijing summit opened Thursday with the largest US business delegation in nearly a decade, but the October trade truce extension is unconfirmed and the substantive agenda has narrowed to soybeans, Boeing and two new bilateral boards.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/dispatches/trump-xi-day-one-deliverables.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -245,5 +259,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-14T05:11:59Z"
+  "generated": "2026-05-14T05:13:22Z"
 }

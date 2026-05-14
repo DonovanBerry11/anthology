@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Xi Jinping opened the Trump-Xi summit at the Great Hall of the People in Beijing on Thursday with framing that emphasised shared interests and a stable bilateral relationship, [according to CNN's cove">
+  <title>Trump-Xi Open at the Great Hall; Deliverables Narrow as Truce Hangs — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#dispatches">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Trump-Xi Open at the Great Hall; Deliverables Narrow as Truce Hangs</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 14 May 2026, 12:13 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>Xi Jinping opened the Trump-Xi summit at the Great Hall of the People in Beijing on Thursday with framing that emphasised shared interests and a stable bilateral relationship, <a href="https://www.cnn.com/2026/05/13/politics/live-news/trump-china-visit-arrival-ceremony-hnk">according to CNN's coverage of the arrival ceremony</a>. Trump arrived Wednesday accompanied by a delegation of 17 corporate executives including Apple's Tim Cook, Tesla's Elon Musk, Nvidia's Jensen Huang, and senior figures from BlackRock, Goldman, Meta, Qualcomm and Micron — the largest US business delegation to a Chinese summit since 2017. The expectations are deliberately modest: this is not a settlement but a meeting to keep deterioration from accelerating.</p>
+<p>The substantive agenda is narrower than the optics suggest. <a href="https://www.csis.org/analysis/trump-xi-summit-beijing-managing-worlds-most-important-relationship">According to CSIS analysis of the summit programme</a>, the most tangible expected outcomes are an extension of the October trade truce, fresh Chinese purchases of US soybeans, beef and Boeing aircraft, and the formation of a bilateral Board of Trade and parallel Board of Investment to manage future disputes. As of Trump's departure for Beijing, <a href="https://www.nbcnews.com/politics/trump-administration/live-blog/trump-china-iran-nebraska-west-virginia-primary-congress-live-updates-rcna344604">officials briefed on planning told NBC News</a> that the truce extension was not yet confirmed. Beijing has so far declined to commit publicly.</p>
+<p>The asks on each side are asymmetric. Washington is seeking visible Chinese pressure on Iran toward de-escalation, alongside agricultural and aircraft purchases for political delivery at home. Beijing's leverage points are different in kind: rare-earth export controls, which Xi used twice during the 2025 tariff escalation to compel US concessions, and continued access to Nvidia's restricted chip lines for Chinese AI firms. Both sides have a clear interest in avoiding a public rupture — Trump because the April CPI and PPI prints have removed any monetary cushion against a new tariff round, and Xi because Chinese export demand is the principal offset to a still-distressed property sector.</p>
+<p>Taiwan and the Iran war remain on the agenda but are unlikely to produce deliverables. <a href="https://www.cfr.org/articles/different-objectives-same-photo-op-how-trump-and-xi-will-approach-the-beijing-summit">The Council on Foreign Relations</a> characterised both items as positioning exercises rather than negotiation topics — useful to each side for domestic and regional signalling, not subjects on which either will move.</p>
+<p>The meetings continue Friday. A joint statement, if one is issued, is expected at the close of formal sessions. Confirmation of any truce extension, the soybean and Boeing volumes, and the legal status of the two new bilateral boards are the items to track.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "trump-xi-day-one-deliverables";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
