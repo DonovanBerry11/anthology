@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-14T20:39:19Z",
+  "generated": "2026-05-14T20:39:21Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -268,6 +268,19 @@
       "date": "2026-05-14",
       "date_display": "May 2026",
       "url": "/notes/war-powers-republican-defection.html",
+      "keywords": []
+    },
+    {
+      "slug": "cloud-ai-competition-opens",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Exclusive Ends: How the OpenAI-Microsoft Split Reshapes the AI Market — Further Reading",
+      "standfirst": "Microsoft and OpenAI have restructured their landmark partnership, moving from an exclusive arrangement to a non-exclusive one, a shift that gives OpenAI greater commercial freedom and opens the broad.",
+      "date": "2026-05-14",
+      "date_display": "May 2026",
+      "url": "/notes/cloud-ai-competition-opens.html",
       "keywords": []
     },
     {
