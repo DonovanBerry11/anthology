@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Senate confirmed [Kevin Warsh as the next Federal Reserve chair on Wednesday by a 54-45 vote](https://www.cnbc.com/2026/05/13/kevin-warsh-wins-senate-confirmation-as-the-next-federal-reserve-chair">
+  <title>Warsh Confirmed as Fed Chair in Closest Vote on Record — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../../../index.html#dispatches">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Warsh Confirmed as Fed Chair in Closest Vote on Record</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 14 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>The Senate confirmed <a href="https://www.cnbc.com/2026/05/13/kevin-warsh-wins-senate-confirmation-as-the-next-federal-reserve-chair.html">Kevin Warsh as the next Federal Reserve chair on Wednesday by a 54-45 vote</a>, the narrowest margin ever recorded for a Fed chair nominee and almost entirely along party lines. Pennsylvania Democrat John Fetterman was the only member of his caucus to cross over. Warsh, who served as a Fed governor from 2006 to 2011 and has spent the last year calling for "regime change" at the central bank, becomes the 11th Fed chair of the modern banking era and the first to take office without bipartisan backing.</p>
+<p>Warsh succeeds <a href="https://www.npr.org/2026/05/13/nx-s1-5816235/kevin-warsh-federal-reserve-chair-jerome-powell">Jerome Powell, whose term as chair expires on Friday</a>. Powell will retain his seat as a governor for now, leaving the Board itself unchanged. The Senate cleared Warsh's separate confirmation as governor on Tuesday, and his swearing-in to both positions awaits final paperwork from the White House. According to <a href="https://www.bloomberg.com/news/articles/2026-05-13/senate-confirms-warsh-to-lead-fed-as-trump-tests-its-autonomy">Bloomberg's account of the vote</a>, the partisan division reflects opposition not to Warsh's record but to President Trump's stated expectation that he will deliver rate cuts on demand.</p>
+<p>The committee he inherits is more divided than at any point in a generation. At the <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260429a.htm">FOMC's April 29 decision to hold rates at 3.50–3.75%</a>, four members dissented — the largest split since 1992. Stephen Miran wanted an immediate quarter-point cut; Beth Hammack, Neel Kashkari and Lorie Logan opposed the statement's easing bias, objecting in particular to language signalling that the next move would be lower. Their stated concern was persistent inflation, a concern reinforced by <a href="https://www.cnbc.com/2026/05/12/cpi-inflation-april-2026.html">Monday's April CPI release showing headline at 3.8%</a>, the hottest reading since May 2023.</p>
+<p>Warsh's first FOMC meeting is scheduled for June 16–17. The president has publicly signalled that he expects cuts; three regional bank presidents have publicly committed in writing to opposing them; and the chair's vote is one of twelve. The institutional constraint on what Warsh can deliver is not the chair's preferences but the configuration of the committee, and that configuration is currently the tightest it has been since the early 1990s. Powell's continuing presence on the board, the dissenting bloc among regional presidents, and the inflation print all suggest that whatever Warsh announces in June will face open opposition from within the institution itself.</p>
+<p>The Bureau of Labor Statistics publishes May CPI on June 11, six days before the meeting. Powell's term as governor runs through January 2028 unless he resigns.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "warsh-confirmation-fed-chair";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

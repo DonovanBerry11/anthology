@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-13T05:19:36Z",
+  "generated": "2026-05-14T05:10:43Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -120,6 +120,20 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/notes/the-watt-constraint.html",
+      "keywords": []
+    },
+    {
+      "slug": "warsh-confirmation-fed-chair",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Warsh Confirmed as Fed Chair in Closest Vote on Record",
+      "standfirst": "The Senate's 54-45 confirmation of Kevin Warsh as the 11th modern-era Fed chair is the narrowest such margin ever, and the FOMC he inherits is split four ways heading into the June meeting.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/dispatches/warsh-confirmation-fed-chair.html",
       "keywords": []
     },
     {
