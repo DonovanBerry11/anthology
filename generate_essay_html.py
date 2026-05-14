@@ -34,14 +34,14 @@ HTML_TEMPLATE = """\
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{meta_description}">
   <title>{title} — Anthology</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
 <div class="container">
 
   <header class="essay-page-header">
-    <a class="essay-page-header__back" href="../index.html">← Anthology</a>
+    <a class="essay-page-header__back" href="/">← Anthology</a>
     <div class="essay-page-header__pub">Anthology</div>
     <h1>{title}</h1>
     <div class="essay-page-header__meta">{date_line}</div>

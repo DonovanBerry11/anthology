@@ -38,7 +38,7 @@ HTML_TEMPLATE = """\
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{meta_description}">
   <title>{title} — Anthology</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body class="page--dispatch">
 
@@ -315,7 +315,7 @@ def main():
     else:
         dispatch_label = "Daily Dispatch" if args.dispatch_type == "daily" else "Weekly Dispatch"
 
-    back_url = args.back_url if args.back_url else "../index.html#dispatches"
+    back_url = args.back_url if args.back_url else "/"
 
     pub_dt = args.pub_datetime if args.pub_datetime else current_est_datetime()
     date_line = f'{args.date} &middot; Published {pub_dt} EST'
