@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Supreme Court is not the brake on US democratic erosion; it is the device that built the road.">
+  <title>Courts Are Not the Brake — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Courts Are Not the Brake</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 14 May 2026, 12:19 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Supreme Court is not the brake on US democratic erosion; it is the device that built the road. The political commentary that treats Roberts-court resistance to a particular Trump executive order as evidence that the judiciary remains a check on executive power is reading the wrong time horizon: individual procedural rulings against the current administration sit on top of a thirty-year doctrinal project, conducted by the same institution under the same intellectual leadership, that progressively narrowed the channels of democratic accountability through which an overreaching executive could otherwise be restrained. Citizens United (2010) eliminated the principal constraint on private money in federal politics, producing the donor economy that selects the candidates the executive now reflects. Shelby County (2013) removed the Department of Justice's pre-clearance authority over voting-rule changes in states with documented histories of disenfranchisement, freeing the legislative redistricting and ballot-access regimes whose effects became visible by 2024. Rucho v. Common Cause (2019) declared partisan gerrymandering a non-justiciable political question, removing federal courts from the only forum capable of reviewing the practice at scale. Trump v. United States (2024) extended absolute immunity to official presidential acts and presumptive immunity to a wider class beyond them, with the practical effect of removing criminal accountability from a presidency the Court itself had just spent two years rendering electorally unaccountable through the gerrymandering and money rulings. Each of these is a formally reasoned, doctrinally serious opinion; together they are the architecture within which an authoritarian-tending executive operates without effective constraint, and the Court that built it is the same Court whose discrete procedural pushbacks are now read as resistance. The institutional incoherence is not an oversight. It is the inevitable product of a sequence in which the constitutional law of accountability is rewritten over thirty years on premises (formalism, originalism, political-question deference, standing restriction) that systematically narrow the actionable categories of executive abuse — and then, when an executive avails itself of the operating room those premises produce, the same institution objects only to the specific abuses that cross its current procedural threshold, with no doctrinal capacity to step back to the structural decisions that made the abuses possible. The 2026 V-Dem report's reclassification of the United States as an "electoral democracy" for the first time in fifty years is in this sense not a comment on the executive branch alone. It is a comment on a judiciary that performed the legal demolition while the political class was looking elsewhere, and whose remaining short-run interventions against the executive — read against the multi-decade record of its own demolitions — function less as constraints than as the institution's quiet maintenance of its own legitimacy at the moment the longer record renders that legitimacy hardest to defend.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "courts-not-the-brake";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

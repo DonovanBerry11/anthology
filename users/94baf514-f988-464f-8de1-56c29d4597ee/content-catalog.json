@@ -205,6 +205,19 @@
       "keywords": []
     },
     {
+      "slug": "courts-not-the-brake",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "Courts Are Not the Brake",
+      "standfirst": "The Roberts court's procedural resistance to specific Trump orders gets read as institutional pushback. It sits on top of a thirty-year doctrinal project — Citizens United, Shelby County, Rucho, Trump v. US — that built the operating room the executive now uses.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/courts-not-the-brake.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -313,5 +326,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-14T05:18:37Z"
+  "generated": "2026-05-14T05:19:42Z"
 }
