@@ -52,7 +52,12 @@ def main():
     parser.add_argument("--dispatch-type", required=True, choices=["daily", "weekly"])
     parser.add_argument("--sector",        default="geopolitics", help="Sector tag for catalog")
     parser.add_argument("--standfirst",    required=True)
-    parser.add_argument("--analysis-md",   required=True)
+    parser.add_argument("--analysis-md",   default=None,
+                        help="Path to analysis.md (required in normal mode; "
+                             "omit when using --combined-dispatches)")
+    parser.add_argument("--combined-dispatches", default=None,
+                        help="Path to JSON file for combined 5-section dispatch mode. "
+                             "When provided, --analysis-md is not used for HTML generation.")
     parser.add_argument("--token-file",    required=True)
     parser.add_argument("--repo",          default="DonovanBerry11/anthology")
     parser.add_argument("--scripts-dir",   required=True)
@@ -77,36 +82,37 @@ def main():
     gen_script    = Path(args.scripts_dir) / "generate_dispatch_html.py"
     git_add_paths = []
 
-    # 2a. Generate shared dispatch HTML (serves unauthenticated / archive view)
-    print("Generating shared dispatch HTML...")
-    shared_html = clone_dir / "dispatches" / f"{args.slug}.html"
-    run(
+    # Build base generator command — switches between normal and combined mode
+    if args.combined_dispatches:
+        _input_flags = f'--combined-dispatches "{args.combined_dispatches}"'
+    else:
+        if not args.analysis_md:
+            print("ERROR: --analysis-md is required when not using --combined-dispatches",
+                  file=sys.stderr)
+            sys.exit(1)
+        _input_flags = f'--input "{args.analysis_md}"'
+
+    _gen_base = (
         f'python3 {gen_script} '
-        f'--input "{args.analysis_md}" '
-        f'--output "{shared_html}" '
+        f'{_input_flags} '
         f'--slug "{args.slug}" '
         f'--title "{args.title}" '
         f'--date "{args.date}" '
         f'--dispatch-type "{args.dispatch_type}" '
         f'--pub-datetime "{pub_datetime}"'
     )
+
+    # 2a. Generate shared dispatch HTML (serves unauthenticated / archive view)
+    print("Generating shared dispatch HTML...")
+    shared_html = clone_dir / "dispatches" / f"{args.slug}.html"
+    run(_gen_base + f' --output "{shared_html}"')
     git_add_paths.append(f'dispatches/{args.slug}.html')
 
     # 2b. If user_id provided, also generate per-user HTML
     if user_id:
         print(f"Generating per-user dispatch HTML for {user_id}...")
         user_html = clone_dir / "users" / user_id / "dispatches" / f"{args.slug}.html"
-        run(
-            f'python3 {gen_script} '
-            f'--input "{args.analysis_md}" '
-            f'--output "{user_html}" '
-            f'--slug "{args.slug}" '
-            f'--title "{args.title}" '
-            f'--date "{args.date}" '
-            f'--dispatch-type "{args.dispatch_type}" '
-            f'--back-url "/" '
-            f'--pub-datetime "{pub_datetime}"'
-        )
+        run(_gen_base + f' --back-url "/" --output "{user_html}"')
         git_add_paths.append(f'users/{user_id}/dispatches/{args.slug}.html')
 
     # 3. Update catalogs

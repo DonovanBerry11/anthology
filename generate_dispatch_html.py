@@ -3,10 +3,7 @@
 generate_dispatch_html.py — Converts a dispatch analysis.md into a styled HTML page
 for the Anthology website (Dispatches section).
 
-Handles both daily dispatches (no subheadings, 300–500w) and weekly dispatches
-(## subheadings render as section headers, 600–1000w).
-
-Usage:
+NORMAL MODE — single dispatch:
     python generate_dispatch_html.py \
         --input analysis.md \
         --output dispatches/my-dispatch.html \
@@ -15,9 +12,29 @@ Usage:
         --date "May 2026" \
         --dispatch-type daily \
         --pub-datetime "10 May 2026, 3:45 PM"
+
+COMBINED MODE — 5-section edition (one combined post, five dispatches):
+    python generate_dispatch_html.py \
+        --combined-dispatches /tmp/edition-dispatches.json \
+        --output dispatches/daily-edition-2026-05-14.html \
+        --slug daily-edition-2026-05-14 \
+        --title "Thursday, 14 May 2026" \
+        --date "May 2026"
+
+    The JSON file must contain an array of exactly 5 objects:
+    [
+      {
+        "label": "I.",
+        "title": "Dispatch title",
+        "body_md": "Full markdown body…",
+        "note_url": "/users/{user_id}/notes/{slug}.html"
+      },
+      …
+    ]
 """
 
 import argparse
+import json
 import re
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -29,6 +46,8 @@ def current_est_datetime():
     now = datetime.now(est)
     return now.strftime("%-d %B %Y, %-I:%M %p")
 
+
+# ── Single-dispatch template (unchanged) ──────────────────────────────────────
 
 HTML_TEMPLATE = """\
 <!DOCTYPE html>
@@ -113,6 +132,137 @@ HTML_TEMPLATE = """\
 </html>
 """
 
+
+# ── Combined-dispatch template (new) ──────────────────────────────────────────
+
+COMBINED_HTML_TEMPLATE = """\
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{meta_description}">
+  <title>{edition_title} — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* ── Combined dispatch sections ─────────────────── */
+    .dispatch-section {{
+      padding: 36px 0 0;
+    }}
+    .dispatch-section__label {{
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }}
+    .dispatch-section__title {{
+      font-family: var(--serif);
+      font-size: clamp(22px, 3.5vw, 30px);
+      font-weight: 400;
+      line-height: 1.18;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      margin-bottom: 22px;
+    }}
+    .dispatch-section__readmore {{
+      margin-top: 18px;
+      padding-bottom: 36px;
+    }}
+    .dispatch-section__readmore a {{
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      color: var(--text);
+      text-decoration: none;
+      text-transform: uppercase;
+      border-bottom: 1.5px solid var(--text);
+      padding-bottom: 1px;
+      transition: opacity 0.15s;
+    }}
+    .dispatch-section__readmore a:hover {{ opacity: 0.5; }}
+    .dispatch-rule {{
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 0;
+    }}
+  </style>
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="{back_url}">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>{edition_title}</h1>
+    <div class="essay-page-header__meta">{date_line}</div>
+  </header>
+
+  <article class="dispatch-body">
+{sections_html}
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+(function() {{
+  const PIECE_SLUG = "{slug}";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {{
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }}
+
+  async function record(depth) {{
+    try {{
+      const {{ data: {{ session }} }} = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({{
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      }});
+    }} catch(e) {{ /* non-blocking */ }}
+  }}
+
+  window.addEventListener('scroll', function() {{
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) {{ recorded50 = true; record(50); }}
+  }}, {{ passive: true }});
+
+  window.addEventListener('pagehide', function() {{
+    record(maxDepth);
+  }});
+}})();
+</script>
+
+</body>
+</html>
+"""
+
+
+# ── Markdown utilities (unchanged) ────────────────────────────────────────────
 
 def md_to_html_body(md_text, dispatch_type):
     """
@@ -292,33 +442,128 @@ def extract_meta_description(md_text, max_len=200):
     return ""
 
 
+# ── Combined-dispatch renderer ─────────────────────────────────────────────────
+
+ROMAN_LABELS = ['I.', 'II.', 'III.', 'IV.', 'V.']
+
+
+def render_combined_sections(dispatches_data):
+    """
+    Render 5 dispatch sections for the combined dispatch page.
+
+    Each element of dispatches_data must be a dict with:
+        label    – section label, e.g. "I." (defaults to roman numeral)
+        title    – section heading
+        body_md  – raw markdown body text
+        note_url – absolute URL of the corresponding note page
+    """
+    parts = []
+    for i, d in enumerate(dispatches_data):
+        label    = d.get('label') or ROMAN_LABELS[i] if i < len(ROMAN_LABELS) else f'{i+1}.'
+        title    = d.get('title', '').strip()
+        body_md  = d.get('body_md', '').strip()
+        note_url = d.get('note_url', '').strip()
+
+        body_html = md_to_html_body(body_md, 'daily')
+
+        # Indent body HTML lines for readability
+        indented_body = '\n'.join(
+            '    ' + line if line.strip() else line
+            for line in body_html.splitlines()
+        )
+
+        section = (
+            f'    <div class="dispatch-section">\n'
+            f'      <p class="dispatch-section__label">{label}</p>\n'
+            f'      <h2 class="dispatch-section__title">{title}</h2>\n'
+            f'{indented_body}'
+        )
+
+        if note_url:
+            section += (
+                f'\n      <p class="dispatch-section__readmore">'
+                f'<a href="{note_url}">Read more &rarr;</a></p>'
+            )
+
+        section += '\n    </div>'
+        parts.append(section)
+
+    # Sections separated by a full-width rule; no rule after the last section
+    separator = '\n    <hr class="dispatch-rule">\n'
+    return separator.join(parts)
+
+
+# ── CLI ────────────────────────────────────────────────────────────────────────
+
 def main():
-    parser = argparse.ArgumentParser(description="Convert dispatch analysis.md to Anthology HTML")
-    parser.add_argument("--input",         required=True, help="Path to analysis.md")
-    parser.add_argument("--output",        required=True, help="Path to write dispatch HTML")
-    parser.add_argument("--slug",          required=True, help="URL slug")
-    parser.add_argument("--title",         required=True, help="Dispatch title")
-    parser.add_argument("--date",          required=True, help="Display date, e.g. 'May 2026'")
-    parser.add_argument("--dispatch-type", required=True, choices=["daily", "weekly"],
-                        help="Dispatch type: daily or weekly")
+    parser = argparse.ArgumentParser(
+        description="Convert dispatch analysis.md (or combined JSON) to Anthology HTML"
+    )
+    # Normal mode args
+    parser.add_argument("--input",         default=None,
+                        help="Path to analysis.md (required in normal mode)")
+    parser.add_argument("--dispatch-type", default="daily", choices=["daily", "weekly"],
+                        help="Dispatch type: daily or weekly (normal mode only)")
     parser.add_argument("--label",         default=None,
                         help="Override the dispatch label (e.g. 'UK Politics', 'NBA')")
+
+    # Combined mode arg
+    parser.add_argument("--combined-dispatches", default=None,
+                        help="Path to JSON file containing array of 5 dispatch objects "
+                             "{label, title, body_md, note_url}. Activates combined mode.")
+
+    # Shared args
+    parser.add_argument("--output",        required=True, help="Path to write HTML output")
+    parser.add_argument("--slug",          required=True, help="URL slug")
+    parser.add_argument("--title",         required=True,
+                        help="Dispatch title (normal) or edition title (combined)")
+    parser.add_argument("--date",          required=True,
+                        help="Display date, e.g. 'May 2026'")
     parser.add_argument("--back-url",      default=None,
-                        help="Override the back-link URL (default: ../index.html#dispatches)")
+                        help="Override the back-link URL (default: /)")
     parser.add_argument("--pub-datetime",  default=None,
                         help="Publication datetime, e.g. '10 May 2026, 3:45 PM'. "
                              "Auto-generated from current EST time if omitted.")
     args = parser.parse_args()
 
+    back_url = args.back_url if args.back_url else "/"
+    pub_dt   = args.pub_datetime if args.pub_datetime else current_est_datetime()
+    date_line = f'{args.date} &middot; Published {pub_dt} EST'
+
+    out = Path(args.output)
+    out.parent.mkdir(parents=True, exist_ok=True)
+
+    # ── COMBINED MODE ──────────────────────────────────────────────────────────
+    if args.combined_dispatches:
+        dispatches_data = json.loads(
+            Path(args.combined_dispatches).read_text(encoding='utf-8')
+        )
+        sections_html = render_combined_sections(dispatches_data)
+
+        # Meta description from first dispatch title
+        first_title = dispatches_data[0].get('title', '') if dispatches_data else ''
+        meta = first_title[:200]
+
+        html = COMBINED_HTML_TEMPLATE.format(
+            edition_title=args.title,
+            date_line=date_line,
+            slug=args.slug,
+            meta_description=meta,
+            back_url=back_url,
+            sections_html=sections_html,
+        )
+        out.write_text(html, encoding='utf-8')
+        print(f"✓ Written (combined, {len(dispatches_data)} sections): {out}")
+        return
+
+    # ── NORMAL MODE ────────────────────────────────────────────────────────────
+    if not args.input:
+        parser.error("--input is required in normal (single-dispatch) mode")
+
     if args.label:
         dispatch_label = args.label
     else:
         dispatch_label = "Daily Dispatch" if args.dispatch_type == "daily" else "Weekly Dispatch"
-
-    back_url = args.back_url if args.back_url else "/"
-
-    pub_dt = args.pub_datetime if args.pub_datetime else current_est_datetime()
-    date_line = f'{args.date} &middot; Published {pub_dt} EST'
 
     md_text = Path(args.input).read_text(encoding="utf-8")
     body    = md_to_html_body(md_text, args.dispatch_type)
@@ -334,8 +579,6 @@ def main():
         body=body,
     )
 
-    out = Path(args.output)
-    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(html, encoding="utf-8")
     print(f"✓ Written: {out}")
 

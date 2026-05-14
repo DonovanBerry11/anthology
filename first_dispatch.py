@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 """
-first_dispatch.py — Generates and publishes a single personalised dispatch
-for a new user immediately after bootstrap completes.
+first_dispatch.py — Generates and publishes a combined 5-section dispatch
+plus 5 companion notes for a new user immediately after bootstrap completes.
 
 Runs on the server only (/root/pipeline/). Called by bootstrap_server.py via
 subprocess.Popen (non-blocking) after /first-dispatch is hit.
+
+Output per run:
+  • 1 combined dispatch HTML page containing 5 demarcated sections
+  • 5 note HTML pages, one per dispatch topic
+  • Each section in the combined dispatch links to its corresponding note
 
 Usage:
     python3 /root/pipeline/first_dispatch.py \
@@ -20,6 +25,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -30,6 +36,8 @@ from dotenv import load_dotenv
 
 VENV_PYTHON = '/root/anthology-env/bin/python3'
 MODEL       = 'claude-sonnet-4-20250514'
+N_DISPATCHES = 5
+ROMAN_LABELS = ['I.', 'II.', 'III.', 'IV.', 'V.']
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -56,7 +64,7 @@ def extract_text(response) -> str:
     return '\n'.join(parts).strip()
 
 
-def run_cmd(cmd, timeout: int = 120) -> str:
+def run_cmd(cmd, timeout: int = 180) -> str:
     """
     Run cmd (list → execvp, str → shell). Raise RuntimeError on non-zero exit.
     Returns stdout stripped.
@@ -75,11 +83,40 @@ def run_cmd(cmd, timeout: int = 120) -> str:
     return result.stdout.strip()
 
 
+def safe_slug(text: str, fallback: str = 'dispatch') -> str:
+    """Convert free text to a URL-safe kebab-case slug."""
+    slug = text.lower()
+    slug = re.sub(r'[^a-z0-9-]', '-', slug)
+    slug = re.sub(r'-+', '-', slug).strip('-')
+    return slug or fallback
+
+
+def parse_json_response(text: str, context: str = '') -> list | dict | None:
+    """
+    Extract the first valid JSON object or array from text.
+    Tolerant of markdown fences and surrounding commentary.
+    """
+    # Remove markdown fences if present
+    cleaned = re.sub(r'```(?:json)?\s*', '', text)
+    cleaned = re.sub(r'```', '', cleaned)
+    # Try to find JSON array first, then object
+    for pattern in [r'\[.*\]', r'\{.*\}']:
+        m = re.search(pattern, cleaned, re.DOTALL)
+        if m:
+            try:
+                return json.loads(m.group())
+            except json.JSONDecodeError:
+                continue
+    logging.warning(f'Could not parse JSON{" in " + context if context else ""}')
+    return None
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Generate and publish a first personalised dispatch for a new user'
+        description='Generate and publish a first combined dispatch (5 sections + 5 notes) '
+                    'for a new user'
     )
     parser.add_argument('--user-id', required=True, help='Supabase UUID')
     parser.add_argument(
@@ -118,7 +155,7 @@ def main():
         ],
     )
     logger = logging.getLogger('first-dispatch')
-    logger.info(f'Starting first dispatch for user_id={user_id}')
+    logger.info(f'Starting first combined dispatch for user_id={user_id}')
 
     # ── Read orientation file ──────────────────────────────────────────────────
     registry_path = system_dir / 'users' / 'registry.json'
@@ -140,251 +177,398 @@ def main():
         logger.error(f'Orientation file not found: {orientation_path}')
         sys.exit(1)
 
-    # First ~2500 chars covers Stated Preferences and profile — enough context
+    # First ~2500 chars covers Stated Preferences and profile
     orientation_excerpt = orientation_path.read_text(encoding='utf-8')[:2500]
     logger.info(f'Loaded orientation: {orientation_path}')
 
-    # ── Next dispatch number ───────────────────────────────────────────────────
+    # ── Next dispatch/note numbers ─────────────────────────────────────────────
     pieces_dispatches_dir = system_dir / 'pieces' / 'dispatches'
+    pieces_notes_dir      = system_dir / 'pieces' / 'notes'
     pieces_dispatches_dir.mkdir(parents=True, exist_ok=True)
+    pieces_notes_dir.mkdir(parents=True, exist_ok=True)
 
-    existing_nums = [
-        int(m.group(1))
-        for d in pieces_dispatches_dir.iterdir()
-        if d.is_dir()
-        for m in [re.match(r'd(\d+)', d.name)]
-        if m
-    ]
-    next_num = max(existing_nums, default=0) + 1
-    logger.info(f'Next dispatch number: {next_num}')
+    def next_piece_number(pieces_dir: Path, prefix: str) -> int:
+        nums = [
+            int(m.group(1))
+            for d in pieces_dir.iterdir()
+            if d.is_dir()
+            for m in [re.match(rf'{re.escape(prefix)}(\d+)', d.name)]
+            if m
+        ]
+        return max(nums, default=0) + 1
+
+    next_dispatch_num = next_piece_number(pieces_dispatches_dir, 'd')
+    next_note_num     = next_piece_number(pieces_notes_dir, 'n')
+    logger.info(f'Next dispatch number: {next_dispatch_num}, next note number: {next_note_num}')
 
     # ── Anthropic client ────────────────────────────────────────────────────────
     client = anthropic.Anthropic(api_key=api_key)
 
-    # ── Step 1: Find topic via web search ──────────────────────────────────────
-    logger.info('Step 1: Finding topic with web search...')
+    # ── Step 1: Find 5 topics via web search ───────────────────────────────────
+    logger.info('Step 1: Finding 5 topics with web search…')
 
-    topic_prompt = f"""You are the editorial agent for Anthology, a personalised newspaper. \
-A new reader has just completed onboarding and their first edition is empty. \
-You need to find a current news story to anchor their first dispatch.
+    topics_prompt = f"""You are the editorial agent for Anthology, a personalised newspaper. \
+A new reader has just completed onboarding. You need to find 5 current news stories to anchor \
+their first edition.
 
 READER PROFILE (from their orientation file):
 {orientation_excerpt}
 
-Search the web for a current news story from the past 24–48 hours that would \
-genuinely interest this reader based on their stated background and interests. \
-Choose something substantive — a political, economic, geopolitical, financial, \
-or technology development that rewards analysis. Avoid soft news.
+Search the web for 5 current news stories from the past 48 hours that would genuinely interest \
+this reader. Choose stories from different domains (e.g. politics, economics, geopolitics, \
+technology, finance) so the edition covers a range. Each story should be substantive — \
+a development that rewards analysis. Avoid soft news or celebrity items.
 
-After searching, respond with ONLY a valid JSON object in this exact format \
-(no markdown fences, no commentary, just the JSON):
-{{
-  "headline": "The actual news headline",
-  "summary": "2–3 sentences summarising what happened and its immediate significance",
-  "source": "Publication or news outlet name",
-  "why_relevant": "One sentence on why this story fits this reader's specific interests",
-  "suggested_slug": "kebab-case-slug-max-5-words",
-  "suggested_title": "An analytical dispatch title (not the news headline — something that frames the story analytically)"
-}}"""
+After searching, respond with ONLY a valid JSON array of exactly 5 objects. \
+No markdown fences, no commentary — just the JSON:
+[
+  {{
+    "headline": "The actual news headline",
+    "summary": "2–3 sentences summarising what happened and its immediate significance",
+    "source": "Publication or news outlet name",
+    "why_relevant": "One sentence on why this story fits this reader's specific interests",
+    "suggested_slug": "kebab-case-slug-max-5-words",
+    "suggested_title": "An analytical dispatch title (not the headline — frames the story analytically)",
+    "note_slug": "kebab-case-slug-for-the-companion-note-max-5-words"
+  }},
+  …
+]"""
 
-    topic_response = client.messages.create(
+    topics_response = client.messages.create(
         model=MODEL,
-        max_tokens=1024,
+        max_tokens=2048,
         tools=[{
             "type": "web_search_20250305",
             "name": "web_search",
-            "max_uses": 5,
+            "max_uses": 8,
         }],
-        messages=[{"role": "user", "content": topic_prompt}],
+        messages=[{"role": "user", "content": topics_prompt}],
     )
 
-    topic_text = extract_text(topic_response)
-    logger.info(f'Topic response (first 300 chars): {topic_text[:300]}')
+    topics_text = extract_text(topics_response)
+    logger.info(f'Topics response (first 400 chars): {topics_text[:400]}')
 
-    # Extract JSON — be tolerant of markdown fences the model might add
-    json_match = re.search(r'\{[^{}]*"headline"[^{}]*\}', topic_text, re.DOTALL)
-    if not json_match:
-        # Fallback: try the whole response as JSON
-        json_match = re.search(r'\{.*\}', topic_text, re.DOTALL)
-    if not json_match:
-        logger.error(f'Could not parse topic JSON. Full response:\n{topic_text}')
+    topics = parse_json_response(topics_text, 'topics response')
+    if not topics or not isinstance(topics, list) or len(topics) < N_DISPATCHES:
+        logger.error(f'Could not parse 5 topics. Full response:\n{topics_text}')
         sys.exit(1)
 
-    try:
-        topic = json.loads(json_match.group())
-    except json.JSONDecodeError as exc:
-        logger.error(f'JSON parse error: {exc}\nMatched text: {json_match.group()}')
-        sys.exit(1)
+    topics = topics[:N_DISPATCHES]
+    for t in topics:
+        t['slug']      = safe_slug(t.get('suggested_slug', ''), 'dispatch')
+        t['title']     = (t.get('suggested_title') or t.get('headline') or 'Dispatch').strip()
+        t['note_slug'] = safe_slug(t.get('note_slug', t['slug'] + '-note'), 'note')
 
-    raw_slug = topic.get('suggested_slug', 'first-dispatch').lower()
-    slug = re.sub(r'[^a-z0-9-]', '-', raw_slug)
-    slug = re.sub(r'-+', '-', slug).strip('-') or 'first-dispatch'
-    title = (topic.get('suggested_title') or topic.get('headline') or 'First Dispatch').strip()
+    logger.info(f'Topics selected: {[t["title"] for t in topics]}')
 
-    logger.info(f'Topic selected: {title} (slug: {slug})')
+    # ── Step 2: Draft all 5 dispatch bodies in one call ────────────────────────
+    logger.info('Step 2: Drafting 5 dispatch bodies…')
 
-    # ── Step 2: Draft the dispatch ──────────────────────────────────────────────
-    logger.info('Step 2: Drafting dispatch...')
+    topics_summary = '\n'.join(
+        f'{i+1}. TITLE: {t["title"]}\n   Headline: {t["headline"]}\n'
+        f'   Summary: {t["summary"]}\n   Source: {t["source"]}\n'
+        f'   Why relevant: {t["why_relevant"]}'
+        for i, t in enumerate(topics)
+    )
 
-    draft_prompt = f"""You are the writer for Anthology, a personalised analytical newspaper. \
-Write a daily dispatch for the reader described below.
+    dispatch_draft_prompt = f"""You are the writer for Anthology, a personalised analytical newspaper. \
+Write 5 daily dispatches for the reader described below.
 
 READER PROFILE:
 {orientation_excerpt}
 
-NEWS STORY:
-Headline: {topic.get('headline', '')}
-Summary: {topic.get('summary', '')}
-Source: {topic.get('source', '')}
-Why relevant to this reader: {topic.get('why_relevant', '')}
+FIVE STORIES TO COVER:
+{topics_summary}
 
-DISPATCH TITLE: {title}
+For each story, write a separate dispatch body. Each dispatch must:
+- Be 350–450 words
+- Use prose paragraphs only — no subheadings, no bullet points, no numbered lists
+- Open with a strong declarative sentence (not a question, not "In recent weeks")
+- Name the source naturally within the text
+- Close with a forward-looking sentence about what to watch
+- NOT include the title, byline, date, or any meta-text — body paragraphs only
+- Be calibrated to this reader's background and sophistication
 
-FORMAT REQUIREMENTS:
-- Length: 350–450 words
-- Structure: prose paragraphs only — no subheadings, no bullet points, no numbered lists, \
-no headers, no bold labels
-- Voice: analytical, precise, direct — serious newspaper tone calibrated to this reader's sophistication
-- Coverage: what happened, its immediate significance, and the broader structural context
-- Attribution: name the source ({topic.get('source', 'source')}) naturally within the text
-- Personalisation: write specifically for this reader's background, not a generic audience
-- Opening: a strong declarative sentence — not a question, not "In recent weeks", \
-not "It was announced that"
-- Closing: a forward-looking sentence about what to watch or what this sets in motion
-- Do not include the dispatch title, byline, date, or any meta-text — body paragraphs only
+Respond with ONLY a valid JSON array of exactly 5 objects. No markdown fences:
+[
+  {{
+    "index": 0,
+    "body": "Full dispatch body text for story 1…"
+  }},
+  …
+]"""
 
-Write the dispatch body now:"""
-
-    draft_response = client.messages.create(
+    dispatch_draft_response = client.messages.create(
         model=MODEL,
-        max_tokens=2048,
-        messages=[{"role": "user", "content": draft_prompt}],
+        max_tokens=8192,
+        messages=[{"role": "user", "content": dispatch_draft_prompt}],
     )
 
-    draft_text = extract_text(draft_response).strip()
-    word_count = len(draft_text.split())
-    logger.info(f'Draft complete: {word_count} words')
+    drafts_data = parse_json_response(extract_text(dispatch_draft_response), 'dispatch drafts')
+    if not drafts_data or not isinstance(drafts_data, list) or len(drafts_data) < N_DISPATCHES:
+        logger.error('Could not parse dispatch drafts JSON')
+        sys.exit(1)
 
-    # ── Step 3: Lightweight QC ─────────────────────────────────────────────────
-    logger.info('Step 3: Quality check...')
+    # Index the drafts by their index field
+    drafts_by_idx = {d.get('index', i): d.get('body', '') for i, d in enumerate(drafts_data)}
+    dispatch_bodies = [drafts_by_idx.get(i, '').strip() for i in range(N_DISPATCHES)]
 
-    qc_prompt = f"""You are a quality editor for Anthology, a personalised newspaper. \
-Review the dispatch below against these criteria:
+    word_counts = [len(b.split()) for b in dispatch_bodies]
+    logger.info(f'Dispatch drafts complete. Word counts: {word_counts}')
 
-1. STRUCTURE: Prose paragraphs only — no subheadings, bullets, bold labels, or lists?
-2. GROUNDED: Factually consistent with the news story provided?
-3. ATTRIBUTED: Source ({topic.get('source', 'source')}) named naturally in the text?
-4. LENGTH: Between 300 and 500 words? (Current count: ~{word_count})
-5. OPENING/CLOSING: Strong declarative opening; forward-looking close?
+    # ── Step 3: QC pass on all 5 dispatches ───────────────────────────────────
+    logger.info('Step 3: Quality check on 5 dispatches…')
 
-If all five pass without issue, respond with exactly:
-PASS
+    dispatches_for_qc = '\n\n'.join(
+        f'=== DISPATCH {i+1}: {topics[i]["title"]} ===\n{body}'
+        for i, body in enumerate(dispatch_bodies)
+    )
 
-If there are fixable issues, respond with:
-REVISED
-[the corrected full dispatch body — same format requirements, no meta-text]
+    qc_prompt = f"""You are a quality editor for Anthology. Review these 5 dispatch bodies:
 
-DISPATCH TITLE: {title}
+For each dispatch, check:
+1. STRUCTURE: Prose paragraphs only — no subheadings, bullets, or lists?
+2. LENGTH: Between 300 and 500 words?
+3. OPENING: Strong declarative opening (not a question, not "In recent weeks")?
+4. SOURCE: Source named naturally in the text?
+5. CLOSING: Forward-looking final sentence?
 
-DISPATCH TEXT:
-{draft_text}
+For each dispatch that passes all checks, respond with just its index and PASS.
+For each dispatch that needs fixing, respond with its index, REVISED, and the corrected body.
 
-NEWS CONTEXT:
-{topic.get('headline', '')} — {topic.get('summary', '')} (Source: {topic.get('source', '')})"""
+Format your response as a JSON array:
+[
+  {{"index": 0, "result": "PASS"}},
+  {{"index": 1, "result": "REVISED", "body": "corrected full body text…"}},
+  …
+]
+
+DISPATCHES TO REVIEW:
+{dispatches_for_qc}"""
 
     qc_response = client.messages.create(
         model=MODEL,
-        max_tokens=2048,
+        max_tokens=8192,
         messages=[{"role": "user", "content": qc_prompt}],
     )
 
-    qc_text = extract_text(qc_response).strip()
-
-    if qc_text.upper().startswith('REVISED'):
-        revised_body = qc_text[len('REVISED'):].strip()
-        if revised_body and len(revised_body.split()) >= 200:
-            draft_text = revised_body
-            logger.info(f'QC: dispatch revised ({len(draft_text.split())} words after revision)')
-        else:
-            logger.warning('QC: REVISED response too short or empty — keeping original draft')
+    qc_data = parse_json_response(extract_text(qc_response), 'QC response')
+    if qc_data and isinstance(qc_data, list):
+        for qc_item in qc_data:
+            idx = qc_item.get('index')
+            if idx is not None and qc_item.get('result', '').upper().startswith('REVISED'):
+                revised = qc_item.get('body', '').strip()
+                if revised and len(revised.split()) >= 200:
+                    dispatch_bodies[idx] = revised
+                    logger.info(f'Dispatch {idx+1}: QC revised ({len(revised.split())} words)')
+                else:
+                    logger.warning(f'Dispatch {idx+1}: QC REVISED body too short, keeping original')
+            else:
+                logger.info(f'Dispatch {idx+1 if idx is not None else "?"}: QC PASS')
     else:
-        logger.info(f'QC result: {qc_text[:80]}')
+        logger.warning('Could not parse QC response — keeping original drafts')
 
-    # ── Build standfirst ───────────────────────────────────────────────────────
-    raw_standfirst = (topic.get('summary') or topic.get('headline') or title).strip()
-    if len(raw_standfirst) > 200:
-        trimmed = raw_standfirst[:200]
-        last_period = trimmed.rfind('.')
-        raw_standfirst = (
-            trimmed[:last_period + 1] if last_period > 80 else trimmed.rstrip() + '.'
-        )
-    standfirst = raw_standfirst.strip()
-    if standfirst and standfirst[-1] not in '.!?':
-        standfirst += '.'
+    # ── Step 4: Draft all 5 note bodies in one call ────────────────────────────
+    logger.info('Step 4: Drafting 5 companion notes…')
 
-    # ── Write piece directory ──────────────────────────────────────────────────
-    piece_dir  = pieces_dispatches_dir / f'd{next_num:03d}-{slug}'
-    piece_dir.mkdir(parents=True, exist_ok=True)
+    dispatches_summary_for_notes = '\n'.join(
+        f'{i+1}. TITLE: {topics[i]["title"]}\n'
+        f'   Story: {topics[i]["summary"]}\n'
+        f'   Dispatch excerpt (first 200 chars): {dispatch_bodies[i][:200]}…'
+        for i in range(N_DISPATCHES)
+    )
 
-    analysis_md = piece_dir / 'analysis.md'
-    analysis_md.write_text(draft_text, encoding='utf-8')
+    note_draft_prompt = f"""You are a writer for Anthology, a personalised newspaper. \
+You have just written 5 short dispatches (350–450 words each) covering current stories. \
+Now write 5 companion notes — one for each story — that go deeper.
 
-    now_utc = datetime.utcnow()
-    log_md_content = f"""# d{next_num:03d} — {title}
+READER PROFILE:
+{orientation_excerpt}
 
-**Generated:** {now_utc.isoformat()}Z UTC
-**User ID:** {user_id}
-**Trigger:** first-dispatch (post-onboarding bootstrap)
-**Model:** {MODEL}
-**Topic source:** web search (web_search_20250305)
-**News headline:** {topic.get('headline', '—')}
-**News source:** {topic.get('source', '—')}
-**Slug:** {slug}
-**Word count:** {len(draft_text.split())}
-**QC result:** {qc_text[:120]}
-**Standfirst:** {standfirst}
-"""
-    (piece_dir / 'log.md').write_text(log_md_content, encoding='utf-8')
-    logger.info(f'Piece directory written: {piece_dir}')
+STORIES (with dispatch summaries):
+{dispatches_summary_for_notes}
+
+Each companion note must:
+- Be 400–600 words
+- Take the story further: provide structural context, historical background, \
+  stakeholder analysis, or an analytical angle the short dispatch could not develop
+- Use prose paragraphs — no subheadings or bullet points
+- Be written for this reader specifically — calibrated to their sophistication and interests
+- NOT be a summary or repeat of the dispatch — the reader has already read the dispatch
+- NOT include a title, byline, date, or meta-text — body paragraphs only
+
+Respond with ONLY a valid JSON array of exactly 5 objects. No markdown fences:
+[
+  {{
+    "index": 0,
+    "body": "Full note body for story 1…"
+  }},
+  …
+]"""
+
+    note_draft_response = client.messages.create(
+        model=MODEL,
+        max_tokens=8192,
+        messages=[{"role": "user", "content": note_draft_prompt}],
+    )
+
+    notes_data = parse_json_response(extract_text(note_draft_response), 'note drafts')
+    if not notes_data or not isinstance(notes_data, list) or len(notes_data) < N_DISPATCHES:
+        logger.error('Could not parse note drafts JSON')
+        sys.exit(1)
+
+    notes_by_idx = {n.get('index', i): n.get('body', '') for i, n in enumerate(notes_data)}
+    note_bodies = [notes_by_idx.get(i, '').strip() for i in range(N_DISPATCHES)]
+
+    note_word_counts = [len(b.split()) for b in note_bodies]
+    logger.info(f'Note drafts complete. Word counts: {note_word_counts}')
 
     # ── Date strings ───────────────────────────────────────────────────────────
     now_est      = datetime.now(est)
-    date_display = now_est.strftime('%B %Y')   # e.g. "May 2026"
+    date_display = now_est.strftime('%B %Y')      # e.g. "May 2026"
     date_iso     = now_est.strftime('%Y-%m-%d')
-
-    # ── Step 4: Publish dispatch ───────────────────────────────────────────────
-    logger.info('Step 4: Publishing dispatch...')
+    now_utc      = datetime.utcnow()
 
     token_file     = anthology_dir / '.publish-config'
-    publish_script = anthology_dir / 'publish_dispatch.py'
+    publish_note   = anthology_dir / 'publish_note.py'
+    publish_disp   = anthology_dir / 'publish_dispatch.py'
+
+    # ── Step 5: Write piece directories and publish notes ─────────────────────
+    logger.info('Step 5: Publishing 5 companion notes…')
+
+    note_urls = []  # per-user URLs, built as each note is published
+
+    for i in range(N_DISPATCHES):
+        note_num  = next_note_num + i
+        note_slug = topics[i]['note_slug']
+        note_title = f"{topics[i]['title']} — Further Reading"
+
+        # Build standfirst from dispatch summary
+        raw_sf = topics[i].get('summary', topics[i]['title'])[:200].strip()
+        if raw_sf and raw_sf[-1] not in '.!?':
+            raw_sf += '.'
+        note_standfirst = raw_sf
+
+        # Write piece directory
+        note_dir = pieces_notes_dir / f'n{note_num:03d}-{note_slug}'
+        note_dir.mkdir(parents=True, exist_ok=True)
+        (note_dir / 'analysis.md').write_text(note_bodies[i], encoding='utf-8')
+        (note_dir / 'log.md').write_text(
+            f"# n{note_num:03d} — {note_title}\n\n"
+            f"**Generated:** {now_utc.isoformat()}Z UTC\n"
+            f"**User ID:** {user_id}\n"
+            f"**Trigger:** first-dispatch companion note {i+1}/5\n"
+            f"**Model:** {MODEL}\n"
+            f"**Dispatch slug:** {topics[i]['slug']}\n"
+            f"**Word count:** {len(note_bodies[i].split())}\n",
+            encoding='utf-8',
+        )
+
+        logger.info(f'  Publishing note {i+1}/5: {note_slug}')
+
+        note_result = subprocess.run(
+            [
+                VENV_PYTHON, str(publish_note),
+                '--slug',        note_slug,
+                '--title',       note_title,
+                '--date',        date_display,
+                '--date-iso',    date_iso,
+                '--standfirst',  note_standfirst,
+                '--analysis-md', str(note_dir / 'analysis.md'),
+                '--token-file',  str(token_file),
+                '--scripts-dir', str(anthology_dir),
+                '--user-id',     user_id,
+            ],
+            capture_output=True,
+            text=True,
+            timeout=240,
+        )
+
+        if note_result.returncode != 0:
+            logger.error(f'  Note {i+1} publish failed:\n{note_result.stderr}')
+            sys.exit(1)
+
+        logger.info(f'  Note {i+1} published: {note_result.stdout.strip()[:150]}')
+        note_urls.append(f'/users/{user_id}/notes/{note_slug}.html')
+
+    logger.info('All 5 notes published.')
+
+    # ── Step 6: Build combined-dispatches JSON and write piece dirs ────────────
+    logger.info('Step 6: Building combined dispatch JSON…')
+
+    combined_slug = f'd{next_dispatch_num:03d}-daily-edition-{date_iso}'
+
+    combined_entries = []
+    for i in range(N_DISPATCHES):
+        dispatch_dir = pieces_dispatches_dir / f'd{next_dispatch_num:03d}-{topics[i]["slug"]}-{i+1}'
+        dispatch_dir.mkdir(parents=True, exist_ok=True)
+        (dispatch_dir / 'analysis.md').write_text(dispatch_bodies[i], encoding='utf-8')
+        (dispatch_dir / 'log.md').write_text(
+            f"# d{next_dispatch_num:03d} section {i+1} — {topics[i]['title']}\n\n"
+            f"**Generated:** {now_utc.isoformat()}Z UTC\n"
+            f"**User ID:** {user_id}\n"
+            f"**Trigger:** first-dispatch combined edition, section {i+1}/5\n"
+            f"**Combined slug:** {combined_slug}\n"
+            f"**Note slug:** {topics[i]['note_slug']}\n"
+            f"**Word count:** {len(dispatch_bodies[i].split())}\n",
+            encoding='utf-8',
+        )
+
+        combined_entries.append({
+            'label':    ROMAN_LABELS[i],
+            'title':    topics[i]['title'],
+            'body_md':  dispatch_bodies[i],
+            'note_url': note_urls[i],
+        })
+
+    # Write combined-dispatches JSON to a temp file
+    combined_json_path = Path(tempfile.mkstemp(suffix='.json', prefix='anthology-combined-')[1])
+    combined_json_path.write_text(json.dumps(combined_entries, indent=2, ensure_ascii=False),
+                                   encoding='utf-8')
+    logger.info(f'Combined dispatch JSON written: {combined_json_path}')
+
+    # Edition title: weekday + date, e.g. "Thursday, 14 May 2026"
+    edition_title = now_est.strftime('%A, %-d %B %Y')
+
+    # Standfirst for catalog — first dispatch summary
+    raw_standfirst = topics[0].get('summary', topics[0]['title'])[:200].strip()
+    if raw_standfirst and raw_standfirst[-1] not in '.!?':
+        raw_standfirst += '.'
+    combined_standfirst = raw_standfirst
+
+    # ── Step 7: Publish combined dispatch ─────────────────────────────────────
+    logger.info('Step 7: Publishing combined dispatch…')
 
     publish_result = subprocess.run(
         [
-            VENV_PYTHON, str(publish_script),
-            '--slug',          slug,
-            '--title',         title,
-            '--date',          date_display,
-            '--date-iso',      date_iso,
-            '--dispatch-type', 'daily',
-            '--standfirst',    standfirst,
-            '--analysis-md',   str(analysis_md),
-            '--token-file',    str(token_file),
-            '--scripts-dir',   str(anthology_dir),
-            '--user-id',       user_id,
+            VENV_PYTHON, str(publish_disp),
+            '--slug',                combined_slug,
+            '--title',               edition_title,
+            '--date',                date_display,
+            '--date-iso',            date_iso,
+            '--dispatch-type',       'daily',
+            '--standfirst',          combined_standfirst,
+            '--combined-dispatches', str(combined_json_path),
+            '--token-file',          str(token_file),
+            '--scripts-dir',         str(anthology_dir),
+            '--user-id',             user_id,
         ],
         capture_output=True,
         text=True,
-        timeout=180,
+        timeout=240,
     )
 
+    # Clean up temp file
+    combined_json_path.unlink(missing_ok=True)
+
     if publish_result.returncode != 0:
-        logger.error(f'Publish failed:\n{publish_result.stderr}')
+        logger.error(f'Combined dispatch publish failed:\n{publish_result.stderr}')
         sys.exit(1)
 
-    logger.info(f'Publish stdout:\n{publish_result.stdout.strip()}')
+    logger.info(f'Combined dispatch published: {publish_result.stdout.strip()[:200]}')
 
-    # ── Step 5: Regenerate edition.json ───────────────────────────────────────
-    logger.info('Step 5: Regenerating edition.json...')
+    # ── Step 8: Regenerate edition.json ───────────────────────────────────────
+    logger.info('Step 8: Regenerating edition.json…')
 
     token     = token_file.read_text(encoding='utf-8').strip()
     clone_dir = Path(f'/tmp/anthology-first-edition-{user_id[:8]}')
@@ -406,37 +590,40 @@ NEWS CONTEXT:
         run_cmd(f'git -C {clone_dir} config user.name "Anthology Server"')
         run_cmd(f'git -C {clone_dir} add users/{user_id}/edition.json')
 
-        # Commit (may produce "nothing to commit" — that's fine)
         commit_result = subprocess.run(
-            f'git -C {clone_dir} commit -m "Edition: first-dispatch for user {user_id[:8]}"',
+            f'git -C {clone_dir} commit -m '
+            f'"Edition: first-dispatch combined for user {user_id[:8]}"',
             shell=True, capture_output=True, text=True,
         )
         if commit_result.returncode == 0:
             run_cmd(f'git -C {clone_dir} push')
-            logger.info('Edition.json regenerated and pushed')
+            logger.info('edition.json regenerated and pushed')
         else:
             if 'nothing to commit' in commit_result.stdout + commit_result.stderr:
-                logger.info('Edition.json: no change (already up to date)')
+                logger.info('edition.json: no change (already up to date)')
             else:
                 logger.warning(f'Edition commit issue: {commit_result.stderr}')
 
     except RuntimeError as exc:
-        # Non-fatal — dispatch is live; edition regenerates on next cron run
         logger.warning(f'Edition regeneration failed (non-fatal): {exc}')
-        logger.info('Dispatch is published. Edition will update on next cron cycle.')
+        logger.info('Dispatches and notes are live. Edition will update on next cron cycle.')
     finally:
         if clone_dir.exists():
             shutil.rmtree(clone_dir, ignore_errors=True)
 
     # ── Done ───────────────────────────────────────────────────────────────────
+    total_words = sum(len(b.split()) for b in dispatch_bodies) + sum(len(b.split()) for b in note_bodies)
     logger.info(
-        f'✓ First dispatch complete: d{next_num:03d}-{slug} — {title}'
+        f'✓ First combined dispatch complete: {combined_slug} ({N_DISPATCHES} sections + '
+        f'{N_DISPATCHES} notes, {total_words} words total)'
     )
-    print(f'✓ First dispatch published: {title}')
-    print(f'  Piece:  d{next_num:03d}-{slug}')
-    print(f'  User:   {user_id}')
-    print(f'  Words:  {len(draft_text.split())}')
-    print(f'  Log:    {log_file}')
+    print(f'✓ First combined dispatch published: {edition_title}')
+    print(f'  Combined dispatch: {combined_slug}')
+    print(f'  Notes published:   {N_DISPATCHES}')
+    print(f'  Note URLs:         {note_urls}')
+    print(f'  User:              {user_id}')
+    print(f'  Total words:       {total_words}')
+    print(f'  Log:               {log_file}')
 
 
 if __name__ == '__main__':
