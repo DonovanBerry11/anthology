@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Cleveland Cavaliers beat the Detroit Pistons 117-113 in overtime at Little Caesars Arena on Wednesday to take a 3-2 lead in the Eastern Conference Semifinals.">
+  <title>NBA Semifinals: Cavs and Spurs Up 3-2; Game 6s Friday — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../../../../index.html#dispatches">← Anthology</a>
+    <div class="essay-page-header__pub">NBA</div>
+    <h1>NBA Semifinals: Cavs and Spurs Up 3-2; Game 6s Friday</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 14 May 2026, 12:16 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<h2 class="dispatch-section-header">East: Cavaliers Take Game 5 in OT, Lead 3-2</h2>
+<p>The Cleveland Cavaliers beat the Detroit Pistons 117-113 in overtime at Little Caesars Arena on Wednesday to take a 3-2 lead in the Eastern Conference Semifinals. <a href="https://sports.yahoo.com/nba/live/cavaliers-vs-pistons-score-live-updates-how-to-watch-game-5-cade-cunningham-donovan-mitchell-battle-for-series-lead-in-detroit-223000739.html">Yahoo Sports' game summary</a> records James Harden leading the Cavs with 30 points, 8 rebounds and 6 assists; Donovan Mitchell added 21 points, including seven in the overtime period. Evan Mobley finished with 19 points, 8 rebounds and 8 assists, and Max Strus contributed 20 off the bench. Cade Cunningham led the Pistons with a series-high 39 points, 9 assists and 7 rebounds in defeat. The end of regulation included a contested no-call on what Detroit argued was a foul on Cunningham; the league has not commented on the play.</p>
+<p>Cleveland has now won three straight after Detroit took the first two games by ten points each. Game 6 is in Cleveland on Friday May 15 at 7:00 p.m. ET on Prime Video, <a href="https://sports.yahoo.com/articles/cavaliers-vs-pistons-game-6-223359370.html">per Yahoo Sports' schedule</a>; a Game 7, if necessary, would return to Detroit on Sunday.</p>
+<h2 class="dispatch-section-header">West: Spurs Lead Wolves 3-2 Ahead of Game 6</h2>
+<p>The San Antonio Spurs beat the Minnesota Timberwolves 126-97 at the Frost Bank Center on Tuesday May 12 to take a 3-2 series lead. <a href="https://www.nba.com/news/spurs-timberwolves-2026-playoffs-game-5-takeaways">Per NBA.com's recap</a>, Victor Wembanyama posted 27 points, 17 rebounds and 5 assists in his first game back after a Game 4 ejection. The Spurs outscored Minnesota 68-36 in the paint and led by as many as 30. Game 6 is in Minneapolis on Friday May 15.</p>
+<h2 class="dispatch-section-header">Conference Finals Field</h2>
+<p>Both Game 1 spots are already taken. <a href="https://www.nba.com/playoffs/2026">The New York Knicks completed a 4-0 sweep of the Philadelphia 76ers</a>, making this their second consecutive Eastern Conference Finals appearance; the Oklahoma City Thunder swept the Los Angeles Lakers 4-0 in the West. The Conference Finals schedule will be set when both semifinal series conclude; the league has not released specific dates pending the closeouts. The NBA Finals tip off June 3 on ABC.</p>
+<h2 class="dispatch-section-header">What to Watch</h2>
+<p>Game 6, Pistons at Cavaliers, Friday May 15 at 7:00 p.m. ET — Cleveland's first chance to close. Game 6, Spurs at Timberwolves, Friday May 15 — San Antonio's first chance to close. If either series goes to seven, Game 7s would be Sunday May 17 at the higher seed.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "nba-semifinals-closeout";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

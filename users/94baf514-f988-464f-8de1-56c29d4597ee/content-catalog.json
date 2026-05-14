@@ -165,6 +165,20 @@
       "keywords": []
     },
     {
+      "slug": "nba-semifinals-closeout",
+      "type": "briefing",
+      "section": "us-sports",
+      "domain": "us-sports",
+      "sector": "sports",
+      "sport": "NBA",
+      "title": "NBA Semifinals: Cavs and Spurs Up 3-2; Game 6s Friday",
+      "standfirst": "Cleveland survived overtime in Detroit, San Antonio rolled at home, and both Game 6s land Friday with the Knicks and Thunder already waiting in the Conference Finals.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/us-sports/nba-semifinals-closeout.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -273,5 +287,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-14T05:14:42Z"
+  "generated": "2026-05-14T05:16:21Z"
 }

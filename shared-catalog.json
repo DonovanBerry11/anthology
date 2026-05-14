@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-14T05:14:42Z",
+  "generated": "2026-05-14T05:16:21Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -176,6 +176,20 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/dispatches/house-discharge-ukraine.html",
+      "keywords": []
+    },
+    {
+      "slug": "nba-semifinals-closeout",
+      "type": "briefing",
+      "section": "us-sports",
+      "domain": "us-sports",
+      "sector": "sports",
+      "sport": "NBA",
+      "title": "NBA Semifinals: Cavs and Spurs Up 3-2; Game 6s Friday",
+      "standfirst": "Cleveland survived overtime in Detroit, San Antonio rolled at home, and both Game 6s land Friday with the Knicks and Thunder already waiting in the Conference Finals.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/us-sports/nba-semifinals-closeout.html",
       "keywords": []
     },
     {
