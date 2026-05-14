@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The name Thucydides enters this conversation not as decoration but as diagnosis.">
+  <title>The Thucydides Appointment: What the Beijing Summit Actually Settled — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Thucydides Appointment: What the Beijing Summit Actually Settled — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 14 May 2026, 3:39 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The name Thucydides enters this conversation not as decoration but as diagnosis. Graham Allison's framework — derived from the Athenian historian's observation that Sparta's fear of Athens's rising power made war nearly inevitable — has been debated, refined, and partially rejected by scholars since Allison popularised it in 2017. The critics are right that the framework is too deterministic: structural pressure does not mechanically produce war. But what the Beijing summit illustrates is something Thucydides captured that the Allison version somewhat obscures. The real danger in his account was not the power transition itself but the misreading of signals — Athens interpreting Spartan caution as weakness, Sparta interpreting Athenian restraint as deception. The summit's value, to the extent it has any durable value, is that it created a shared grammar for signal interpretation. Both sides now know, with somewhat greater precision, where the other locates its red lines. That is not resolution. It is legibility.</p>
+<p>The CEO presence at the summit deserves more analytical weight than it typically receives. Musk, Cook, and Fink are not ceremonial attendees. Each represents a distinct vector of US-China economic entanglement: Musk through Tesla's gigafactory in Shanghai and the supply chain dependencies that flow from it; Cook through Apple's manufacturing concentration in Zhengzhou and Shenzhen, which remains structurally unreduced despite years of announced diversification; Fink through BlackRock's asset management ambitions in China's onshore market, where the firm has been building retail fund infrastructure. Their presence signals that the summit was partly a renegotiation of the terms under which American capital remains embedded in the Chinese economy — and that both governments understand that economic decoupling, in any meaningful sense, is a longer and more contested process than the trade war rhetoric suggests.</p>
+<p>Xi's Taiwan framing is worth parsing precisely. The phrase 'handled poorly' is a studied piece of diplomatic language. It does not assert that current handling is poor — it projects a conditional. This preserves Xi's ability to characterise any future US action as having crossed into 'poor handling' while maintaining deniability about current escalation. It is simultaneously a warning, a negotiating position, and a domestic political signal: the Chinese public and the People's Liberation Army officer corps are audiences for this language as much as Trump is. Rubio's 'unchanged policy' formulation performs an equivalent function on the American side — it forecloses no option while appearing to commit to stability.</p>
+<p>The export surge — 14.1 percent year-on-year — is the most underappreciated element of the summit's context. Xi arrived in Beijing's equivalent of a strong hand. Chinese export performance means that whatever tariff architecture the two sides negotiate, China enters those negotiations without the acute economic urgency that would force concession. The irony embedded in the trade data is that the tariff regime Trump re-imposed in early 2026 has, at least in the short run, been absorbed more readily than the administration anticipated, partly because Chinese exporters redirected through Southeast Asian intermediaries with considerable efficiency. The structural trade imbalance that generated the original political pressure on the US side has not materially narrowed. That fact will not remain politically inert. The summit established a grammar, as the dispatch argued, but grammars are not treaties — and the underlying arithmetic of the bilateral relationship has not been altered by two days of carefully choreographed conversation in Beijing.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "taiwan-hormuz-entanglement";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

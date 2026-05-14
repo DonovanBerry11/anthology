@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-14T05:19:42Z",
+  "generated": "2026-05-14T20:39:15Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -229,6 +229,19 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/notes/courts-not-the-brake.html",
+      "keywords": []
+    },
+    {
+      "slug": "taiwan-hormuz-entanglement",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Thucydides Appointment: What the Beijing Summit Actually Settled — Further Reading",
+      "standfirst": "President Trump and Chinese President Xi Jinping held a two-day summit in Beijing — attended by top American CEOs including Elon Musk, Tim Cook, and Larry Fink — covering trade, the Iran war, and Taiw.",
+      "date": "2026-05-14",
+      "date_display": "May 2026",
+      "url": "/notes/taiwan-hormuz-entanglement.html",
       "keywords": []
     },
     {

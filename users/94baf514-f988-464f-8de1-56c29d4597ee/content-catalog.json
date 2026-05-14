@@ -218,6 +218,19 @@
       "keywords": []
     },
     {
+      "slug": "taiwan-hormuz-entanglement",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Thucydides Appointment: What the Beijing Summit Actually Settled — Further Reading",
+      "standfirst": "President Trump and Chinese President Xi Jinping held a two-day summit in Beijing — attended by top American CEOs including Elon Musk, Tim Cook, and Larry Fink — covering trade, the Iran war, and Taiw.",
+      "date": "2026-05-14",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/taiwan-hormuz-entanglement.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -326,5 +339,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-14T05:19:42Z"
+  "generated": "2026-05-14T20:39:15Z"
 }
