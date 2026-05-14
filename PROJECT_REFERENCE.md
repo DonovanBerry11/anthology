@@ -347,7 +347,7 @@ These tasks remain configured in Cowork but should be **disabled** once the serv
 | `auth/auth.js` | Supabase client init, `_supabase` global, `updateAuthNav()`, `requireAuth()` |
 | `auth/callback.html` | PKCE redirect handler post-email-confirmation. New users (no `onboarding_complete` flag) → `/onboarding.html`; returning users → `/`. |
 | `style.css` | All CSS — CSS variables: `--bg`, `--text`, `--muted`, `--rule`, `--sans`, `--serif` |
-| `vercel.json` | `cleanUrls`, `trailingSlash: false`, rewrites for `/users/:id/{section}/:slug` |
+| `vercel.json` | `cleanUrls`, `trailingSlash: false`, rewrites for `/users/:id/{section}/:slug` → `…/:slug.html` for all five content types: `essays`, `notes`, `dispatches`, `uk-politics`, `us-sports`. If a new content type is added under `users/`, add a matching rewrite rule or clean URLs for that type will 404. |
 | `bootstrap_server.py` | Source for the droplet's Bootstrap API server — deploy via `deploy_bootstrap.command`. Now includes `/first-dispatch` endpoint. |
 | `first_dispatch.py` | Deploy to `/root/pipeline/`. Generates and publishes a personalised dispatch for a new user immediately after onboarding. Called by `/first-dispatch` endpoint. Args: `--user-id` `--env`. Uses Anthropic API directly with `web_search_20250305` tool (model: `claude-sonnet-4-20250514`). Writes piece to `anthology-system/pieces/dispatches/d[NNN]-[slug]/`, publishes via `publish_dispatch.py`, regenerates `edition.json`. |
 | `anthology-bootstrap.service` | Systemd unit source — deploy via `deploy_bootstrap.command` |
@@ -377,6 +377,8 @@ shared-catalog.json       shared catalog (all pieces, all users; serves unauthen
 | `generate_essay_html.py` | Markdown → styled essay HTML. Args: `--input --output --slug --title --date [--pub-datetime]` |
 | `generate_note_html.py` | Same for notes. PIECE_TYPE=`note` in beacon. |
 | `generate_dispatch_html.py` | Same for dispatches. Extra args: `--dispatch-type [daily\|weekly] [--label] [--back-url]`. PIECE_TYPE=`dispatch`. |
+
+**HTML generator conventions (do not regress):** All three generators use `href="/style.css"` (absolute path) for the stylesheet and `href="/"` for the back-link. Do not change these to relative paths — relative paths break at different directory depths (shared content is 1 level deep; per-user content is 3 levels deep). The absolute form works correctly at all depths. `publish_dispatch.py` passes `--back-url "/"` explicitly for per-user HTML; the generator default is also `"/"`. |
 | `generate_edition.py` | Builds `edition.json` from catalog. Args: `--user-id --repo-dir` (or `--catalog --output`). Selects lead, 2-3 secondary, up to 8 further reading. |
 | `catalog_utils.py` | Shared helper. `update_catalog(repo_dir, entry, user_id=None)` — upserts shared + per-user catalog. |
 | `publish_essay.py` | Clones repo → generates HTML (shared + per-user) → updates catalogs → commits/pushes. Args: `--slug --title --date --standfirst --analysis-md --token-file --scripts-dir [--repo] [--user-id] [--date-iso] [--sector]` |
@@ -524,6 +526,7 @@ Each piece dir contains: `analysis.md`, `log.md`, `review.md` (post quality cycl
 7. **Bootstrap/first-dispatch server rate-limits are in-memory** — reset on service restart. Acceptable at current scale; use Redis if multi-process/multi-server deployment needed.
 
 Previously resolved gaps:
+- ~~Per-user content renders with no CSS~~ — all generators switched to `href="/style.css"` (absolute); per-user note and dispatch HTML retroactively patched; `vercel.json` rewrites added for `uk-politics` and `us-sports` (2026-05-14)
 - ~~No signup → registry automation~~ — `register_new_users.py` handles this (2026-05-11)
 - ~~Edition empty state missing~~ — `#edition` shows message with link to set interests (2026-05-11)
 - ~~No onboarding redirect~~ — full 5-step onboarding questionnaire at `/onboarding.html`; `callback.html` routes new users there post-verification; structured `user_metadata` written to Supabase; `register_new_users.py` reads fields into orientation files (2026-05-12)
