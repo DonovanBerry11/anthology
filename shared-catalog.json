@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-14T20:39:21Z",
+  "generated": "2026-05-14T20:39:23Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -281,6 +281,19 @@
       "date": "2026-05-14",
       "date_display": "May 2026",
       "url": "/notes/cloud-ai-competition-opens.html",
+      "keywords": []
+    },
+    {
+      "slug": "seahawks-open-title-defence",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "272 Games, Nine Countries: The Architecture of the 2026 NFL Season — Further Reading",
+      "standfirst": "The NFL released its complete 272-game 2026 regular-season schedule on Thursday evening, with the defending Super Bowl champion Seattle Seahawks hosting the New England Patriots in the season opener o.",
+      "date": "2026-05-14",
+      "date_display": "May 2026",
+      "url": "/notes/seahawks-open-title-defence.html",
       "keywords": []
     },
     {

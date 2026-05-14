@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The nine-country footprint of the 2026 NFL schedule is not primarily a scheduling decision — it is the physical expression of a decade-long institutional strategy that deserves to be understood on its">
+  <title>272 Games, Nine Countries: The Architecture of the 2026 NFL Season — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>272 Games, Nine Countries: The Architecture of the 2026 NFL Season — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 14 May 2026, 3:39 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The nine-country footprint of the 2026 NFL schedule is not primarily a scheduling decision — it is the physical expression of a decade-long institutional strategy that deserves to be understood on its own terms. The NFL's international expansion began in 2007 with a single game at Wembley, framed internally as a market test. What followed was a gradual but consistent pattern of adding games, adding cities, and incrementally building the legal and franchise infrastructure to make permanent international presence viable. The addition of Melbourne in 2026 is the most significant single step in that progression, because it represents the first game in the Southern Hemisphere and the first genuine test of whether NFL commercial viability can survive the inversion of the American sports calendar — the Australian winter overlapping with the NFL's regular season is not an accident, but the time zone arithmetic for live American viewership is punishing in ways that London games are not.</p>
+<p>The Seattle-New England opener carries a structural significance that runs alongside the obvious narrative interest of the Super Bowl rematch. The defending champion opener is a ritual that re-establishes the competitive hierarchy at the season's threshold — the champion is displayed, tested, and either validated or destabilised before the standings have any meaning. The fact that 2026 marks the first time since 2016 that the opener is a true Super Bowl rematch matters to fans as a continuity of storyline, but it matters to the league as a scheduling asset: it guarantees narrative stakes for a Wednesday night game that might otherwise carry less weight than a traditional Thursday or Sunday opener. NBC's placement in the opener slot reflects the network's positioning in the rights landscape — the deal architecture gives NBC premium access to marquee events, and the league uses that leverage to ensure its broadcast partners are invested in the season's opening moment.</p>
+<p>The Thanksgiving Chiefs-Bills matchup is worth situating in the broader history of how the league manages its marquee rivalries through the schedule. Kansas City and Buffalo have been the AFC's dominant tension for the better part of half a decade — a rivalry constructed not merely by competitive record but by the particular theatrical quality of their late-game confrontations, several of which have entered the short canon of games that casual fans can recall by score and circumstance. Placing them on Thanksgiving night is the league's acknowledgment that the rivalry has achieved the kind of cultural saturation that makes it a reliable viewership instrument regardless of either team's current standing.</p>
+<p>What the schedule's architecture reveals, taken as a whole, is that the NFL has become sophisticated enough in its commercial planning to treat the 272-game slate as a portfolio rather than a sequence. Individual games are assets with different risk and return profiles — the international games carry higher logistical cost and uncertain live attendance but deliver long-term market development value; the Thanksgiving and primetime matchups are lower-risk, high-return viewership instruments; the opener is a brand statement as much as a game. The league office's scheduling decisions have converged, over time, toward something that resembles the content strategy of a media company more than the fixture list of a sports league. That convergence is not incidental. The NFL's revenue model is increasingly indistinguishable from a media revenue model, and the schedule is its content calendar.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "seahawks-open-title-defence";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
