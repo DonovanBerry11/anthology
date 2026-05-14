@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Wholesale prices accelerated sharply in April, with the [Producer Price Index rising to 6.0% year-on-year](https://www.cnbc.com/2026/05/13/ppi-inflation-report-april-2026-.html) from an upwardly revis">
+  <title>PPI Hits 6% as Pipeline Inflation Builds Into Warsh's First Meeting — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#dispatches">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>PPI Hits 6% as Pipeline Inflation Builds Into Warsh's First Meeting</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 14 May 2026, 12:11 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>Wholesale prices accelerated sharply in April, with the <a href="https://www.cnbc.com/2026/05/13/ppi-inflation-report-april-2026-.html">Producer Price Index rising to 6.0% year-on-year</a> from an upwardly revised 4.3% in March — the hottest reading since December 2022 and roughly two percentage points above the consensus estimate. The release on Wednesday lands twenty-four hours after April CPI <a href="https://www.cnbc.com/2026/05/12/cpi-inflation-april-2026-.html">printed at 3.8%, also the highest since May 2023</a>, and frames the inflation problem as one of pipeline pressure rather than a single hot data point. Producer prices typically lead consumer prices by one to three months.</p>
+<p>The composition of the PPI release is what is consequential. According to <a href="https://www.benzinga.com/markets/macro-economic-events/26/05/52520372/us-producer-inflation-april-2026-fed-rates">Benzinga's analysis of the BLS detail</a>, unprocessed energy materials rose 9.2% in the month and are now up 48.9% on the year, with crude petroleum at 11.3%. But the pressure extends beyond the energy line: core PPI rose 1.0% month-on-month, lifting the annual core rate to 5.2%, and roughly 60% of the headline gain came from a 1.2% advance in final-demand services rather than from goods. Services inflation is the variable the Fed has consistently flagged as the most persistent.</p>
+<p>The combined release reshapes the rates outlook directly. <a href="https://www.cnbc.com/2026/05/12/cpi-inflation-april-2026-.html">CME FedWatch futures no longer price in any rate cuts in 2026</a>, a reversal from the start of the year when at least one quarter-point cut was the consensus. The 10-year Treasury yield rose modestly to 4.48% after a one percent climb the previous session. Kevin Warsh, confirmed Wednesday as the next Fed chair by a 54-45 Senate vote, inherits an FOMC that just dissented four ways over including an easing bias in its statement, and a data set in which both the proximate (CPI) and leading (PPI) inflation indicators are accelerating into his first meeting on June 16–17.</p>
+<p>Two specific channels of pass-through matter for the May print. The first is energy, with WTI above $100 and gasoline at $4.50 a gallon nationally per AAA, both tied to the Iran conflict and the Hormuz transit disruption. The second is tariff-related goods costs that have not yet fully cleared the producer level. Economists raised their May CPI expectations on the back of Wednesday's PPI release.</p>
+<p>The BLS publishes May CPI on June 11 and May PPI on June 12, five and four days respectively before the FOMC decision.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "ppi-shock-pipeline-inflation";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

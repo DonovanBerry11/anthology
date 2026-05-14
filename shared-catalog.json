@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-14T05:10:43Z",
+  "generated": "2026-05-14T05:11:59Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -134,6 +134,20 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/dispatches/warsh-confirmation-fed-chair.html",
+      "keywords": []
+    },
+    {
+      "slug": "ppi-shock-pipeline-inflation",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "PPI Hits 6% as Pipeline Inflation Builds Into Warsh's First Meeting",
+      "standfirst": "Wednesday's PPI release at 6.0% year-on-year — the hottest since December 2022 — frames April's CPI shock as a pipeline problem and removes any remaining 2026 rate-cut pricing from futures markets.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/dispatches/ppi-shock-pipeline-inflation.html",
       "keywords": []
     },
     {
