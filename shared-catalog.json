@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-14T05:16:21Z",
+  "generated": "2026-05-14T05:17:37Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -190,6 +190,19 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/us-sports/nba-semifinals-closeout.html",
+      "keywords": []
+    },
+    {
+      "slug": "the-hegemons-defection",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Hegemon's Defection",
+      "standfirst": "The US is dismantling the multilateral trade architecture it built to extend its own power. The bilateral substitute cannot replicate its systemic effects, and the hegemon loses leverage by defecting from its own rules — not gains it.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/notes/the-hegemons-defection.html",
       "keywords": []
     },
     {

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The United States is dismantling, on the grounds that it constrains American action, the international trade machinery the United States itself built to extend American power.">
+  <title>The Hegemon's Defection — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Hegemon's Defection</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 14 May 2026, 12:17 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The United States is dismantling, on the grounds that it constrains American action, the international trade machinery the United States itself built to extend American power. When the US delegation told the WTO in March that "the age of multilateralism is over," the framing was that American sovereignty was being recovered from rules others had imposed; the underlying historical fact is the opposite. GATT, the WTO, the dispute settlement body, the most-favoured-nation principle, the binding tariff schedules — these are American instruments, drafted in Geneva at American insistence from 1947 onward because a continent-sized economy with the only intact industrial base in the postwar period had a specific interest in a rule-bound trading system. The rules constrained the United States least and conferred on it the most. Bilateral deal-making cannot substitute because the value of the multilateral system was precisely what it did across many partners at once: it forced every other state to extend to American exporters the concessions it granted to its preferred trading partners. Strip that out and every bilateral negotiation has to be conducted on its own terms, each one a chance for a smaller state to extract from American buyers what it could not extract under most-favoured-nation. The arithmetic is unforgiving: 164 WTO members generate roughly thirteen thousand bilateral pairs, and the United States can run perhaps a dozen serious trade negotiations a year. A bilateral system at WTO scale is not slower than the multilateral one — it is functionally impossible at scale, and the gap fills with power asymmetry. The hegemon's defection from its own rules also costs it the legitimacy that made the rules binding on others in the first place. India and Brazil complied with WTO panel rulings against them because the system was understood to apply equally; when the United States simply ignores adverse rulings (as it has on steel tariffs, on Section 232, on aircraft subsidies in the EU dispute), the basis on which other states are expected to comply with rulings against them dissolves. And the dispute mechanism has been, on the numbers, an American asset: US firms have won far more WTO cases than they have lost, with American exporters relying on the appellate body for protection of intellectual property, access to government procurement markets, and enforcement against state-owned enterprises. The trade-policy substitute now being constructed — tariffs by executive order, deals announced by photo-op, retaliation against panel losses — has none of these features. It is an exit rather than a replacement, with no body capable of binding a future US administration to whatever this one negotiates. WTO projections for 2026 global trade growth have fallen from 4.6% to 1.9% on this disorganisation, and the largest share of that revision is borne by US exporters whose access to disputed markets is no longer protected. The United States is not throwing off a constraint. It is liquidating a structure of advantage and calling the liquidation freedom.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-hegemons-defection";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
