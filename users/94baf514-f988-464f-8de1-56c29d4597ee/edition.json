@@ -1,7 +1,7 @@
 {
   "date": "2026-05-14",
   "date_display": "Thursday, 14 May 2026",
-  "generated_at": "14 May 2026, 12:20 AM EST",
+  "generated_at": "14 May 2026, 3:39 PM EST",
   "user_id": "94baf514-f988-464f-8de1-56c29d4597ee",
   "lead": {
     "slug": "trump-xi-beijing-summit",
@@ -146,6 +146,20 @@
       "keywords": []
     },
     {
+      "slug": "d016-daily-edition-2026-05-14",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Thursday, 14 May 2026",
+      "standfirst": "President Trump and Chinese President Xi Jinping held a two-day summit in Beijing — attended by top American CEOs including Elon Musk, Tim Cook, and Larry Fink — covering trade, the Iran war, and Taiw.",
+      "date": "2026-05-14",
+      "date_display": "May 2026",
+      "url": "/dispatches/d016-daily-edition-2026-05-14.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -157,20 +171,6 @@
       "date": "2026-05-12",
       "date_display": "May 2026",
       "url": "/dispatches/cloudflare-ai-layoffs.html",
-      "keywords": []
-    },
-    {
-      "slug": "ai-hardware-rotation",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "technology",
-      "dispatch_type": "daily",
-      "title": "Wall Street's AI Chip Rotation",
-      "standfirst": "AMD, Intel, and Micron have outrun Nvidia by orders of magnitude year-to-date as Wall Street rotates AI-hardware capital from training GPUs to inference-era CPUs and memory. Nvidia's counter-move is a 0 billion equity-investment campaign across its own customer base.",
-      "date": "2026-05-12",
-      "date_display": "May 2026",
-      "url": "/dispatches/ai-hardware-rotation.html",
       "keywords": []
     }
   ]
