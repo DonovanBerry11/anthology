@@ -283,6 +283,20 @@
       "keywords": []
     },
     {
+      "slug": "d016-daily-edition-2026-05-14",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Thursday, 14 May 2026",
+      "standfirst": "President Trump and Chinese President Xi Jinping held a two-day summit in Beijing — attended by top American CEOs including Elon Musk, Tim Cook, and Larry Fink — covering trade, the Iran war, and Taiw.",
+      "date": "2026-05-14",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/dispatches/d016-daily-edition-2026-05-14.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -391,5 +405,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-14T20:39:23Z"
+  "generated": "2026-05-14T20:39:25Z"
 }

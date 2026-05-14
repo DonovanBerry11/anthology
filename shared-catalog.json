@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-14T20:39:23Z",
+  "generated": "2026-05-14T20:39:25Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -294,6 +294,20 @@
       "date": "2026-05-14",
       "date_display": "May 2026",
       "url": "/notes/seahawks-open-title-defence.html",
+      "keywords": []
+    },
+    {
+      "slug": "d016-daily-edition-2026-05-14",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Thursday, 14 May 2026",
+      "standfirst": "President Trump and Chinese President Xi Jinping held a two-day summit in Beijing — attended by top American CEOs including Elon Musk, Tim Cook, and Larry Fink — covering trade, the Iran war, and Taiw.",
+      "date": "2026-05-14",
+      "date_display": "May 2026",
+      "url": "/dispatches/d016-daily-edition-2026-05-14.html",
       "keywords": []
     },
     {
