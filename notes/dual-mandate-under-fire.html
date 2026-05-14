@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kevin Warsh is not inheriting a central bank.">
+  <title>The Handover and the Hot Print: Warsh Inherits a Stagflation Trap — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Handover and the Hot Print: Warsh Inherits a Stagflation Trap — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 14 May 2026, 3:39 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>Kevin Warsh is not inheriting a central bank. He is inheriting a position — and the distinction matters more than it might appear. The Federal Reserve's institutional culture has been shaped over the past fifteen years by a particular operating philosophy: discretionary, data-dependent, communicatively managed through forward guidance. Powell embodied that philosophy with considerable skill. Warsh has spent much of the intervening years as its critic. His academic and op-ed output since his first stint on the Board of Governors — he served from 2006 to 2011, meaning he sat through the financial crisis and its immediate aftermath — has consistently argued that the Fed expanded its mandate beyond its institutional competence, particularly through quantitative easing and the implicit socialization of credit allocation that came with it. The question of whether Warsh governs as a critic or as an institutionalist once inside the building is genuinely open, but the 3.8 percent print means he may not have the luxury of a philosophical transition period.</p>
+<p>The stagflation framing that markets have settled on is analytically correct but requires precision about which channel is doing the work. The inflation acceleration is not broad-based in the way that 2021–22 inflation was. It is concentrated in energy and in the transport and logistics costs that flow from energy — freight, air cargo, the secondary pass-through into goods that move long distances. The Strait of Hormuz disruption is the proximate mechanism: insurance premiums on tankers transiting the Gulf have increased by multiples, and that cost lands in refined product prices with a lag of roughly four to eight weeks. This matters for Warsh's decision framework because supply-side inflation driven by a geopolitical shock is theoretically distinct from demand-side inflation. The textbook response to the former is to look through it — to avoid tightening into a supply shock and compounding the growth damage. But the textbook response assumes the shock is temporary and credibly so. If the Iran conflict remains unresolved through Q3 and Q4, the energy channel becomes persistent rather than transitory, and the Fed's ability to 'look through' it erodes.</p>
+<p>The 15 percent probability of a hike that futures markets are now pricing is a relatively new development and deserves attention as a signal rather than a forecast. Rates markets are not predicting a hike — they are pricing the optionality of one. The movement from under 1 percent to nearly 15 percent in a month reflects not a change in the modal expectation but a repricing of the tail. That is meaningfully different. What it tells us is that the market now assigns non-trivial weight to a scenario in which the geopolitical and inflation dynamics persist long enough that Warsh, who has never been publicly dovish, decides that a credibility-establishing move is necessary. The Fed has a history of incoming chairs using their early months to signal independence — Volcker most dramatically, Greenspan more subtly in 1987. Warsh may calculate that a hike, even into a slowing economy, is the fastest way to establish that the institution is not an instrument of the administration's preferences.</p>
+<p>The political economy around the handover is also structurally unusual. Trump nominated Warsh partly as a corrective to what he perceived as Powell's excessive caution on rate cuts. But if Warsh's first act is to hold — or hike — into a supply shock, the political friction will arrive early. The Fed's formal independence is legally intact, but its practical independence has always depended on a president who finds the cost of public confrontation higher than the benefit. That calculus has not always held in the current administration, and Warsh will be managing it from day one.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "dual-mandate-under-fire";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

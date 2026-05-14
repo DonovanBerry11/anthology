@@ -231,6 +231,19 @@
       "keywords": []
     },
     {
+      "slug": "dual-mandate-under-fire",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Handover and the Hot Print: Warsh Inherits a Stagflation Trap — Further Reading",
+      "standfirst": "April's US Consumer Price Index printed at 3.8% year-on-year, above the 3.7% consensus and accelerating from 3.3% in March, driven significantly by energy costs linked to the Iran war and the disrupte.",
+      "date": "2026-05-14",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/dual-mandate-under-fire.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -339,5 +352,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-14T20:39:15Z"
+  "generated": "2026-05-14T20:39:17Z"
 }
