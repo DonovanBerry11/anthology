@@ -244,6 +244,19 @@
       "keywords": []
     },
     {
+      "slug": "war-powers-republican-defection",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Public Promise and the Private Pipeline: China's Iran Commitment — Further Reading",
+      "standfirst": "President Trump announced at the close of the Beijing summit that China has committed to not supplying military equipment to Iran — a significant geopolitical concession, though reports earlier this w.",
+      "date": "2026-05-14",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/war-powers-republican-defection.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -352,5 +365,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-14T20:39:17Z"
+  "generated": "2026-05-14T20:39:19Z"
 }
