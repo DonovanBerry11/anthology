@@ -13,6 +13,14 @@
     {
       "source": "/users/:userId/dispatches/:slug",
       "destination": "/users/:userId/dispatches/:slug.html"
+    },
+    {
+      "source": "/users/:userId/uk-politics/:slug",
+      "destination": "/users/:userId/uk-politics/:slug.html"
+    },
+    {
+      "source": "/users/:userId/us-sports/:slug",
+      "destination": "/users/:userId/us-sports/:slug.html"
     }
   ]
 }

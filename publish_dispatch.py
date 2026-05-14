@@ -104,7 +104,7 @@ def main():
             f'--title "{args.title}" '
             f'--date "{args.date}" '
             f'--dispatch-type "{args.dispatch_type}" '
-            f'--back-url "../../../index.html#dispatches" '
+            f'--back-url "/" '
             f'--pub-datetime "{pub_datetime}"'
         )
         git_add_paths.append(f'users/{user_id}/dispatches/{args.slug}.html')
