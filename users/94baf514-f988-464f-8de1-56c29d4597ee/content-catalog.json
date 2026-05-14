@@ -192,6 +192,19 @@
       "keywords": []
     },
     {
+      "slug": "friendshoring-fiction",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "Friend-shoring Fiction",
+      "standfirst": "Friend-shoring is a reclassification, not a relocation: the diversified supply chains it claims to be producing remain Chinese-input dependent, absorb higher production costs, and fail to insulate against the disruption sources the policy was designed to address.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/friendshoring-fiction.html",
+      "keywords": []
+    },
+    {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
       "section": "dispatches",
@@ -300,5 +313,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-14T05:17:37Z"
+  "generated": "2026-05-14T05:18:37Z"
 }

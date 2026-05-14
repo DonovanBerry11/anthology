@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Friend-shoring is rhetoric, not relocation.">
+  <title>Friend-shoring Fiction — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Friend-shoring Fiction</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 14 May 2026, 12:18 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>Friend-shoring is rhetoric, not relocation. The supply-chain restructuring it claims to be producing is, almost everywhere it has been measured, an accounting reclassification of decisions that would have been made on cost grounds regardless of geopolitics, and the geopolitical goals the term is supposed to serve are not being achieved. The numbers make the point. McKinsey's 2026 supply-chain survey reports that three-quarters of supply-chain leaders cite tariff turbulence as a driver of strategy revision and that 93% are diversifying within Asia rather than out of it; what looks like a re-routing of Chinese supply chains turns out, when traced to component level, to be a substitution of Vietnamese, Indian, Thai or Malaysian assembly for Chinese assembly, with the underlying components still sourced through Chinese intermediaries operating one layer up. A Vietnamese-assembled phone whose printed circuit board, display, lithium cell and chipset all originate in Shenzhen has not been friend-shored in any geopolitically meaningful sense; it has been re-labelled. The cost mathematics of the original offshoring decision — labour at one-eighth US rates, energy at half European rates, regulatory burden a fraction of either — have not changed, and because they have not changed, the firms doing the relocating absorb the higher production costs of moving to Mexico or Eastern Europe without escaping the disruption sources (Chinese inputs, tariff regime volatility, dollar-denominated shipping) that the relocation was supposed to address. Take the most concrete US example: Mexican electronics assembly, presented since 2022 as the canonical nearshoring success, runs on Chinese-sourced semiconductors, batteries and rare-earth magnets shipped to Pacific ports and trucked north. When the Iran war disrupted Strait of Hormuz transit in early 2026, the disruption hit Mexican production lines on a one-month lag — the friend-shored geography turned out to be a logistical convenience that did nothing to insulate the assembled product from a geopolitical event on the other side of the world. The reason this matters is that the policy infrastructure being built around friend-shoring — tax credits, federal procurement preferences, allied-country trade frameworks — is being calibrated against a transformation that is not occurring. The administration is paying for an outcome whose definition assumes the very dependency the policy is supposed to break. The deeper problem is the digital layer. The friend-shoring frame applies to physical goods crossing physical borders; it has no purchase on the software, semiconductor design, cloud-infrastructure and data-flow dimensions on which the goods now depend, and those dimensions remain dominated by a small number of US, Chinese and Taiwanese firms that no allied-country labelling exercise can re-territorialise. The policy is solving for visibility — for a story about decoupling that politicians can tell — while the underlying interdependence reorganises around the policy rather than against it.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "friendshoring-fiction";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
