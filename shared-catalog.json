@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-15T05:10:43Z",
+  "generated": "2026-05-15T05:10:45Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -294,6 +294,20 @@
       "date": "2026-05-15",
       "date_display": "May 2026",
       "url": "/notes/agentic-payments-architecture.html",
+      "keywords": []
+    },
+    {
+      "slug": "d017-daily-edition-2026-05-15",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Friday, 15 May 2026",
+      "standfirst": "President Trump held a high-stakes summit with Chinese President Xi Jinping in Beijing on May 14–15, addressing the Iran war, the Strait of Hormuz blockade, trade tensions, and the Taiwan situation. T.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/dispatches/d017-daily-edition-2026-05-15.html",
       "keywords": []
     },
     {
