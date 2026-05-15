@@ -1,23 +1,37 @@
 {
-  "date": "2026-05-14",
-  "date_display": "Thursday, 14 May 2026",
-  "generated_at": "14 May 2026, 3:45 PM EST",
+  "date": "2026-05-15",
+  "date_display": "Friday, 15 May 2026",
+  "generated_at": "15 May 2026, 12:10 AM EST",
   "user_id": "94baf514-f988-464f-8de1-56c29d4597ee",
   "lead": {
-    "slug": "d016-daily-edition-2026-05-14",
+    "slug": "d017-daily-edition-2026-05-15",
     "type": "dispatch",
     "section": "dispatches",
     "domain": "global",
     "sector": "geopolitics",
     "dispatch_type": "daily",
-    "title": "Thursday, 14 May 2026",
-    "standfirst": "President Trump and Chinese President Xi Jinping held a two-day summit in Beijing — attended by top American CEOs including Elon Musk, Tim Cook, and Larry Fink — covering trade, the Iran war, and Taiw.",
-    "date": "2026-05-14",
+    "title": "Friday, 15 May 2026",
+    "standfirst": "President Trump held a high-stakes summit with Chinese President Xi Jinping in Beijing on May 14–15, addressing the Iran war, the Strait of Hormuz blockade, trade tensions, and the Taiwan situation. T.",
+    "date": "2026-05-15",
     "date_display": "May 2026",
-    "url": "/dispatches/d016-daily-edition-2026-05-14.html",
+    "url": "/dispatches/d017-daily-edition-2026-05-15.html",
     "keywords": []
   },
   "secondary": [
+    {
+      "slug": "d016-daily-edition-2026-05-14",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Thursday, 14 May 2026",
+      "standfirst": "President Trump and Chinese President Xi Jinping held a two-day summit in Beijing — attended by top American CEOs including Elon Musk, Tim Cook, and Larry Fink — covering trade, the Iran war, and Taiw.",
+      "date": "2026-05-14",
+      "date_display": "May 2026",
+      "url": "/dispatches/d016-daily-edition-2026-05-14.html",
+      "keywords": []
+    },
     {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
@@ -45,7 +59,9 @@
       "date_display": "May 2026",
       "url": "/dispatches/ai-hardware-rotation.html",
       "keywords": []
-    },
+    }
+  ],
+  "further_reading": [
     {
       "slug": "warsh-fed-confirmation",
       "type": "dispatch",
@@ -59,9 +75,7 @@
       "date_display": "May 2026",
       "url": "/dispatches/warsh-fed-confirmation.html",
       "keywords": []
-    }
-  ],
-  "further_reading": [
+    },
     {
       "slug": "hormuz-tanker-strikes",
       "type": "dispatch",
@@ -207,20 +221,6 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/dispatches/april-cpi-energy-shock.html",
-      "keywords": []
-    },
-    {
-      "slug": "russia-ukraine-ceasefire-expiry",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "geopolitics",
-      "dispatch_type": "daily",
-      "title": "Victory Day Ceasefire Expires; Putin Floats Third-Country Meeting",
-      "standfirst": "The US-brokered three-day Victory Day ceasefire expired May 11 with mutual violation claims, even as the 1,000-for-1,000 prisoner swap proceeded and Putin offered, conditionally, to meet Zelenskyy in a third country once a long-term treaty is in place.",
-      "date": "May 2026",
-      "date_display": "May 2026",
-      "url": "/dispatches/russia-ukraine-ceasefire-expiry.html",
       "keywords": []
     }
   ]
