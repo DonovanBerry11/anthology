@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-15T05:14:13Z",
+  "generated": "2026-05-15T05:14:15Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -347,6 +347,19 @@
       "date": "2026-05-15",
       "date_display": "May 2026",
       "url": "/notes/agentic-ai-energy-crisis.html",
+      "keywords": []
+    },
+    {
+      "slug": "2026-weather-extremes",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "Double Jeopardy: What Happens When El Niño Meets a Warmer Planet — Further Reading",
+      "standfirst": "Climate scientists are warning that a strong El Niño weather pattern expected to develop as early as this month could combine with the already-elevated global temperature baseline to produce extreme w.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/notes/2026-weather-extremes.html",
       "keywords": []
     },
     {

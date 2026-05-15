@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="El Niño is one of the most studied climate phenomena on Earth, which makes the current scientific alarm about it more significant, not less.">
+  <title>Double Jeopardy: What Happens When El Niño Meets a Warmer Planet — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Double Jeopardy: What Happens When El Niño Meets a Warmer Planet — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 12:14 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>El Niño is one of the most studied climate phenomena on Earth, which makes the current scientific alarm about it more significant, not less. The mechanism is well understood: a periodic warming of surface waters in the central and eastern tropical Pacific disrupts the atmospheric circulation patterns that govern rainfall, temperature, and storm tracks across much of the globe. It drives droughts in Australia and southern Africa, floods in South America and the southern United States, reduced Atlantic hurricane activity, and warming in large parts of Asia. Forecasters have been able to predict its onset with reasonable accuracy for decades, and its effects have been documented across centuries of historical records. What climate scientists are saying now is not that El Niño has become a different phenomenon, but that the planet it is occurring on has changed in ways that alter the baseline from which it operates. The most useful analogy is a disease that has always been dangerous now occurring in a patient who is already compromised. The symptoms are the same; the outcomes are not. The 2015-16 El Niño event was among the strongest on record and was associated with severe coral bleaching, catastrophic droughts in East Africa, and flooding across South America. That event occurred against a global average temperature background that was itself elevated relative to pre-industrial levels. The 2026 event is arriving into a background that is warmer still, and the gap matters because many of the threshold effects in the climate system — coral bleaching temperatures, heat stress thresholds for crops, flood risk from saturated soils — are calibrated to absolute temperature levels, not anomalies. The political dimension of this is worth examining carefully. El Niño provides a rhetorical exit for governments and industries that prefer to attribute extreme weather to natural variability rather than emissions. The phenomenon is natural; it recurs; it has caused droughts and floods throughout recorded history. That framing is not false, but it is incomplete in a way that has become increasingly dishonest. Scientists use the term 'attribution science' for the field that attempts to quantify how much more likely or severe a given weather event is because of climate change. For major heat events, the attribution studies have become remarkably consistent: events that would have been nearly impossible in the pre-industrial climate are now occurring with regularity, and their intensity is materially increased by the warming background. The El Niño interaction is an extension of that logic. The historical record of what a strong El Niño does is no longer a reliable guide to what the next one will do, because the historical record was compiled in a different climate. This creates a genuine forecasting problem for governments responsible for disaster preparedness, agricultural planning, and water resource management. The models are running, but they are running in territory that has no historical analogue.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "2026-weather-extremes";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
