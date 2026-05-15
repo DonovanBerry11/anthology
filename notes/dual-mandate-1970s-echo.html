@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kevin Warsh's intellectual biography is worth understanding before assessing what the April PPI print means for his tenure.">
+  <title>The Warsh Inheritance: Arriving Dovish into a Hawkish Fire — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Warsh Inheritance: Arriving Dovish into a Hawkish Fire — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>Kevin Warsh's intellectual biography is worth understanding before assessing what the April PPI print means for his tenure. He served on the Federal Reserve Board from 2006 to 2011, which means he was present for the entire arc of the financial crisis — the Bear Stearns rescue, the Lehman decision, the emergency facilities, and the first iteration of quantitative easing. He dissented from the Fed's November 2010 decision to proceed with QE2, arguing that the benefits were speculative and the risks to credibility real. That dissent established his reputation as hawkish-leaning, which makes his dovish signaling during the nomination process all the more significant — it suggested genuine updated priors, not mere political accommodation to a Trump White House that had spent years demanding lower rates.</p>
+<p>The PPI print complicates this in a specific way. The Federal Reserve's credibility problem is not symmetric. An institution that raises rates too aggressively risks recession but preserves its anti-inflation reputation and can ease subsequently. An institution that eases prematurely into a stagflationary environment risks an inflationary psychology that requires far more painful correction later — the lesson of the 1970s Arthur Burns Fed, which remains the canonical example of what happens when a central bank allows political and economic pressures to erode its nominal anchor. Warsh's dovish orientation, whatever its intellectual basis, will now be read through that lens by bond markets before he has chaired a single meeting.</p>
+<p>The 10-year yield touching 4.48% is the market's way of expressing this concern without waiting for Fed action. Long-duration rates are not set by the Federal Open Market Committee; they are set by the aggregate judgment of investors about future inflation, future growth, and the credibility of the institution responsible for managing both. When long rates rise on a hot PPI print, the market is effectively tightening financial conditions in advance of any FOMC decision — which both constrains and partially substitutes for Fed action. Warsh inherits an institution that has already partially lost control of the long end of the curve, and that loss of control predates his chairmanship.</p>
+<p>The FOMC fracture matters here in a structural sense. The committee that Warsh chairs is not a monolithic body; it is a coalition of regional bank presidents and board governors with heterogeneous mandates, economic models, and political exposures. A fractured committee is harder to lead under stress, and the specific stress of stagflation — where the dual mandate's two objectives point in opposite directions — is precisely the condition that maximizes internal disagreement. Jerome Powell managed FOMC cohesion through the 2022 tightening cycle partly because inflation was unambiguous and the direction of travel was clear. Warsh's situation is the inverse: the direction of travel is contested, the data is sending conflicting signals, and the political environment is noisier than at any point since the early 1980s. The institutional question is whether he can establish chairmanship authority before the first genuinely hard decision forces a public disagreement.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "dual-mandate-1970s-echo";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
