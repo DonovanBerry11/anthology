@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-14T20:39:25Z",
+  "generated": "2026-05-15T05:10:35Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -229,6 +229,19 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/notes/courts-not-the-brake.html",
+      "keywords": []
+    },
+    {
+      "slug": "hormuz-leverage-game",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Beijing Calculation: What China Gets for Arming Down — Further Reading",
+      "standfirst": "President Trump held a high-stakes summit with Chinese President Xi Jinping in Beijing on May 14–15, addressing the Iran war, the Strait of Hormuz blockade, trade tensions, and the Taiwan situation. T.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/notes/hormuz-leverage-game.html",
       "keywords": []
     },
     {

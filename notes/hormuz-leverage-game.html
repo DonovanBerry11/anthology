@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The architecture of the concession matters as much as the concession itself.">
+  <title>The Beijing Calculation: What China Gets for Arming Down — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Beijing Calculation: What China Gets for Arming Down — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The architecture of the concession matters as much as the concession itself. When Beijing agrees to withhold military equipment from a partner state, it is not merely making a tactical adjustment — it is participating in a logic of great-power bargaining that has a specific historical grammar. The closest analogue is Soviet behavior during the 1973 Yom Kippur War, when Moscow, despite its alignment with Egypt and Syria, accepted back-channel pressure from Washington to limit the resupply of Arab forces once the military situation clarified. That restraint was not altruism; it was the price of continued détente and the arms control negotiations Moscow valued more than Egyptian battlefield gains. China's calculus in May 2026 has the same structure: the asset being protected is not Iran but the broader bilateral relationship with the United States at a moment when that relationship determines the operating environment for Chinese export markets, technology access, and Taiwan diplomacy.</p>
+<p>What makes this concession analytically interesting is the oil price transmission mechanism. At $105 Brent, every major importing economy — Germany, Japan, South Korea, India — is absorbing a structural drag that compounds with every week the Hormuz situation persists. China imports roughly 11 million barrels per day, making it the world's largest crude importer by volume. The arithmetic is straightforward: sustained triple-digit oil is as damaging to Chinese industrial margins and consumer sentiment as it is to American ones. Beijing's incentive to de-escalate is therefore partially self-interested in a way that makes the concession more durable than a purely diplomatic gesture would be. When a party's stated position and its material interest align, the commitment is cheaper to sustain.</p>
+<p>The Taiwan dimension sits beneath the public communiqué and deserves attention. Every summit between a sitting American president and the Chinese leadership produces a joint statement whose language on Taiwan is parsed with extraordinary care by governments in Taipei, Tokyo, and Canberra. The willingness of the Trump administration to convene in Beijing — rather than a neutral site — carries symbolic freight that the Chinese side will have registered and that regional allies will have noticed. Summit venue is not incidental protocol; it is the first paragraph of the signal being sent. Whether Washington extracted any private assurance on Taiwan force posture in exchange for the diplomatic staging is unknowable from public record, but the question is the right one to hold.</p>
+<p>Finally, the priced-concession framing illuminates what happens next. Concessions extracted through leverage depreciate when the leverage does. If oil falls back toward $80 on genuine de-escalation, the implicit cost to China of re-engaging Iran militarily declines with it. The durability of Beijing's commitment is therefore partly a function of whether the Hormuz situation resolves quickly or drags. A fast resolution removes the crisis pressure that made the concession rational; a prolonged one tests whether the broader relationship benefits Beijing cited were real or rhetorical. Watching the pace of Hormuz normalization over the coming weeks is, in this sense, the best available stress-test of how much structural weight the Beijing summit actually bore.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "hormuz-leverage-game";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

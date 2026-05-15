@@ -218,6 +218,19 @@
       "keywords": []
     },
     {
+      "slug": "hormuz-leverage-game",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Beijing Calculation: What China Gets for Arming Down — Further Reading",
+      "standfirst": "President Trump held a high-stakes summit with Chinese President Xi Jinping in Beijing on May 14–15, addressing the Iran war, the Strait of Hormuz blockade, trade tensions, and the Taiwan situation. T.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/hormuz-leverage-game.html",
+      "keywords": []
+    },
+    {
       "slug": "taiwan-hormuz-entanglement",
       "type": "note",
       "section": "notes",
@@ -405,5 +418,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-14T20:39:25Z"
+  "generated": "2026-05-15T05:10:35Z"
 }
