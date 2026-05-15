@@ -25,7 +25,20 @@
       "date_display": "May 2026",
       "url": "/users/44585119-14a8-4991-aa05-6708286d4149/notes/sp500-bubble-risk.html",
       "keywords": []
+    },
+    {
+      "slug": "agentic-ai-energy-crisis",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Invisible Ceiling: Why Electricians May Determine Who Wins the AI Race — Further Reading",
+      "standfirst": "A new Goldman Sachs report argues that the physical infrastructure required to power the next generation of agentic AI — where models run persistently rather than on demand — cannot be built fast enou.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/users/44585119-14a8-4991-aa05-6708286d4149/notes/agentic-ai-energy-crisis.html",
+      "keywords": []
     }
   ],
-  "generated": "2026-05-15T05:14:11Z"
+  "generated": "2026-05-15T05:14:13Z"
 }

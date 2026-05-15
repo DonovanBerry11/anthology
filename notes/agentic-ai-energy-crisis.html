@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The concept of a binding constraint is underused in technology analysis.">
+  <title>The Invisible Ceiling: Why Electricians May Determine Who Wins the AI Race — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Invisible Ceiling: Why Electricians May Determine Who Wins the AI Race — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 12:14 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The concept of a binding constraint is underused in technology analysis. Most coverage of the AI race focuses on the obvious variables: model capability, training data, chip design, regulatory environment, and talent concentration. The Goldman Sachs report is notable precisely because it identifies a constraint that exists entirely outside that frame, in a part of the economy that has not been asked to scale at this speed since the rural electrification programs of the 1930s and the postwar industrial build-out. The analogy to those earlier infrastructure moments is worth developing. Rural electrification required not just the physical installation of lines and substations but the creation of an entirely new workforce — linemen, electricians, meter readers, transformer technicians — who had to be trained from scratch because the skills did not previously exist at the required scale. The federal government resolved that problem through a combination of vocational training programs, utility cooperatives, and direct subsidy. The current moment has no equivalent coordinating mechanism. The electrician shortage is structural in ways that are not easily addressed by market signals alone. Apprenticeship programs for licensed electricians run three to five years, are regulated at the state level, and have enrollment caps tied to union agreements and training facility capacity. You cannot simply increase the number of apprentices in January and have licensed journeymen available by March. The pipeline physics are fixed. This is why the 760,000 figure in the Goldman report is worth taking seriously: it is not a projection of demand that can be met by retraining software developers or importing labour from adjacent trades. It requires a deliberate expansion of training infrastructure that has to begin now to produce results by 2028. The geopolitical dimension of the power constraint is also underappreciated. Data centre location decisions are not purely economic; they reflect judgements about grid reliability, regulatory stability, and physical security. The United States has advantages in all three relative to most alternative locations, but the 45-gigawatt projected shortfall means that advantage is not inexhaustible. Countries that invest aggressively in grid capacity — including, notably, China, which has been building transmission infrastructure at a pace that dwarfs Western programs — could attract AI infrastructure investment by default, not by technological leadership. There is also a subtler point about the relationship between energy and AI sovereignty. A country that cannot power its data centres cannot run its own AI systems at scale. This means the energy constraint is not just an economic problem; it is a national security problem, because dependence on foreign data centre capacity for AI workloads creates vulnerabilities that are difficult to quantify but potentially severe. The transition from on-demand AI inference to persistent agentic systems compounds this: a model that runs continuously consumes dramatically more power than one that responds to queries, and the shift to agentic architectures is already underway in enterprise deployments.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "agentic-ai-energy-crisis";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
