@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-15T05:10:39Z",
+  "generated": "2026-05-15T05:10:41Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -268,6 +268,19 @@
       "date": "2026-05-15",
       "date_display": "May 2026",
       "url": "/notes/wembanyama-spurs-moment.html",
+      "keywords": []
+    },
+    {
+      "slug": "vra-precedent-downstream",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "Drawing the Battlefield: How the Map Decides the Midterms Before a Vote Is Cast — Further Reading",
+      "standfirst": "With Trump's approval ratings falling amid high oil prices, war anxiety, and inflation, Democrats are increasingly competitive in the 2026 midterm cycle — and a multi-state redistricting battle is now.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/notes/vra-precedent-downstream.html",
       "keywords": []
     },
     {

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Redistricting is the most consequential and least legible mechanism in American democratic politics, in part because its effects are structural rather than episodic — they do not happen on election ni">
+  <title>Drawing the Battlefield: How the Map Decides the Midterms Before a Vote Is Cast — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Drawing the Battlefield: How the Map Decides the Midterms Before a Vote Is Cast — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>Redistricting is the most consequential and least legible mechanism in American democratic politics, in part because its effects are structural rather than episodic — they do not happen on election night but in the years of skewed representation that follow. The legal and procedural history here runs deep. The Supreme Court's 1962 Baker v. Carr decision established federal court jurisdiction over legislative apportionment, ending an era in which malapportioned districts were essentially immune to challenge. Reynolds v. Sims two years later imposed the one-person, one-vote standard that nationalized the principle of equal representation. Those decisions created the modern redistricting regime — and simultaneously created the modern redistricting war, because they established that maps were contestable in federal court, which transformed map-drawing into anticipatory litigation strategy.</p>
+<p>The Voting Rights Act of 1965, specifically Section 2, became the second great legal instrument of redistricting constraint, requiring that maps not dilute the voting power of racial minorities. Alabama's position in the current cycle is therefore not new terrain — it is the latest episode in a litigation sequence that stretches back decades and that the Supreme Court's recent doctrinal movement has materially altered. When the Court weakens the VRA's enforcement mechanism, as it has done incrementally since Shelby County v. Holder in 2013, it does not immediately change any single district; it changes the cost-benefit calculation for state legislatures considering aggressive maps, because the legal backstop that previously made extreme dilution costly is now less reliable.</p>
+<p>Tennessee's cracking of Memphis is a textbook application of a technique that has been used against urban minority concentrations since the post-2010 cycle. The logic is geometric: a compact, heavily Democratic district with high minority representation delivers one seat. The same voters distributed across three districts dilute to a minority in each, potentially delivering zero seats. The technique is legally distinct from packing — concentrating minority voters into a single district to contain their influence — and the two approaches are often combined across different cities within the same state map, a practice sometimes called pack-and-crack that has survived multiple legal challenges.</p>
+<p>The futures market movement on congressional control is the appropriate place to anchor uncertainty quantification. Prediction markets aggregate information about redistricting outcomes, candidate recruitment, incumbent vulnerability, and national environment simultaneously, and their real-time repricing reflects the compound probability of multiple contingent events. The historical relationship between presidential approval at the midterm and seat change is robust — every president with approval below 45% at the midterm has lost seats in the House — but redistricting can dampen or amplify that relationship by as many as fifteen to twenty seats in either direction depending on cycle-specific map configurations. The current cycle's unusual feature is that the redistricting battles are concentrated in states where the legal and political outcomes remain genuinely uncertain, which means the futures markets are pricing a distribution rather than a point estimate, and that distribution is wide.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "vra-precedent-downstream";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
