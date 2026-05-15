@@ -324,6 +324,19 @@
       "keywords": []
     },
     {
+      "slug": "nba-conference-finals-2026",
+      "type": "briefing",
+      "section": "us-sports",
+      "domain": "us-sports",
+      "sector": "nba",
+      "title": "NBA Conference Finals Set: Thunder (8-0) and Knicks Await; Wembanyama Leads Spurs to Game 6",
+      "standfirst": "The Oklahoma City Thunder and New York Knicks are both 8-0 in the postseason and confirmed Conference Finalists; in the West semi-final, Victor Wembanyama's Spurs lead the Timberwolves 3-2 heading into Game 6 in Minneapolis tonight, after Wembanyama joined Shaq, Kareem, and Hakeem as the only players to record 35-15-5 in a playoff game.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/us-sports/nba-conference-finals-2026.html",
+      "keywords": []
+    },
+    {
       "slug": "taiwan-hormuz-entanglement",
       "type": "note",
       "section": "notes",
@@ -511,5 +524,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-15T19:36:57Z"
+  "generated": "2026-05-15T19:37:06Z"
 }

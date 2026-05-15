@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Oklahoma City Thunder swept the Los Angeles Lakers in the second round to reach the Western Conference Finals [with a perfect 8–0 postseason record](https://www.nbcsports.com/nba/news/2026-nba-pla">
+  <title>NBA Conference Finals Set: Thunder (8-0) and Knicks Await; Wembanyama Leads Spurs to Game 6 — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">NBA</div>
+    <h1>NBA Conference Finals Set: Thunder (8-0) and Knicks Await; Wembanyama Leads Spurs to Game 6</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 2:37 PM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>The Oklahoma City Thunder swept the Los Angeles Lakers in the second round to reach the Western Conference Finals <a href="https://www.nbcsports.com/nba/news/2026-nba-playoffs-bracket-schedule-scores-matchups">with a perfect 8–0 postseason record</a>, matching the best start in NBA playoff history. OKC swept Portland in the first round and the Lakers in four games in the second, allowing the fewest points per possession of any team remaining. Their Western Conference Finals opponent is not yet determined.</p>
+<p>The San Antonio Spurs lead the Minnesota Timberwolves 3–2 after a dominant <a href="https://www.espn.com/nba/recap?gameId=401871156">126–97 Game 5 victory on May 12</a>. Victor Wembanyama finished with 27 points, 17 rebounds, five assists, and three blocks. In the pivotal Game 3, Wembanyama became <a href="https://www.olympics.com/en/news/wembanyama-record-game-spurs-take-series-lead">just the fourth player in NBA history</a> to record at least 35 points, 15 rebounds, and five blocks in a single playoff game, joining Shaquille O'Neal, Kareem Abdul-Jabbar, and Hakeem Olajuwon. De'Aaron Fox and Stephon Castle have averaged 18-plus points apiece across the series. Game 6 is scheduled for May 15 in Minneapolis at 9:30 PM ET on ESPN; the Spurs have won both road games in this series.</p>
+<p>The New York Knicks defeated the Atlanta Hawks 4–2 in the first round, then <a href="https://www.espn.com/nba/story/_/id/48735626/knicks-sweep-76ers-return-eastern-conference-finals">swept the Philadelphia 76ers in four games</a> in the second to reach the Eastern Conference Finals at 8–0, clinching the <a href="https://www.nbcnewyork.com/nba/conference-finals-schedule-2026/6500285/">first Conference Finals berth</a> for a Knicks team since 2000. The Knicks' postseason point differential of plus-194 across ten games is the best 10-game span in NBA playoff history, according to ESPN. Jalen Brunson has averaged 29.4 points across the postseason.</p>
+<p>The Cleveland Cavaliers defeated the Detroit Pistons 117–113 in overtime in <a href="https://www.nba.com/news/live-updates-2026-nba-playoffs-eastern-conference-semifinals-cavaliers-pistons-chase-crucial-game-5-win">Game 5 on May 13</a> to take a 3–2 series lead. James Harden led with 30 points, 8 rebounds, and 6 assists. The Pistons, led by Cade Cunningham, had held a 2–0 lead after the first two games. Game 6 is scheduled for May 15 at 7:00 PM ET on Prime Video; a potential Game 7 would be May 17.</p>
+<p>Both Conference Finals begin on May 19 pending semi-final completion. <a href="https://heavy.com/sports/nba/nba-finals-odds-2026/">Heavy.com's Finals odds tracker</a> has OKC as the early championship favourite regardless of their Western Conference Finals opponent. The Knicks-Thunder Finals matchup — should both advance — would be the first involving New York since 1999.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "nba-conference-finals-2026";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
