@@ -1,7 +1,7 @@
 {
   "date": "2026-05-15",
   "date_display": "Friday, 15 May 2026",
-  "generated_at": "15 May 2026, 12:10 AM EST",
+  "generated_at": "15 May 2026, 2:37 PM EST",
   "user_id": "94baf514-f988-464f-8de1-56c29d4597ee",
   "lead": {
     "slug": "d017-daily-edition-2026-05-15",
@@ -19,6 +19,34 @@
   },
   "secondary": [
     {
+      "slug": "d018-daily-edition-2026-05-15",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Friday, 15 May 2026",
+      "standfirst": "President Trump wrapped up a two-day summit with President Xi Jinping in Beijing, covering the Iran war, trade, AI governance, and Taiwan. Xi told Trump that Taiwan is 'the most important issue in Chi.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/dispatches/d018-daily-edition-2026-05-15.html",
+      "keywords": []
+    },
+    {
+      "slug": "trump-xi-beijing-summit-may15",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Trump-Xi Beijing Summit: 200 Jets, Rare Earths Preserved, Truce Extended",
+      "standfirst": "Trump's two-day Beijing summit delivered a narrow set of trade commitments — 200 Boeing jets, beef imports restored, rare-earth flows preserved — while Taiwan, Iran, and AI chip export controls were all left unresolved, with Xi framing the outcome as 'constructive strategic stability' ahead of an October tariff deadline.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/dispatches/trump-xi-beijing-summit-may15.html",
+      "keywords": []
+    },
+    {
       "slug": "d016-daily-edition-2026-05-14",
       "type": "dispatch",
       "section": "dispatches",
@@ -31,7 +59,9 @@
       "date_display": "May 2026",
       "url": "/dispatches/d016-daily-edition-2026-05-14.html",
       "keywords": []
-    },
+    }
+  ],
+  "further_reading": [
     {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
@@ -59,9 +89,7 @@
       "date_display": "May 2026",
       "url": "/dispatches/ai-hardware-rotation.html",
       "keywords": []
-    }
-  ],
-  "further_reading": [
+    },
     {
       "slug": "warsh-fed-confirmation",
       "type": "dispatch",
@@ -194,34 +222,6 @@
         "industrial policy",
         "financial markets"
       ]
-    },
-    {
-      "slug": "trump-xi-beijing-summit",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "geopolitics",
-      "dispatch_type": "daily",
-      "title": "Trump-Xi Beijing Summit Opens Under Iran Shadow",
-      "standfirst": "Trump arrived in Beijing on May 12 for a state visit whose formal agenda — tariffs, rare earths, Taiwan, AI — has been crowded by an Iran ceasefire Trump himself called 'on massive life support,' with Xi holding more diplomatic leverage on Tehran than the White House had planned for.",
-      "date": "May 2026",
-      "date_display": "May 2026",
-      "url": "/dispatches/trump-xi-beijing-summit.html",
-      "keywords": []
-    },
-    {
-      "slug": "april-cpi-energy-shock",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "geopolitics",
-      "dispatch_type": "daily",
-      "title": "April CPI Reaccelerates to 3.8% as Energy Shock Hits Headline",
-      "standfirst": "Headline CPI rose to 3.8% in April — the highest since May 2023 — driven by a 17.9% annual energy surge, but core inflation also reaccelerated to 2.8%, complicating the Fed's three-meeting hold and the White House's push for cuts.",
-      "date": "May 2026",
-      "date_display": "May 2026",
-      "url": "/dispatches/april-cpi-energy-shock.html",
-      "keywords": []
     }
   ]
 }
