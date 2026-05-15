@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The bond market has not imposed fiscal discipline on the United States, and this is not evidence that US fiscal policy is sustainable — it is evidence that dollar reserve status operates as a structur">
+  <title>The Bond Market Veto That Wasn't — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Bond Market Veto That Wasn't</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 2:37 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The bond market has not imposed fiscal discipline on the United States, and this is not evidence that US fiscal policy is sustainable — it is evidence that dollar reserve status operates as a structural buffer whose continued existence depends on the same trust that current policy is steadily eroding.</p>
+<p>The <a href="https://www.cbo.gov/publication/61882">Congressional Budget Office's February 2026 baseline</a> projects a fiscal year 2026 deficit of $1.9 trillion — 5.8% of GDP in a non-recessionary year — with net interest payments reaching $1.0 trillion annually, rising to $2.1 trillion by 2036 and consuming 25.8% of federal revenues. Approximately one-third of outstanding Treasury debt matures in 2026, requiring refinancing at rates 200–300 basis points higher than original issuance: this is not a spending decision, it is a structural addition to the deficit that arrives independent of any new programme or tax cut. And yet ten-year Treasury yields, while elevated, have not moved to the punitive levels that fiscal theory would predict for any other sovereign running a 6% peacetime deficit. The bond market is not applying the brake. The standard interpretation is that this proves the position is manageable. The correct interpretation is that it proves the brake is different for dollar-denominated debt.</p>
+<p>The exorbitant privilege — Valéry Giscard d'Estaing's phrase for what it costs other countries to hold reserves in a currency whose issuer can print — works by making the cost of fiscal excess fall on the rest of the world rather than on the issuer. Foreign central banks absorb Treasury paper as a reserve asset; the US borrows cheaply; the inflation tax is partly distributed globally. This is real. But it persists only insofar as dollar-denominated assets remain the preferred reserve. Each instance of financial weaponisation — the 2022 Russia asset freeze, the successive rounds of secondary sanctions, the progressive exclusion of adversaries from SWIFT — chips at the preference. Not quickly. Reserve currency transitions happen across decades. But the mechanism that makes dollar privilege self-reinforcing — the depth and liquidity that come from global demand — is what is being drawn down, one sanctions episode at a time.</p>
+<p>The political structure of the problem is the other half. The CBO's own decomposition shows that stabilising the debt-to-GDP ratio at its current level — let alone reducing it — requires either revenue increases or spending reductions concentrated in Social Security, Medicare, and defence. These are the most politically organised constituencies in the US system: elderly voters turn out at the highest rates, the defence sector distributes its economic footprint across every congressional district, Medicare's beneficiary population grows with every cohort that ages through the programme. The reckoning is not technically difficult to describe. It is politically close to impossible to execute — which means it will not happen until markets impose it, and when markets impose it on a reserve currency after a long period of forbearance, the adjustment is faster and more violent than it would have been had fiscal correction arrived gradually.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-bond-market-veto";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

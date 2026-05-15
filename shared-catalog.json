@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-15T19:37:06Z",
+  "generated": "2026-05-15T19:37:15Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -427,6 +427,19 @@
       "date": "2026-05-15",
       "date_display": "May 2026",
       "url": "/us-sports/nba-conference-finals-2026.html",
+      "keywords": []
+    },
+    {
+      "slug": "the-bond-market-veto",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "fiscal",
+      "title": "The Bond Market Veto That Wasn't",
+      "standfirst": "The bond market's failure to punish US fiscal excess is not proof that a 6%-of-GDP deficit is sustainable — it is proof that dollar reserve status provides a buffer whose continued existence is being eroded by the same financial weaponisation that requires it, making the reckoning deferred rather than avoided.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/notes/the-bond-market-veto.html",
       "keywords": []
     },
     {
