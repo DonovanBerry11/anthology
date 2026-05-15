@@ -311,6 +311,19 @@
       "keywords": []
     },
     {
+      "slug": "starmer-survival-kings-speech",
+      "type": "briefing",
+      "section": "uk-politics",
+      "domain": "uk-politics",
+      "sector": "politics",
+      "title": "Starmer's Survival: King's Speech Delivered as Health Secretary Resigns",
+      "standfirst": "The State Opening of Parliament delivered 35 bills — including a European Partnership Bill and the Hillsborough Law — on the same day Wes Streeting resigned as Health Secretary with more than 81 nominations for a formal Labour leadership challenge.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/uk-politics/starmer-survival-kings-speech.html",
+      "keywords": []
+    },
+    {
       "slug": "taiwan-hormuz-entanglement",
       "type": "note",
       "section": "notes",
@@ -498,5 +511,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-15T19:36:48Z"
+  "generated": "2026-05-15T19:36:57Z"
 }
