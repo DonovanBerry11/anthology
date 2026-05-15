@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-15T05:10:45Z",
+  "generated": "2026-05-15T05:14:09Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -308,6 +308,19 @@
       "date": "2026-05-15",
       "date_display": "May 2026",
       "url": "/dispatches/d017-daily-edition-2026-05-15.html",
+      "keywords": []
+    },
+    {
+      "slug": "us-china-summit-stakes",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Beijing Tea Ceremony: What the Trump-Xi Summit Actually Settled — Further Reading",
+      "standfirst": "President Trump wrapped up a two-day summit with President Xi Jinping in Beijing, covering the Iran war, trade, AI governance, and Taiwan. Xi told Trump that Taiwan is 'the most important issue in Chi.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/notes/us-china-summit-stakes.html",
       "keywords": []
     },
     {
