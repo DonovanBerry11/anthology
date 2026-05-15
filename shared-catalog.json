@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-15T05:10:41Z",
+  "generated": "2026-05-15T05:10:43Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -281,6 +281,19 @@
       "date": "2026-05-15",
       "date_display": "May 2026",
       "url": "/notes/vra-precedent-downstream.html",
+      "keywords": []
+    },
+    {
+      "slug": "agentic-payments-architecture",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Unbundling: When AI Infrastructure Becomes Its Own Market — Further Reading",
+      "standfirst": "Microsoft and OpenAI have restructured their relationship into a non-exclusive arrangement, opening the cloud AI market to broader competition and signalling that OpenAI is actively seeking new commer.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/notes/agentic-payments-architecture.html",
       "keywords": []
     },
     {

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Microsoft-OpenAI restructuring is the kind of event that is easy to misread as primarily about those two companies when it is actually about the topology of an entire industry.">
+  <title>The Unbundling: When AI Infrastructure Becomes Its Own Market — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Unbundling: When AI Infrastructure Becomes Its Own Market — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Microsoft-OpenAI restructuring is the kind of event that is easy to misread as primarily about those two companies when it is actually about the topology of an entire industry. Exclusive distribution arrangements in platform markets tend to create what economists call foreclosure effects — competitors are locked out not because the product is inferior but because the distribution channel is controlled. The original Microsoft-OpenAI exclusivity gave Azure a structural advantage in the cloud AI market that was not purely a function of Azure's technical quality. When that exclusivity dissolves, the competitive landscape does not simply become level; it becomes contested in a way that requires every player — AWS, Google Cloud, Oracle, the emerging independents — to recalibrate their model access and pricing strategies simultaneously. That recalibration is expensive and produces a period of instability that is actually good for enterprise buyers, who gain negotiating leverage they did not previously have.</p>
+<p>Cerebras's IPO pricing at $185 per share is the capital markets making a specific bet about which layer of the AI stack will capture the most durable margin. The semiconductor layer is historically where the most defensible value in compute cycles has accrued — Intel held extraordinary pricing power for decades, and Nvidia's current position reflects a similar dynamic — but the history also shows that the layer is vulnerable to architectural disruption. Cerebras is making a design-level bet that wafer-scale integration outperforms the multi-chip module approach that Nvidia has refined, and the IPO price implies that public market investors are at least partially crediting that bet. What the market is not pricing with confidence is the timeline, because the AI infrastructure market is moving fast enough that architectural advantages can erode in two to three years rather than the decade-long cycles that characterized previous semiconductor transitions.</p>
+<p>The AWS AgentCore Payments announcement is the development that deserves the most structural attention, because it operates at a different level of abstraction than model access or chip architecture. What AWS is building — in partnership with Coinbase and Stripe — is a payment rail designed for non-human principals. The entire architecture of modern financial infrastructure assumes that transactions are initiated by human agents who bear legal and contractual responsibility for those transactions. An AI agent that can autonomously complete stablecoin micropayments is not simply a faster human — it is a new category of economic actor that the existing legal and regulatory framework does not cleanly accommodate. The use of stablecoins rather than fiat rails is not incidental; it reflects the fact that stablecoin settlement is programmable in ways that ACH and card networks are not, which is precisely what autonomous agent commerce requires.</p>
+<p>The deeper question this raises is one of liability assignment. When an AI agent makes a payment that turns out to be fraudulent, mistaken, or the product of a compromised instruction chain, the legal question of who bears responsibility — the deploying enterprise, the infrastructure provider, the model developer — is entirely unresolved. That resolution will happen through litigation, regulation, or contractual norm-setting over the next several years, and its outcome will determine whether autonomous machine commerce scales or stalls at the proof-of-concept stage.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "agentic-payments-architecture";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
