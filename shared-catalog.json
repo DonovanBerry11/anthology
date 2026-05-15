@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-15T19:37:27Z",
+  "generated": "2026-05-15T19:37:35Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -453,6 +453,19 @@
       "date": "2026-05-15",
       "date_display": "May 2026",
       "url": "/notes/the-strait-and-the-system.html",
+      "keywords": []
+    },
+    {
+      "slug": "the-court-against-itself",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Court Against Itself",
+      "standfirst": "The Supreme Court is not a bulwark against democratic erosion — Citizens United, Shelby County, and Rucho systematically dismantled the legal conditions for electoral accountability, making the same institution now appearing to resist specific executive orders the multi-decade architect of the structural conditions that enabled executive overreach.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/notes/the-court-against-itself.html",
       "keywords": []
     },
     {

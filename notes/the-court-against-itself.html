@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Supreme Court is not the bulwark against American democratic erosion — it is the institution most responsible for creating the conditions that made that erosion possible, and the cases generating">
+  <title>The Court Against Itself — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Court Against Itself</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 2:37 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Supreme Court is not the bulwark against American democratic erosion — it is the institution most responsible for creating the conditions that made that erosion possible, and the cases generating current political attention (procedural blocks on specific executive orders) obscure a multi-decade trajectory of doctrinal choices that systematically narrowed the instruments of democratic accountability.</p>
+<p>The comparison with other backsliding democracies makes this visible. In Hungary and Turkey, courts were packed or defanged by the executive to enable consolidation. In the United States, the relevant Supreme Court decisions — <em>Citizens United v. FEC</em> (2010), <em>Shelby County v. Holder</em> (2013), <em>Rucho v. Common Cause</em> (2019) — were internally reasoned, legally defensible, and structurally corrosive. <em>Citizens United</em> treated corporate political expenditure as protected speech, removing the main federal limit on money in federal elections. <em>Shelby County</em> gutted the preclearance mechanism of the Voting Rights Act by holding that the coverage formula was outdated — removing federal supervision of voting law changes in states with documented histories of discrimination. <em>Rucho</em> held that partisan gerrymandering is a political question beyond federal judicial remedy, leaving elected officials free to draw district lines that convert majorities into permanent minorities. Each of these decisions was formally reasoned; none required an overt political intervention. All three moved in the same direction: narrowing the legal conditions under which political participation can produce governmental accountability. The cumulative effect — reduced electoral competition through unconstrained gerrymandering, weakened voting rights enforcement through the dismantling of preclearance, money-saturated political speech without federal spending limits — is visible in the structural conditions that preceded and enabled the current moment. This is not the portrait of an institution subverted from outside. It is the portrait of an institution that arrived at its current posture through its own choices.</p>
+<p>The paradox is that the institution most visibly resisting executive overreach on procedural grounds — blocking specific deportations, staying particular agency actions, preserving individual due-process claims — is the same institution whose thirty-year doctrinal project removed the structural guardrails that would have constrained the political conditions producing the overreach in the first place. Courts are independent enough to resist individual presidential orders in the short run; they are not independent enough to resist the appointment project that shaped their doctrine over decades. The independence is real in the dimension where it matters least and absent in the dimension where it matters most. The V-Dem 2026 report, which reclassified the United States as an "electoral democracy" rather than a "liberal democracy" for the first time in over fifty years, locates the degradation not in a single administration but in an accumulating trajectory — one that includes, prominently, the doctrinal narrowing of rights, standing, and available remedies by the federal judiciary itself. The court that appears to be holding the line is the court that drew the line where it currently stands.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-court-against-itself";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
