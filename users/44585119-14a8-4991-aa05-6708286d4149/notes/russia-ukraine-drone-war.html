@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Territorial control metrics in the Ukraine war have been reported inconsistently throughout the conflict, and understanding what they do and do not measure is essential context for evaluating the Apri">
+  <title>The Tide Turns? Ukraine's April Gains and What They Actually Mean — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Tide Turns? Ukraine's April Gains and What They Actually Mean — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 12:14 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>Territorial control metrics in the Ukraine war have been reported inconsistently throughout the conflict, and understanding what they do and do not measure is essential context for evaluating the April shift. The Institute for the Study of War uses a methodology that tracks changes in the contact line based on open-source imagery, geolocated footage, and official statements. The methodology is more rigorous than most, but it captures control of territory, not strategic depth, economic value, or population. A kilometer gained in a depopulated agricultural district in Zaporizhzhia is counted the same as a kilometer gained near a logistics hub or a population centre. With that caveat established, the directional signal in April is still meaningful. For most of the preceding eighteen months, the arithmetic of the war had been running against Ukraine — not catastrophically, but consistently. Russia was advancing in Donetsk at a rate that, while slow, was cumulative. The Kursk incursion in August 2024 temporarily reversed the psychological dynamic but did not fundamentally alter the front-line calculus, and Ukraine ultimately had to withdraw from most of the territory it seized. The April data, if it holds, represents a genuine inflection rather than a one-month anomaly. The drone superiority argument being made by Ukrainian commanders is analytically credible for reasons that go beyond the immediate tactical picture. Drone warfare is a domain where the cost exchange ratio favors the defender in ways that conventional artillery does not. A first-person-view drone capable of destroying a tank or an armoured personnel carrier costs roughly two thousand dollars to manufacture. The vehicle it destroys costs between two and twenty million dollars. At scale, that asymmetry compounds into a significant attrition advantage if the side with the cheaper weapon can maintain production and operator training faster than the side with the expensive one can replace its losses. Ukraine has been building that production capacity since 2022 with significant Western support, and the mid-range strike capability now being used against Russian logistics represents a maturation of that investment. The Putin peace signal deserves scepticism grounded in the history of the conflict rather than cynicism for its own sake. Russia has historically used ceasefire overtures to consolidate territorial gains, resupply, and reconstitute units degraded by attritional combat. The timing of the Kyiv missile attack — launched while peace hints were circulating — follows a pattern that has appeared multiple times since 2022. The more structurally important variable is what the Trump administration's posture will be if negotiations become serious. The United States has enormous leverage over both the pace of Western military support and the terms of any eventual settlement, and the administration's relationship with both Kyiv and Moscow has been neither consistently supportive nor consistently hostile, which creates a genuine uncertainty that both parties to the conflict are attempting to factor into their planning.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "russia-ukraine-drone-war";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
