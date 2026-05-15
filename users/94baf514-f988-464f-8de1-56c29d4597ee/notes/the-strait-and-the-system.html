@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Hormuz closure is not primarily an oil price event — it is a demonstration that the United States can no longer guarantee the energy security of the trading system it built, because the asymmetric">
+  <title>The Strait and the System — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Strait and the System</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 2:37 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Hormuz closure is not primarily an oil price event — it is a demonstration that the United States can no longer guarantee the energy security of the trading system it built, because the asymmetric tools available to Iran have made the cost of reopening the strait, under live military conditions, higher than American naval supremacy alone can absorb.</p>
+<p>Iran closed the Strait of Hormuz in February 2026 following US-Israeli strikes on its nuclear facilities, triggering what the International Energy Agency has described as the largest supply disruption in the history of the global oil market — roughly 20% of world oil supply and approximately 30% of seaborne crude flows pass through the strait's 21-mile navigable channel. The disruption is real and its energy price effects are severe. But the more consequential question is why the United States, which has maintained a carrier-group presence in the Persian Gulf continuously since 1979 on the explicit premise that freedom of navigation would be enforced, has not been able to reopen the strait in the weeks since the closure.</p>
+<p>The answer is that the Iranian anti-ship toolkit — land-based anti-ship missiles, naval mines distributed across a shallow and confined waterway, and drone swarms capable of saturating point defences — imposes casualty risk on surface vessels that US carrier-group doctrine is not structured to absorb cheaply in a contested strait environment. This is not a new vulnerability; it has been assessed in US Naval War College wargames since at least the mid-2010s. The asymmetric toolkit makes the strait operationally contested in ways that make clearing it under fire a different calculation from projecting power in open ocean. American naval supremacy is real in the aggregate; it is constrained in a 21-mile bottleneck defended by missiles from shore.</p>
+<p>The dependency map makes the political problem sharper. Saudi Aramco's East-West pipeline, which terminates at Yanbu on the Red Sea, has a capacity of roughly 5 million barrels per day — a fraction of the 20 million barrels per day that normally transit Hormuz. The UAE's Fujairah bypass handles approximately 1.5 million barrels per day. Neither alternative route approaches Hormuz-scale capacity, and the gap reflects decades of underinvestment in bypass infrastructure that was never economically justified when the strait was open. The US is now bearing military costs for an architecture whose primary beneficiaries are European and Asian importers — China, Japan, South Korea, and the EU together account for the majority of Hormuz-transiting energy — while American domestic energy production has rendered the US itself largely insulated from the price shock. The burden-sharing problem this exposes — Europe and Asia relying on American military capacity to protect supply chains the US no longer needs — has no clean resolution in the current political environment.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-strait-and-the-system";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

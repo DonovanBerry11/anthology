@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-15T19:37:15Z",
+  "generated": "2026-05-15T19:37:27Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -440,6 +440,19 @@
       "date": "2026-05-15",
       "date_display": "May 2026",
       "url": "/notes/the-bond-market-veto.html",
+      "keywords": []
+    },
+    {
+      "slug": "the-strait-and-the-system",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "geopolitical",
+      "title": "The Strait and the System",
+      "standfirst": "Iran's February 2026 Hormuz closure is not primarily an oil price event — it is a demonstration that American naval supremacy can no longer guarantee the energy security of the trading system the US built, because Iranian anti-ship missiles, mines, and drones have made the 21-mile strait operationally contested in ways carrier-group doctrine cannot resolve cheaply.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/notes/the-strait-and-the-system.html",
       "keywords": []
     },
     {
