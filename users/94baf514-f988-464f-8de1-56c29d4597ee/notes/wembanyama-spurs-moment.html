@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The historical context for evaluating the Thunder's playoff run requires some care, because dominance in small samples is easy to overstate and the NBA postseason rewards both excellence and bracket l">
+  <title>Thunder Perfect, Wemby Rising, Cleveland Clutch: The Bracket at 3–2 — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Thunder Perfect, Wemby Rising, Cleveland Clutch: The Bracket at 3–2 — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The historical context for evaluating the Thunder's playoff run requires some care, because dominance in small samples is easy to overstate and the NBA postseason rewards both excellence and bracket luck in ways that are difficult to fully disentangle. That said, the 8–0 start places Oklahoma City in genuinely rare company. The 2001 Lakers, the 1989 Detroit Pistons, and the 2017 Golden State Warriors all sustained stretches of postseason dominance that looked anomalous at the time and were later understood as expressions of structural team advantages that the regular season had obscured or underweighted. The question worth holding about the Thunder is whether their margin reflects true team quality or an unusually favorable bracket path — and the Lakers sweep provides at least partial evidence for the former, since Los Angeles was not a paper opponent.</p>
+<p>The Wembanyama situation in the Spurs–Timberwolves series is analytically richer than the ejection controversy suggests. Wembanyama's physical profile — the wingspan, the shot-blocking reach, the handle for a seven-footer — represents a genuine morphological outlier in the history of the position, and the ejection in Game 4 is best understood as a defensive adjustment problem for referees operating with rules calibrated to conventional player geometries. When a player's reach means that legal contests look like fouls at standard observation angles, officiating variance increases. San Antonio's ability to blow out Minnesota in Game 5 after the Game 4 disruption is the more significant data point: it suggests the team's system is robust to individual game perturbations, which is a playoff quality that matters enormously across a seven-game series.</p>
+<p>The Cleveland comeback against Detroit carries a different kind of significance. Nine-point deficits in the final three minutes are overcome less often than casual observation suggests — the base rate is somewhere around twelve to fifteen percent across the modern three-point era, depending on the scoring environment assumptions. Cleveland's ability to manufacture that comeback speaks to something specific about their offensive structure in late-game situations, almost certainly related to their ability to generate high-quality looks from the midrange and foul-line extended zones that have historically been Detroit's defensive vulnerability in this series. The Cavs being one win from the Conference Finals means the Eastern bracket is close to clarifying, and the eventual matchup with the dominant team from the other conference will be the most consequential series for assessing how the Thunder's dominance translates against a legitimately constructed playoff opponent rather than one they have already studied in the regular season.</p>
+<p>The broader competitive ecology of the 2026 playoffs is worth naming: three of the five remaining series are genuinely contested, which is unusual relative to recent postseason history, and suggests the compression of talent across the league that front offices and analysts have noted across the past two drafts is now expressing itself in playoff competition.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "wembanyama-spurs-moment";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
