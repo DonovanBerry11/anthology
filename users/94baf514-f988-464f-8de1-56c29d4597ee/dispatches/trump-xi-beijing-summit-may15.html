@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Trump arrived in Beijing on May 13 for his first state visit to China since 2017, accompanied by a business delegation that included Tim Cook, Elon Musk, and Jensen Huang, and departed on May 15 havin">
+  <title>Trump-Xi Beijing Summit: 200 Jets, Rare Earths Preserved, Truce Extended — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Trump-Xi Beijing Summit: 200 Jets, Rare Earths Preserved, Truce Extended</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 15 May 2026, 2:36 PM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>Trump arrived in Beijing on May 13 for his first state visit to China since 2017, accompanied by a business delegation that included Tim Cook, Elon Musk, and Jensen Huang, and departed on May 15 having secured a narrow set of transactional commitments against a backdrop of deferred structural disagreements on Taiwan, Iran, and AI chips.</p>
+<p>The summit's concrete outputs, confirmed by both governments, were limited. China agreed to buy American soybeans, oil, and liquefied natural gas. Beijing issued new import licences allowing hundreds of US slaughterhouses to resume beef shipments to China, restoring a trade route suspended during earlier tensions. China committed to purchase 200 Boeing 737 jets — a number Trump described as "fantastic" but significantly below the 500 units he had previewed before the visit; <a href="https://www.cbsnews.com/news/trump-wraps-up-visit-with-xi-in-china/">Boeing shares fell approximately 4% on the announcement</a>. Both sides agreed to extend the trade truce reached in October 2025 and established a framework for managing future tariff and export-control disputes rather than allowing immediate escalation. A US-China Board of Trade, intended to facilitate commercial engagement in non-sensitive sectors, was announced as agreed in principle at working-level talks in South Korea the previous week, where Treasury Secretary Scott Bessent and Chinese Vice Premier He Lifeng had described outcomes as <a href="https://www.cnbc.com/2026/05/14/trump-xi-summit-beijing-takeaway-taiwan-trade-iran-war-strategic-relations-.html">"overall balanced and positive."</a></p>
+<p>On rare earths — which <a href="https://foreignpolicy.com/2026/05/12/trump-xi-china-summit-rare-earth-trade-critical-minerals/">China controls at approximately 85% of global processing capacity and over 90% of magnet production</a> — both sides agreed to keep flows moving and to extend the existing restrictions rollback, according to <a href="https://www.cnbc.com/2026/05/14/trump-xi-summit-us-china-trade-taiwan-iran-nvidia.html">CNBC reporting from May 14</a>. The rare-earth question had been the most operationally sensitive item on the US list, underpinning semiconductor production, defence systems, and clean-energy supply chains. An agreement to preserve that supply without a formal long-term resolution leaves the leverage point intact.</p>
+<p>The strategic outcomes were thinner. Xi told Trump that mishandling Taiwan would put the bilateral relationship in "great jeopardy" — a formulation Beijing uses as a standing warning rather than a new signal, but one that received prominent placement in Chinese state media coverage of the summit. On Iran, whose February 2026 Strait of Hormuz closure has disrupted approximately 20% of global oil supply, China indicated it was prepared to assist with diplomatic pressure but set conditions; <a href="https://foreignpolicy.com/2026/05/14/trump-xi-jinping-china-summit-taiwan-iran-trade-beef/">Foreign Policy reported</a> that Iran diplomacy produced no concrete movement. AI chip export controls, which Washington imposed in 2024 and Beijing has repeatedly demanded be rolled back, were also left unresolved.</p>
+<p>Xi and Trump framed the summit around what the Chinese side called "constructive strategic stability" — a phrase describing managed coexistence rather than resolution. Trump invited Xi to visit Washington on September 24, ahead of the October expiry of the extended trade truce, ensuring the two leaders will meet again before the next decision point on tariffs arrives.</p>
+<p>Watch: the October truce deadline, Senate consideration of new AI chip export-control legislation pending since April, and whether Beijing's offer of Hormuz diplomatic assistance translates into any measurable change in the Iran negotiation track.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "trump-xi-beijing-summit-may15";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

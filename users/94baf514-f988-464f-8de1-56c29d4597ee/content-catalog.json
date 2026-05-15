@@ -297,6 +297,20 @@
       "keywords": []
     },
     {
+      "slug": "trump-xi-beijing-summit-may15",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Trump-Xi Beijing Summit: 200 Jets, Rare Earths Preserved, Truce Extended",
+      "standfirst": "Trump's two-day Beijing summit delivered a narrow set of trade commitments — 200 Boeing jets, beef imports restored, rare-earth flows preserved — while Taiwan, Iran, and AI chip export controls were all left unresolved, with Xi framing the outcome as 'constructive strategic stability' ahead of an October tariff deadline.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/dispatches/trump-xi-beijing-summit-may15.html",
+      "keywords": []
+    },
+    {
       "slug": "taiwan-hormuz-entanglement",
       "type": "note",
       "section": "notes",
@@ -484,5 +498,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-15T05:10:45Z"
+  "generated": "2026-05-15T19:36:48Z"
 }
