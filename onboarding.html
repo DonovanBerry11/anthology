@@ -892,7 +892,7 @@
       // Non-fatal — proceed to homepage
     }
 
-    // Fire both server calls (fire-and-forget — neither blocks the redirect)
+    // Fire both server calls then redirect (fetches must be dispatched before navigation)
     (async () => {
       try {
         const session = await _supabase.auth.getSession();
@@ -903,18 +903,17 @@
           'Content-Type':  'application/json',
           'Authorization': `Bearer ${accessToken}`
         };
-        // Trigger orientation bootstrap
-        fetch('http://159.65.80.203:5050/bootstrap', { method: 'POST', headers, body })
+        // Trigger orientation bootstrap (proxied via Vercel — avoids mixed-content block)
+        fetch('/api/bootstrap', { method: 'POST', headers, body })
           .catch(e => console.warn('Bootstrap request failed:', e));
         // Trigger first dispatch generation (returns 202 immediately; runs async on server)
-        fetch('http://159.65.80.203:5050/first-dispatch', { method: 'POST', headers, body })
+        fetch('/api/first-dispatch', { method: 'POST', headers, body })
           .catch(e => console.warn('First dispatch request failed:', e));
       } catch (e) {
         console.warn('Server fire-and-forget setup failed:', e);
       }
+      window.location.href = '/';
     })();
-
-    window.location.href = '/';
   }
 
   /* ════════════════════ AUTH GUARD ════════════════════ */

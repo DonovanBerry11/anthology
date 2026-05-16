@@ -3,6 +3,14 @@
   "trailingSlash": false,
   "rewrites": [
     {
+      "source": "/api/bootstrap",
+      "destination": "http://159.65.80.203:5050/bootstrap"
+    },
+    {
+      "source": "/api/first-dispatch",
+      "destination": "http://159.65.80.203:5050/first-dispatch"
+    },
+    {
       "source": "/users/:userId/essays/:slug",
       "destination": "/users/:userId/essays/:slug.html"
     },
