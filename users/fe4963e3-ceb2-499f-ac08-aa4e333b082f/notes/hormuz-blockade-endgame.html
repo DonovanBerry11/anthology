@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The 50-49 vote is worth sitting with numerically before moving to the political analysis, because the arithmetic of failure in the Senate is not neutral.">
+  <title>Fifty-Forty-Nine: The Vote That Measured How Much the Iran War Is Costing Trump at Home — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Fifty-Forty-Nine: The Vote That Measured How Much the Iran War Is Costing Trump at Home — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 4:04 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The 50-49 vote is worth sitting with numerically before moving to the political analysis, because the arithmetic of failure in the Senate is not neutral. A resolution that loses by one vote is not the same as a resolution that loses by fifteen. It is a signal to whips on both sides of the aisle, to the White House legislative affairs office, to foreign governments watching American resolve, and to the next Republican senator who is quietly calculating the political cost of the war on their 2028 primary prospects. Lisa Murkowski's vote is the most significant single datum in the tally — not because Alaska has particular exposure to the Hormuz closure, but because Murkowski has spent her Senate career as a barometer of the point at which institutionalist Republicans decide that party loyalty has stopped being costless.</p>
+<p>The War Powers Resolution as a mechanism has a complicated legal and political history that shapes how seriously the executive branch takes these votes. The original 1973 act — passed over Nixon's veto in the wake of Vietnam — was always constitutionally contested, and every administration since has found ways to interpret it narrowly or work around it. What has changed in the decades since is the political weight attached to the vote itself, independent of its legal enforceability. When these resolutions were losing 68-30, they were symbolic dissent. When they are losing 50-49, they are something closer to a credible threat, because a single additional defection — or a single absence on the other side — changes the outcome and forces a confrontation the White House would rather avoid.</p>
+<p>The two-thirds public opposition finding from Reuters/Ipsos is analytically important in a specific way. Polls about ongoing military conflicts tend to track casualties and economic cost more reliably than they track abstract questions of legal authority or strategic rationale. The fact that two-thirds of respondents say Trump has not clearly explained the rationale suggests the communication failure is broad-based — it is not confined to Democrats who were always going to oppose the war, or to libertarian-leaning Republicans with ideological objections to overseas military action. It is reaching voters who do not have strong prior commitments on the question and who are being moved by what they see at the gas pump and the grocery store.</p>
+<p>The Hormuz dimension is the part of this story that most general political coverage underweights. A strait through which roughly 20% of the world's traded oil and a significant share of global LNG passes does not close without cascading second and third-order effects that play out over months, not weeks. The ceasefire that nominally holds has not reopened commercial shipping lanes to anything approaching pre-conflict traffic levels, and the insurance market for vessels transiting the region has repriced in ways that are baked into energy costs globally regardless of what the spot price of crude does on any given day. For American voters, the connection between the war and the cost of filling a tank is not abstract — it is the most direct and visceral way in which a foreign conflict enters domestic political consciousness, and it has historically been the variable that turns public opinion most decisively against wartime presidents.</p>
+<p>What the 50-49 vote does not tell you is whether the political math will move further against Trump before the next vote. That depends on how the summer plays out — whether the Hormuz closure persists, whether there are U.S. casualties that generate sustained media attention, and whether any of the Republican senators who voted with the White House this time are facing difficult reelection environments that make the calculation look different in six months. The three defectors know all of this. So does the West Wing.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "hormuz-blockade-endgame";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
