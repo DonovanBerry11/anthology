@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-16T05:14:00Z",
+  "generated": "2026-05-16T05:14:02Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -321,6 +321,19 @@
       "date": "2026-05-16",
       "date_display": "May 2026",
       "url": "/notes/hormuz-diplomacy-stalled.html",
+      "keywords": []
+    },
+    {
+      "slug": "war-powers-act-limits",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Constitution's Blind Spot: Congress Cannot Find the Votes to Reclaim Its War Authority — Further Reading",
+      "standfirst": "For the third time, House Democrats failed to advance an Iran war powers resolution, with the vote ending in a 212–212 tie after one Democrat crossed the aisle to join Republicans in opposition. Repor.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/notes/war-powers-act-limits.html",
       "keywords": []
     },
     {
