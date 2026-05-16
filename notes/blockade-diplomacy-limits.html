@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Strait of Hormuz is approximately 21 miles wide at its narrowest navigable point, which means that one of the most consequential variables in global monetary policy is, in a literal sense, a geogr">
+  <title>The Chokepoint Economy: How the Strait of Hormuz Became the World's Central Bank — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Chokepoint Economy: How the Strait of Hormuz Became the World's Central Bank — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Strait of Hormuz is approximately 21 miles wide at its narrowest navigable point, which means that one of the most consequential variables in global monetary policy is, in a literal sense, a geographical accident. The strait exists because the Arabian Peninsula and the Iranian plateau happen to converge at a point that forces virtually all Persian Gulf maritime traffic through a channel narrow enough to threaten with a modest investment in naval mines, anti-ship missiles, or small boat harassment. Roughly 20 to 21 million barrels of oil per day transited the strait in recent years — representing a fifth or more of global daily consumption — along with substantial LNG volumes that serve markets in South and East Asia. There is no alternative that does not add weeks and meaningful cost to transit times, which is why the Cape of Good Hope rerouting now underway is a signal of genuine commercial desperation rather than a routine adjustment.</p>
+<p>The historical precedent most relevant to the current situation is not the 1970s oil embargo, which is the comparison that surfaces most frequently in inflationary contexts, but the Tanker War of 1984 to 1988. During the latter phase of the Iran-Iraq War, both sides attacked oil tankers in the Persian Gulf in an attempt to strangle the other's revenues and impose costs on their suppliers. The United States ultimately intervened with Operation Earnest Will in 1987, reflagging Kuwaiti tankers and providing naval escorts through the strait. The episode demonstrated that the US was willing to absorb direct military risk to maintain the Hormuz passage — but it also demonstrated that the threat of closure could persist for years without triggering a resolution, because neither side had an interest in the precise outcome that would allow the other to declare victory.</p>
+<p>The current 'blockade diplomacy' framing deserves scrutiny because it implies a clarity of strategic intent that may not be present. US pressure on Iranian ports is calibrated — tight enough to impose pain, loose enough to preserve deniability about the ultimate objective. Iran's threats to Strait shipping are similarly calibrated — credible enough to move oil prices and shipping insurance rates, not yet operationalized to the point of triggering a full US naval response. This mutual calibration creates a stable-unstable equilibrium: stable because neither party wants the next escalation step, unstable because the accumulation of incidents at the margin increases the probability of an accident or miscalculation that neither party controls.</p>
+<p>For central banks, the policy problem this creates is structurally different from demand-driven inflation because the standard toolkit operates on the wrong variable. The Federal Reserve can tighten credit to reduce consumption, which will eventually reduce demand for oil at the margin. But it cannot open the Strait. This means that every rate decision made in the current environment is partly a bet on geopolitical resolution — an assumption embedded in the models that the supply disruption is temporary. If that assumption is wrong, the cost of the bet is a rate path that was calibrated for a world that did not materialize, layered on top of an economy already absorbing the inflationary shock itself. The stagflationary trap is not a metaphor; it is the literal output of a model in which both its inflation and growth variables are moving in the wrong direction simultaneously, and the instrument designed to address one makes the other worse.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "blockade-diplomacy-limits";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

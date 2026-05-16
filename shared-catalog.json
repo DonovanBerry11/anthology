@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-16T05:10:50Z",
+  "generated": "2026-05-16T05:10:52Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -281,6 +281,19 @@
       "date": "2026-05-16",
       "date_display": "May 2026",
       "url": "/notes/ai-capex-returns-debate.html",
+      "keywords": []
+    },
+    {
+      "slug": "blockade-diplomacy-limits",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Chokepoint Economy: How the Strait of Hormuz Became the World's Central Bank — Further Reading",
+      "standfirst": "The US-Iran conflict has entered what analysts are calling a 'blockade diplomacy' phase, with the US tightening pressure on Iranian ports while Iran continues threatening Strait of Hormuz shipping — a.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/notes/blockade-diplomacy-limits.html",
       "keywords": []
     },
     {
