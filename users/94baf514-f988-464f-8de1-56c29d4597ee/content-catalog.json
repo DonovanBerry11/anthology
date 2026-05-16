@@ -231,6 +231,19 @@
       "keywords": []
     },
     {
+      "slug": "hormuz-oil-inflation-nexus",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "No Deal, No Relief: The Beijing Summit and the Market It Couldn't Calm — Further Reading",
+      "standfirst": "President Trump's two-day summit with Chinese President Xi Jinping in Beijing concluded without a major policy breakthrough on the Iran conflict or trade, sending US equities sharply lower — the S&P 5.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/hormuz-oil-inflation-nexus.html",
+      "keywords": []
+    },
+    {
       "slug": "hormuz-leverage-game",
       "type": "note",
       "section": "notes",
@@ -576,5 +589,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-16T05:10:45Z"
+  "generated": "2026-05-16T05:10:47Z"
 }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The modern US-China summit is a form that has almost entirely decoupled from its function.">
+  <title>No Deal, No Relief: The Beijing Summit and the Market It Couldn't Calm — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>No Deal, No Relief: The Beijing Summit and the Market It Couldn't Calm — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The modern US-China summit is a form that has almost entirely decoupled from its function. The form is the bilateral meeting between heads of state, with its choreography of handshakes and joint statements and preliminary deals announced in currencies that discourage precise scrutiny — planes, not dollars; commitments, not contracts. The function was supposed to be the management of a relationship too consequential to leave to its own logic. What the Beijing summit exposed is that the gap between form and function has widened to the point where the form now actively misleads markets about the state of the relationship.</p>
+<p>The Boeing figure is instructive here. Two hundred planes versus the expected five hundred is not just a negotiating gap — it reflects a structural reality about the Chinese aviation market that predates this summit by years. Chinese airlines have been under state pressure to accelerate domestic substitution toward the COMAC C919, China's domestically produced narrow-body aircraft, which entered commercial service in 2023. Commitments to Boeing orders exist in tension with that industrial policy directive, which means that any Boeing deal announced at a summit carries embedded political risk that the headline number does not disclose. Markets expecting five hundred planes were not pricing in a commercial transaction; they were pricing in a political signal that China chose not to send.</p>
+<p>On Iran, the dynamic is structurally different but produces a similar informational problem. Xi's reported assurance that China would not supply military equipment to Iran is meaningful as a diplomatic statement and almost impossible to verify as a behavioral commitment. China's relationship with Iran is triangulated through energy dependence — China has been absorbing discounted Iranian crude at volumes that have kept the Iranian economy functioning under sanctions — and through the broader logic of a multipolar order in which US primacy over the Strait of Hormuz is something Beijing has a long-term interest in complicating. None of that disappears because of a summit assurance. The assurance instead creates a plausible deniability layer that may be useful to both parties for different reasons.</p>
+<p>The deeper issue for markets is that the US-China relationship has entered a phase in which the resolution of acute crises — whether in the South China Sea, over Taiwan, or now over Iran — requires cooperation between two states that are simultaneously engaged in a long-run strategic competition where each crisis is also a test of relative resolve. This creates a structural feature: neither side can afford to appear to capitulate, which means that genuine cooperation can only be disguised as something else. Deals get done through ambiguity, through third parties, through time. Summits, which are public and immediate, are poorly suited to this mode. They are well suited to announcements, which is why markets have learned to price them in advance — and poorly suited to learning, which is why markets are repeatedly disappointed.</p>
+<p>The equity selloff following the Beijing summit is best read not as a market making an error in expectations but as a market correctly processing that the geopolitical structure surrounding the Hormuz crisis does not contain a near-term resolution mechanism. The S&P and Nasdaq moves are, in this light, a belated recalibration rather than a surprise.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "hormuz-oil-inflation-nexus";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
