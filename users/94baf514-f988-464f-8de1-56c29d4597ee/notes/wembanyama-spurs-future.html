@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The conference semifinal is structurally the most revealing round of an NBA playoff bracket.">
+  <title>Knife's Edge: Cleveland, San Antonio, and the Postseason at Its Best — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Knife's Edge: Cleveland, San Antonio, and the Postseason at Its Best — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The conference semifinal is structurally the most revealing round of an NBA playoff bracket. The first round operates on a seeding differential that frequently produces outcomes without much diagnostic value — a two versus a seven rarely tells you anything you didn't already know. The conference finals and beyond operate under the pressure of finality, which changes how coaches deploy rotations and how players respond to leverage. The semifinal is the round where teams are close enough in quality that schemes get genuinely tested, where the outcomes are uncertain enough that adjustments become decisive, and where the narrative of a postseason gets written.</p>
+<p>Cleveland's position is interesting precisely because it runs against the grain of how the Cavaliers have historically been understood. The franchise's playoff identity has been shaped almost entirely by the LeBron years — two distinct eras bookended by his departures, both defined by a single player carrying a team that would otherwise have been competent at best. The current Cavaliers are a different construction: a roster built around defensive sophistication and offensive spacing rather than a transcendent individual, the kind of team that wins series through attrition and execution rather than through moments. A 9-0 closing run in Game 5 overtime is exactly the kind of win that fingerprints this type of team — it is not heroic, it is systematic. It is the reward for depth and conditioning and preparation, not inspiration.</p>
+<p>Detroit's presence in the conference semifinals as a top seed is itself one of the more interesting organizational stories of the past several years. The Pistons franchise spent the better part of a decade in a deliberate rebuild that tested the patience of its ownership and market in ways that have become a template — for better and worse — for tanking strategy in the post-lottery-reform era. That the rebuild eventually produced a team capable of earning a one seed, and that the series is genuinely competitive entering Game 6, validates a process that could easily have gone differently with a few injury turns or draft lottery outcomes. The margin between vindication and organizational failure in NBA rebuilding is uncomfortably thin.</p>
+<p>In the West, the OKC Thunder's 8-0 postseason record represents something more structurally significant than a hot team. Oklahoma City's roster construction — built around a young core developed almost entirely within the organization, with minimal reliance on marquee free agency — reflects a front office philosophy that is betting on development predictability over market efficiency. The Thunder swept the Lakers in a series that, given Los Angeles's payroll and reputation, should have been more competitive. The fact that it wasn't is a data point about how far the Lakers remain from genuine contention, but it is also a data point about how much OKC's system advantage compounds in a playoff setting where rotations tighten and habits are tested under pressure.</p>
+<p>Wembanyama at 27 and 17 in a blowout against Minnesota is the kind of line that merits context: he is doing this in his second postseason, at an age when most franchise players are still working out basic playoff adjustments. The Spurs are not yet the finished article, but the direction is visible.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "wembanyama-spurs-future";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
