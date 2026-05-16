@@ -1,23 +1,51 @@
 {
-  "date": "2026-05-15",
-  "date_display": "Friday, 15 May 2026",
-  "generated_at": "15 May 2026, 12:14 AM EST",
+  "date": "2026-05-16",
+  "date_display": "Saturday, 16 May 2026",
+  "generated_at": "16 May 2026, 12:14 AM EST",
   "user_id": "44585119-14a8-4991-aa05-6708286d4149",
   "lead": {
-    "slug": "d017-daily-edition-2026-05-15",
+    "slug": "d019-daily-edition-2026-05-16",
     "type": "dispatch",
     "section": "dispatches",
     "domain": "global",
     "sector": "geopolitics",
     "dispatch_type": "daily",
-    "title": "Friday, 15 May 2026",
-    "standfirst": "President Trump held a high-stakes summit with Chinese President Xi Jinping in Beijing on May 14–15, addressing the Iran war, the Strait of Hormuz blockade, trade tensions, and the Taiwan situation. T.",
-    "date": "2026-05-15",
+    "title": "Saturday, 16 May 2026",
+    "standfirst": "Jerome Powell's term as Federal Reserve Chair ended May 15, with Kevin Warsh stepping in at a moment of acute central bank division. Treasury yields spiked to near-one-year highs at 4.55% and market-i.",
+    "date": "2026-05-16",
     "date_display": "May 2026",
-    "url": "/dispatches/d017-daily-edition-2026-05-15.html",
+    "url": "/dispatches/d019-daily-edition-2026-05-16.html",
     "keywords": []
   },
   "secondary": [
+    {
+      "slug": "d020-daily-edition-2026-05-16",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Saturday, 16 May 2026",
+      "standfirst": "President Trump concluded a two-day summit with Xi Jinping in Beijing, with both leaders emphasising stability and touting economic progress, but departing without resolving the core disputes over Tai.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/dispatches/d020-daily-edition-2026-05-16.html",
+      "keywords": []
+    },
+    {
+      "slug": "d017-daily-edition-2026-05-15",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Friday, 15 May 2026",
+      "standfirst": "President Trump held a high-stakes summit with Chinese President Xi Jinping in Beijing on May 14–15, addressing the Iran war, the Strait of Hormuz blockade, trade tensions, and the Taiwan situation. T.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/dispatches/d017-daily-edition-2026-05-15.html",
+      "keywords": []
+    },
     {
       "slug": "d018-daily-edition-2026-05-15",
       "type": "dispatch",
@@ -30,6 +58,22 @@
       "date": "2026-05-15",
       "date_display": "May 2026",
       "url": "/dispatches/d018-daily-edition-2026-05-15.html",
+      "keywords": []
+    }
+  ],
+  "further_reading": [
+    {
+      "slug": "trump-xi-beijing-summit-may15",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Trump-Xi Beijing Summit: 200 Jets, Rare Earths Preserved, Truce Extended",
+      "standfirst": "Trump's two-day Beijing summit delivered a narrow set of trade commitments — 200 Boeing jets, beef imports restored, rare-earth flows preserved — while Taiwan, Iran, and AI chip export controls were all left unresolved, with Xi framing the outcome as 'constructive strategic stability' ahead of an October tariff deadline.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/dispatches/trump-xi-beijing-summit-may15.html",
       "keywords": []
     },
     {
@@ -59,9 +103,7 @@
       "date_display": "May 2026",
       "url": "/dispatches/cloudflare-ai-layoffs.html",
       "keywords": []
-    }
-  ],
-  "further_reading": [
+    },
     {
       "slug": "ai-hardware-rotation",
       "type": "dispatch",
@@ -157,71 +199,6 @@
         "compliance",
         "international"
       ]
-    },
-    {
-      "slug": "trump-ai-oversight-reversal",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "technology",
-      "dispatch_type": "daily",
-      "title": "White House Reverses on AI Oversight",
-      "standfirst": "An administration that spent its first year opposing AI oversight is now drafting an executive order requiring pre-deployment government vetting of advanced models, following the Mythos security alarm. The reversal signals that national security framing is doing what the broader AI safety debate failed to do.",
-      "date": "2026-05-08",
-      "date_display": "May 2026",
-      "url": "/dispatches/trump-ai-oversight-reversal.html",
-      "keywords": [
-        "AI",
-        "artificial intelligence",
-        "Trump",
-        "US politics",
-        "technology",
-        "regulation",
-        "oversight",
-        "executive order",
-        "commercial",
-        "applications",
-        "national security"
-      ]
-    },
-    {
-      "slug": "pharma-tariffs",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "political-economy",
-      "dispatch_type": "daily",
-      "title": "The Pharma Tariff Tier",
-      "standfirst": "Trump's Section 232 pharmaceutical tariffs impose 100% on patented drug imports from 17 named companies, with a July 31 deadline. The tiered structure — 100% default, 20% for approved onshoring plans, zero for MFN holders — creates a compliance landscape almost entirely absent from mainstream coverage.",
-      "date": "2026-05-07",
-      "date_display": "May 2026",
-      "url": "/dispatches/pharma-tariffs.html",
-      "keywords": [
-        "tariffs",
-        "pharmaceuticals",
-        "trade",
-        "US politics",
-        "political-economy",
-        "Section 232",
-        "drug prices",
-        "Trump",
-        "industrial policy",
-        "financial markets"
-      ]
-    },
-    {
-      "slug": "trump-xi-beijing-summit",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "geopolitics",
-      "dispatch_type": "daily",
-      "title": "Trump-Xi Beijing Summit Opens Under Iran Shadow",
-      "standfirst": "Trump arrived in Beijing on May 12 for a state visit whose formal agenda — tariffs, rare earths, Taiwan, AI — has been crowded by an Iran ceasefire Trump himself called 'on massive life support,' with Xi holding more diplomatic leverage on Tehran than the White House had planned for.",
-      "date": "May 2026",
-      "date_display": "May 2026",
-      "url": "/dispatches/trump-xi-beijing-summit.html",
-      "keywords": []
     }
   ]
 }
