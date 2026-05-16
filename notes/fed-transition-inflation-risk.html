@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kevin Warsh is not an obvious choice for a stagflation environment, and understanding why requires going back to how he got here and what his intellectual formation actually is.">
+  <title>The Warsh Fed Inherits a Stagflation Trap: What the Powell-to-Warsh Handoff Means for Rates, Markets, and the Oil Shock — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Warsh Fed Inherits a Stagflation Trap: What the Powell-to-Warsh Handoff Means for Rates, Markets, and the Oil Shock — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 4:04 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>Kevin Warsh is not an obvious choice for a stagflation environment, and understanding why requires going back to how he got here and what his intellectual formation actually is. Warsh served on the Federal Reserve Board under Ben Bernanke during the 2008 financial crisis, an experience that shaped him in specific ways — he was one of the early internal voices arguing that the Fed's post-crisis quantitative easing programs carried inflation risks that the consensus was underweighting, and he left in 2011 having developed a reputation as a hawk who was skeptical of the institution's expanding mandate. Trump nominated him for ideological reasons that had more to do with criticism of Powell's rate policy during Trump's first term than with any careful matching of Warsh's profile to the current macro environment. The irony is that the environment he now inherits may actually suit his instincts better than a conventional soft-landing scenario would have.</p>
+<p>The 1970s analogy that is circulating in market commentary is both useful and dangerous, and it is worth being precise about where it holds and where it breaks down. The structural parallel that matters is the supply-side inflation shock interacting with an already-elevated price level — in the 1970s, it was the OPEC embargo; now it is the Hormuz closure and the attendant energy price surge. The parallel that matters less is the wage-price spiral dynamic that made 1970s inflation so persistent. Labor markets today, while softening, do not have the same union density or wage-indexing mechanisms that allowed cost-push inflation to become self-reinforcing in that era. What the 1970s comparison correctly identifies is the policy trap: raising rates to combat the inflation impulse risks tipping a softening labor market into something worse, while holding rates or cutting risks allowing an energy-driven inflation spike to become embedded in expectations.</p>
+<p>The CAPE ratio at 39.6 is the figure that should make equity investors most uncomfortable, and not just because of what it implies about valuation. The Cyclically Adjusted Price-to-Earnings ratio, developed by Robert Shiller, is meaningful precisely because it smooths earnings over a ten-year window, stripping out the cyclical noise that makes single-year P/E ratios unreliable. A reading of 39.6 means that by the most historically stable measure of equity valuation available, the market is pricing in either extraordinary future earnings growth or — more likely — continued financial repression in which the alternatives to equities remain unattractive. Both assumptions are stress-tested by a stagflationary environment. Earnings growth is harder to sustain when input costs are rising and consumer demand is softening. Financial repression becomes harder to maintain when inflation is running at 3.3% and accelerating, because the Fed's ability to keep real rates negative while maintaining its inflation-fighting credibility diminishes rapidly.</p>
+<p>Warsh's first test will come before he has had time to build any institutional authority at the Fed. The May CPI print — due roughly three weeks into his tenure — will set the tone for how markets interpret his first public communications, and his first press conference will be parsed with unusual intensity for any signal about whether he will prioritize the inflation mandate at the cost of growth, or attempt to hold the line while waiting to see whether the energy shock is transitory. The word 'transitory' has a particular resonance at the Fed right now, having become associated with the Powell-era miscommunication of 2021. Warsh will be aware of that history and will almost certainly avoid the framing — but the substantive question it raises is unavoidable: how much of the current inflation impulse resolves if and when Hormuz reopens, and how much has already become embedded in inflation expectations in ways that require a policy response regardless.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "fed-transition-inflation-risk";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
