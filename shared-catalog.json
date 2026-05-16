@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-16T05:14:04Z",
+  "generated": "2026-05-16T05:14:06Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -347,6 +347,19 @@
       "date": "2026-05-16",
       "date_display": "May 2026",
       "url": "/notes/fed-inflation-dual-mandate.html",
+      "keywords": []
+    },
+    {
+      "slug": "automation-jobs-transition",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Agentic Reckoning: When AI Stops Being a Tool and Starts Being the Workforce — Further Reading",
+      "standfirst": "A fresh wave of major tech layoffs swept through the industry in May 2026, with Cloudflare cutting over 1,100 jobs (20% of its workforce) after reporting internal AI usage surged 600% in three months,.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/notes/automation-jobs-transition.html",
       "keywords": []
     },
     {

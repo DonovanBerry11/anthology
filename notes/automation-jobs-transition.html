@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The history of technology-driven labour displacement tends to be narrated in long, smooth arcs — the agricultural revolution, mechanised textile production, the automation of manufacturing assembly li">
+  <title>The Agentic Reckoning: When AI Stops Being a Tool and Starts Being the Workforce — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Agentic Reckoning: When AI Stops Being a Tool and Starts Being the Workforce — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 12:14 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The history of technology-driven labour displacement tends to be narrated in long, smooth arcs — the agricultural revolution, mechanised textile production, the automation of manufacturing assembly lines. Each of these transitions, in retrospect, appears gradual and even logical. Living through them looked nothing like that. What the current wave of AI-driven restructuring shares with those earlier episodes is the gap between the macro story economists tell — that technology creates new categories of work even as it destroys existing ones — and the micro reality that specific people with specific skills are losing specific jobs faster than new roles are being defined, let alone filled. What distinguishes this episode from earlier automation waves is the nature of the work being displaced. Previous waves primarily replaced physical and routine cognitive labour. The jobs now being restructured at Cloudflare, Amazon, and across the broader technology sector are managerial, analytical, and communicative — the categories of work that mid-twentieth-century economists assumed were the safest refuges from machine competition. The economic theory of comparative advantage in human labour is being stress-tested in real time, and the results are not conforming to the optimistic version of the model. The 'agentic' framing that Amazon and others have adopted is doing significant conceptual work that deserves scrutiny. An agent, in the AI sense, is a system that can pursue goals autonomously across multiple steps, making decisions without human intervention at each stage. This is categorically different from earlier automation, which replaced a task, because an agent can in principle replace a workflow — a sequence of tasks that previously required judgment, adaptation, and coordination across individuals. When a company says it is shifting to agentic workflows, it is not saying it has automated a function. It is saying it has eliminated the need for the human architecture that coordinated a set of functions. This is why the Cloudflare figure — 600 percent increase in internal AI usage over three months — is structurally significant. That rate of adoption within a single organisation suggests that the experimental phase, in which AI tools exist alongside human workers in a supplementary relationship, has ended. The question for labour markets is not whether this displacement is real — May 2026 makes clear that it is — but whether the transition costs will be managed deliberately or simply absorbed by affected workers and their communities. Previous technology transitions were accompanied, eventually, by public investment in retraining, by new educational categories, by labour market institutions that evolved to match workers to emerging roles. None of those adaptive mechanisms move at the speed the current transition is demanding. The policy infrastructure for managing AI-driven displacement is, at the moment, roughly where the infrastructure for managing factory automation was in 1955 — understood to be necessary in the abstract, almost entirely unbuilt in practice.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "automation-jobs-transition";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
