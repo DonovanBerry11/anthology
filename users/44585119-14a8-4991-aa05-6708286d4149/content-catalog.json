@@ -53,6 +53,19 @@
       "keywords": []
     },
     {
+      "slug": "el-nino-baseline-risk",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "A Warmer Floor: Why This El Niño Is Different From Every One Before It — Further Reading",
+      "standfirst": "Climate scientists warned this week that a potentially powerful El Niño developing in the Pacific, layered on top of an already warming baseline, could drive 'unprecedented' weather extremes and push.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/users/44585119-14a8-4991-aa05-6708286d4149/notes/el-nino-baseline-risk.html",
+      "keywords": []
+    },
+    {
       "slug": "us-china-summit-stakes",
       "type": "note",
       "section": "notes",
@@ -132,5 +145,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-16T05:14:06Z"
+  "generated": "2026-05-16T05:14:07Z"
 }

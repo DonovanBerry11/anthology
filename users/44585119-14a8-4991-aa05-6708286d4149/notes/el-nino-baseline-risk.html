@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="El Niño is among the most studied climate phenomena on Earth, with instrumental records stretching back to the nineteenth century and proxy records — drawn from coral cores, tree rings, and ice column">
+  <title>A Warmer Floor: Why This El Niño Is Different From Every One Before It — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>A Warmer Floor: Why This El Niño Is Different From Every One Before It — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 12:14 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>El Niño is among the most studied climate phenomena on Earth, with instrumental records stretching back to the nineteenth century and proxy records — drawn from coral cores, tree rings, and ice columns — extending several centuries further. The basic mechanism is well understood: a periodic weakening of the trade winds that normally push warm surface water westward across the Pacific allows that warm water to slosh back eastward, raising sea surface temperatures across the central and eastern Pacific and reorganising atmospheric circulation patterns globally. What this produces downstream — drought in Australia and southern Africa, flooding in South America, disrupted monsoons across South Asia — follows patterns that meteorologists can now anticipate with meaningful skill months in advance. The scientific concern being expressed now is not about El Niño itself but about the substrate on which it operates. Global mean surface temperatures are roughly 1.2 to 1.3 degrees Celsius above the pre-industrial baseline. That increment represents stored heat — in the atmosphere, in the oceans, in altered land-surface conditions — that does not reset between climate events. When El Niño arrives and adds its own thermal anomaly on top of that elevated baseline, the resulting peak temperatures enter ranges that have no historical analogue in the instrumental record. The India-Pakistan heatwave finding from the World Weather Attribution study is a useful illustration of how this compounding works in practice. Attribution science attempts to quantify the degree to which a specific extreme event was made more likely or more severe by human-caused climate change. A finding that a given heatwave is three times more likely than in the pre-industrial era does not mean that climate change caused the event — such events occurred naturally before industrialisation. It means that the background conditions have shifted enough to make the event dramatically more probable and, in most cases, more intense when it does occur. A once-in-thirty-year event becoming a once-in-ten-year event has enormous practical consequences for infrastructure design, agricultural planning, public health systems, and insurance markets, none of which were built to manage that frequency. The five-year recurrence estimate for a 46-degree-plus heatwave across northern India and Pakistan carries implications that go well beyond the immediate humanitarian concern. Agricultural systems in the Indo-Gangetic Plain, which feed hundreds of millions of people, are calibrated to historical temperature ranges. Crop stress at those temperatures is not linear — there are biological thresholds above which yield losses accelerate sharply. Water systems that depend on Himalayan glaciation are simultaneously under stress from the same warming that intensifies the heatwaves. The compounding of these pressures, layered under an El Niño that has not yet peaked, is what distinguishes the scientific alarm being expressed now from routine seasonal forecasting. The warmer floor is not a metaphor. It is a physical condition that every subsequent weather event, however familiar in type, is now built upon.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "el-nino-baseline-risk";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

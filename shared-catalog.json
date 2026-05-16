@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-16T05:14:06Z",
+  "generated": "2026-05-16T05:14:07Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -360,6 +360,19 @@
       "date": "2026-05-16",
       "date_display": "May 2026",
       "url": "/notes/automation-jobs-transition.html",
+      "keywords": []
+    },
+    {
+      "slug": "el-nino-baseline-risk",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "A Warmer Floor: Why This El Niño Is Different From Every One Before It — Further Reading",
+      "standfirst": "Climate scientists warned this week that a potentially powerful El Niño developing in the Pacific, layered on top of an already warming baseline, could drive 'unprecedented' weather extremes and push.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/notes/el-nino-baseline-risk.html",
       "keywords": []
     },
     {
