@@ -1,23 +1,37 @@
 {
-  "date": "2026-05-15",
-  "date_display": "Friday, 15 May 2026",
-  "generated_at": "15 May 2026, 2:37 PM EST",
+  "date": "2026-05-16",
+  "date_display": "Saturday, 16 May 2026",
+  "generated_at": "16 May 2026, 12:10 AM EST",
   "user_id": "94baf514-f988-464f-8de1-56c29d4597ee",
   "lead": {
-    "slug": "d017-daily-edition-2026-05-15",
+    "slug": "d019-daily-edition-2026-05-16",
     "type": "dispatch",
     "section": "dispatches",
     "domain": "global",
     "sector": "geopolitics",
     "dispatch_type": "daily",
-    "title": "Friday, 15 May 2026",
-    "standfirst": "President Trump held a high-stakes summit with Chinese President Xi Jinping in Beijing on May 14–15, addressing the Iran war, the Strait of Hormuz blockade, trade tensions, and the Taiwan situation. T.",
-    "date": "2026-05-15",
+    "title": "Saturday, 16 May 2026",
+    "standfirst": "Jerome Powell's term as Federal Reserve Chair ended May 15, with Kevin Warsh stepping in at a moment of acute central bank division. Treasury yields spiked to near-one-year highs at 4.55% and market-i.",
+    "date": "2026-05-16",
     "date_display": "May 2026",
-    "url": "/dispatches/d017-daily-edition-2026-05-15.html",
+    "url": "/dispatches/d019-daily-edition-2026-05-16.html",
     "keywords": []
   },
   "secondary": [
+    {
+      "slug": "d017-daily-edition-2026-05-15",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Friday, 15 May 2026",
+      "standfirst": "President Trump held a high-stakes summit with Chinese President Xi Jinping in Beijing on May 14–15, addressing the Iran war, the Strait of Hormuz blockade, trade tensions, and the Taiwan situation. T.",
+      "date": "2026-05-15",
+      "date_display": "May 2026",
+      "url": "/dispatches/d017-daily-edition-2026-05-15.html",
+      "keywords": []
+    },
     {
       "slug": "d018-daily-edition-2026-05-15",
       "type": "dispatch",
@@ -45,7 +59,9 @@
       "date_display": "May 2026",
       "url": "/dispatches/trump-xi-beijing-summit-may15.html",
       "keywords": []
-    },
+    }
+  ],
+  "further_reading": [
     {
       "slug": "d016-daily-edition-2026-05-14",
       "type": "dispatch",
@@ -59,9 +75,7 @@
       "date_display": "May 2026",
       "url": "/dispatches/d016-daily-edition-2026-05-14.html",
       "keywords": []
-    }
-  ],
-  "further_reading": [
+    },
     {
       "slug": "cloudflare-ai-layoffs",
       "type": "dispatch",
@@ -196,31 +210,6 @@
         "commercial",
         "applications",
         "national security"
-      ]
-    },
-    {
-      "slug": "pharma-tariffs",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "political-economy",
-      "dispatch_type": "daily",
-      "title": "The Pharma Tariff Tier",
-      "standfirst": "Trump's Section 232 pharmaceutical tariffs impose 100% on patented drug imports from 17 named companies, with a July 31 deadline. The tiered structure — 100% default, 20% for approved onshoring plans, zero for MFN holders — creates a compliance landscape almost entirely absent from mainstream coverage.",
-      "date": "2026-05-07",
-      "date_display": "May 2026",
-      "url": "/dispatches/pharma-tariffs.html",
-      "keywords": [
-        "tariffs",
-        "pharmaceuticals",
-        "trade",
-        "US politics",
-        "political-economy",
-        "Section 232",
-        "drug prices",
-        "Trump",
-        "industrial policy",
-        "financial markets"
       ]
     }
   ]
