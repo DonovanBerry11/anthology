@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-16T05:14:02Z",
+  "generated": "2026-05-16T05:14:04Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -334,6 +334,19 @@
       "date": "2026-05-16",
       "date_display": "May 2026",
       "url": "/notes/war-powers-act-limits.html",
+      "keywords": []
+    },
+    {
+      "slug": "fed-inflation-dual-mandate",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "Record Highs, Real Pain: How Markets and Main Street Are Living in Different Economies — Further Reading",
+      "standfirst": "U.S. equity markets reached record highs on May 14, with the S&P 500 closing above 7,500 for the first time and the Dow recapturing 50,000, driven by Trump-Xi summit optimism and strong AI-sector earn.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/notes/fed-inflation-dual-mandate.html",
       "keywords": []
     },
     {

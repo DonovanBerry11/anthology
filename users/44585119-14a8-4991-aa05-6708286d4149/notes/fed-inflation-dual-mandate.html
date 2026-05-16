@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The divergence between equity markets and lived economic experience is not a new phenomenon, but the mechanism driving it has shifted in ways that make this particular episode harder to interpret thro">
+  <title>Record Highs, Real Pain: How Markets and Main Street Are Living in Different Economies — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Record Highs, Real Pain: How Markets and Main Street Are Living in Different Economies — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 12:14 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The divergence between equity markets and lived economic experience is not a new phenomenon, but the mechanism driving it has shifted in ways that make this particular episode harder to interpret through historical analogies. In past inflationary periods — the 1970s being the canonical example — rising prices and rising equity valuations were broadly incompatible. Inflation eroded corporate margins, raised the cost of capital, and drove investors toward hard assets. What the current moment reflects is something different: a bifurcation within the economy itself, where a relatively small number of sectors, principally AI-adjacent technology firms, are generating earnings growth so substantial that they are lifting headline indices even as the broader economy absorbs significant real-income pressure. The S&P 500 crossing 7,500 is therefore not evidence that the economy is healthy. It is evidence that the index is heavily concentrated in companies whose earnings are structurally insulated from the pressures affecting most American households. The top ten holdings in the S&P 500 now represent a historically unusual share of total index weight, which means a record-high close tells you something very specific about a very small slice of corporate America and relatively little about the economy's overall condition. The Federal Reserve's position is genuinely uncomfortable in a way that has few modern parallels. Its dual mandate — price stability and maximum employment — is generating conflicting signals simultaneously. Inflation at 3.8 percent is well above target, which under conventional monetary policy logic would call for rate increases. But the war-linked nature of the price pressure means that raising rates would not address the underlying cause — you cannot make jet fuel cheaper by tightening credit conditions — while it would add further stress to the housing market and small business lending that is already constrained. The futures market pricing a 74.5 percent probability of a hold reflects not confidence in the Fed's position but recognition that it is trapped between instruments that are poorly matched to the problem it is facing. There is also a distributional story embedded in this data that rarely surfaces in market coverage. Equity wealth in the United States is concentrated heavily in the top quintile of households. A record-high S&P 500 generates real wealth effects for those households — they feel wealthier, spend more freely, and their consumption data distorts aggregate consumer sentiment figures upward. Meanwhile, households in the lower three quintiles, who hold little or no equity but spend a much higher share of income on fuel and groceries, are experiencing a meaningfully different economic reality. Survey data measuring consumer confidence tends to average across these groups in ways that obscure rather than illuminate the underlying polarisation. The grocery store and the brokerage account are not just describing different countries. They are being experienced by different populations, and the policy tools available to address one set of conditions tend to worsen the other.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "fed-inflation-dual-mandate";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
