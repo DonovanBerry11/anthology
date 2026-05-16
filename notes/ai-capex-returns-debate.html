@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A 190x revenue multiple asks a specific question that most valuation frameworks are not designed to answer: at what point does the scale of investment commitment become self-validating?">
+  <title>The 5 Billion Question: What Cerebras's Debut Tells Us About AI Valuation — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The 5 Billion Question: What Cerebras's Debut Tells Us About AI Valuation — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>A 190x revenue multiple asks a specific question that most valuation frameworks are not designed to answer: at what point does the scale of investment commitment become self-validating? Traditional discounted cash flow analysis fails at these multiples not because the math breaks down but because the assumptions required to justify the number — sustained hypergrowth for an extended period, expanding margins, no meaningful competitive erosion — are not assumptions drawn from evidence. They are assumptions drawn from a narrative about what the technology will eventually become. The multiple is therefore not a valuation in the conventional sense. It is a probability-weighted bet on category definition: the buyer is paying for the chance that Cerebras becomes the infrastructure layer that AI compute runs on, in the same way that buyers of Amazon Web Services' parent in the early 2010s were paying for the chance that cloud became the default architecture for enterprise computing.</p>
+<p>The AWS comparison is worth examining carefully because it illustrates both why the bet might be right and why it is genuinely dangerous. Amazon Web Services reached profitability and scale through a combination of first-mover advantage, switching costs that accumulated as enterprise customers built on the platform, and a pricing strategy that sacrificed margin to grow volume. The network effects were real but slow to appear, and the window of vulnerability — when a better-funded or better-engineered competitor could have displaced AWS — was longer than the outcome retrospectively suggests. Cerebras is entering a market where that window may be structurally narrower, because Nvidia's dominance of the AI training market is not merely a first-mover advantage. It is embedded in the software stack — in CUDA, in the accumulated library of optimized models and workflows — in ways that are genuinely difficult to route around.</p>
+<p>Cerebras' technical differentiation is real. Its Wafer Scale Engine architecture, which integrates an entire silicon wafer as a single chip rather than connecting discrete dies, produces bandwidth and latency characteristics that are meaningfully better than GPU clusters for certain inference workloads. The question markets are implicitly answering at a 190x revenue multiple is whether those characteristics are good enough, on a broad enough class of workloads, to justify the switching costs of departing the Nvidia ecosystem. That is a technical question masquerading as a financial one, and it is genuinely unresolved.</p>
+<p>The timing of the Cerebras listing is itself a data point. AI-linked equities have led market performance through a period of broader pressure, which creates an IPO window that sophisticated issuers and their bankers are rationally inclined to use. This is not an accusation of bad faith — timing a listing to favorable sector sentiment is entirely standard practice — but it does mean that some portion of the 68% first-day gain reflects sector enthusiasm rather than company-specific price discovery. The question that will determine whether the $95 billion figure looks prescient or excessive is not answerable from a prospectus. It requires knowing which of the current generation of AI infrastructure bets survives the inevitable consolidation phase that follows every technology build-out, and which becomes a cautionary exhibit in the next cycle's business school curriculum.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "ai-capex-returns-debate";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

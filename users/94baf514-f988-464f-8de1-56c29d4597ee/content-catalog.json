@@ -257,6 +257,19 @@
       "keywords": []
     },
     {
+      "slug": "ai-capex-returns-debate",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The $95 Billion Question: What Cerebras's Debut Tells Us About AI Valuation — Further Reading",
+      "standfirst": "AI chipmaker Cerebras Systems made a dramatic Nasdaq debut on May 14, closing up 68% on its first day of trading and reaching a market capitalisation of approximately $95 billion — against 2025 revenu.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/ai-capex-returns-debate.html",
+      "keywords": []
+    },
+    {
       "slug": "hormuz-leverage-game",
       "type": "note",
       "section": "notes",
@@ -602,5 +615,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-16T05:10:48Z"
+  "generated": "2026-05-16T05:10:50Z"
 }
