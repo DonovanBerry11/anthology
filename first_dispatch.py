@@ -181,6 +181,40 @@ def main():
     orientation_excerpt = orientation_path.read_text(encoding='utf-8')[:2500]
     logger.info(f'Loaded orientation: {orientation_path}')
 
+    # ── Read voice.md if present ───────────────────────────────────────────────
+    voice_instruction_block = ''
+    voice_path = orientation_path.parent / 'voice.md'
+    if voice_path.exists():
+        voice_text = voice_path.read_text(encoding='utf-8')
+        logger.info(f'Loaded voice.md: {voice_path}')
+        # Extract populated fields (state != unknown and != default)
+        populated_lines = []
+        current_section = ''
+        for line in voice_text.splitlines():
+            stripped = line.strip()
+            # Track section headings (## 1. Register etc.)
+            if stripped.startswith('## ') and stripped[3:4].isdigit():
+                current_section = stripped.lstrip('#').strip()
+            # Capture lines after "> " that are not "unknown" or "default"
+            if stripped.startswith('> ') and current_section:
+                value = stripped[2:].strip()
+                if value and value.lower() not in ('unknown', 'default'):
+                    populated_lines.append(f'- {current_section}: {value}')
+        if populated_lines:
+            voice_instruction_block = (
+                '\n\nThe following voice preferences apply to this user. '
+                'Apply them to each dispatch section:\n'
+                + '\n'.join(populated_lines)
+                + '\nDo not apply preferences marked unknown or default.'
+            )
+            logger.info(
+                f'Voice instruction block built: {len(populated_lines)} populated fields'
+            )
+        else:
+            logger.info('voice.md exists but all fields are unknown/default — not injecting')
+    else:
+        logger.info(f'No voice.md found at {voice_path} — proceeding without voice calibration')
+
     # ── Next dispatch/note numbers ─────────────────────────────────────────────
     pieces_dispatches_dir = system_dir / 'pieces' / 'dispatches'
     pieces_notes_dir      = system_dir / 'pieces' / 'notes'
@@ -212,7 +246,7 @@ A new reader has just completed onboarding. You need to find 5 current news stor
 their first edition.
 
 READER PROFILE (from their orientation file):
-{orientation_excerpt}
+{orientation_excerpt}{voice_instruction_block}
 
 Search the web for 5 current news stories from the past 48 hours that would genuinely interest \
 this reader. Choose stories from different domains (e.g. politics, economics, geopolitics, \
@@ -275,7 +309,7 @@ No markdown fences, no commentary — just the JSON:
 Write 5 daily dispatches for the reader described below.
 
 READER PROFILE:
-{orientation_excerpt}
+{orientation_excerpt}{voice_instruction_block}
 
 FIVE STORIES TO COVER:
 {topics_summary}
@@ -383,7 +417,7 @@ You have just written 5 short dispatches (350–450 words each) covering current
 Now write 5 companion notes — one for each story — that go deeper.
 
 READER PROFILE:
-{orientation_excerpt}
+{orientation_excerpt}{voice_instruction_block}
 
 STORIES (with dispatch summaries):
 {dispatches_summary_for_notes}

@@ -319,6 +319,200 @@ domains that consistently draw deep engagement.
 """
 
 
+# ── Voice file builder ────────────────────────────────────────────────────────
+
+def build_voice_md(user_id, today, interests=None, additional_info="",
+                   country_of_residence="", city=""):
+    """
+    Generate a starter voice.md for a new user following the voice-template.md schema.
+
+    Fields that cannot be inferred from the available onboarding data are marked
+    `unknown`. The interests[] array and additional_info field provide the most
+    signal — used to infer register and structural preferences conservatively.
+    """
+    interests = interests or []
+    has_interests = bool(interests)
+    has_additional = bool(additional_info.strip())
+
+    # Infer register from interests: sports-heavy → add domain exception note
+    sports = [i for i in interests if i.lower() in ('sports',)]
+    analytical = [i for i in interests if i.lower() in (
+        'politics', 'foreign affairs', 'economics', 'finance', 'tech'
+    )]
+
+    if analytical:
+        register_formality = "formal-analytical"
+        register_distance = "neutral-to-distant"
+    elif has_interests:
+        register_formality = "default"
+        register_distance = "default"
+    else:
+        register_formality = "unknown"
+        register_distance = "unknown"
+
+    sports_exception = (
+        "Sports content: fan-register warmth, not analytical distance."
+        if sports else "unknown"
+    )
+
+    # Structural preferences: conservative inferences from interests
+    if analytical:
+        vocabulary_register = "elevated-technical"
+        lead_type = "analytical-observation-first"
+    elif has_interests:
+        vocabulary_register = "default"
+        lead_type = "default"
+    else:
+        vocabulary_register = "unknown"
+        lead_type = "unknown"
+
+    # Additional info may contain voice signals — preserve as a note
+    additional_note = ""
+    if has_additional:
+        additional_note = (
+            f"\n*Note from onboarding additional_info field (may contain voice signals):*\n"
+            f"> {additional_info.strip()}\n"
+        )
+
+    return f"""\
+# Voice Calibration — User {user_id[:8]}
+
+*Per-user voice calibration file. Read by the dispatch agent in Pre-Draft and Round 1 sense-check.
+Populated fields take precedence over pipeline orientation defaults on register, rhythm, and anti-patterns.
+Pipeline orientation takes precedence on structure, attribution, and sourcing.*
+
+---
+
+## Header
+
+```
+user_id:        {user_id}
+generated_at:   {today}
+last_updated:   {today}
+data_sources:   [onboarding_metadata]
+```
+
+*Generated at bootstrap from onboarding metadata. Fields inferred conservatively from interests[]
+and additional_info. Update as reading engagement data accumulates.*
+{additional_note}
+---
+
+## 1. Register
+
+**State:** `{"populated" if analytical else "unknown"}`
+
+**Formality axis** *(formal-analytical / conversational / direct)*:
+> {register_formality}
+
+**Distance-warmth axis** *(distant / neutral / warm)*:
+> {register_distance}
+
+**Domain exceptions** *(register that diverges from the default for specific content types)*:
+> {sports_exception}
+
+---
+
+## 2. Sentence Rhythm
+
+**State:** `unknown`
+
+**Preferred sentence length** *(short-punchy / varied / long-complex)*:
+> unknown
+
+**Tolerance for long constructions** *(low / medium / high)*:
+> unknown
+
+**Format-dependent variation** *(does rhythm preference vary by content type?)*:
+> unknown
+
+---
+
+## 3. Vocabulary
+
+**State:** `{"populated" if analytical else "unknown"}`
+
+**Preferred diction register** *(plain / elevated / technical)*:
+> {vocabulary_register}
+
+**Domain-specific terminology** *(tolerate / require / avoid)*:
+> {"require in analytical domains — technical terms expected without hedging" if analytical else "unknown"}
+
+**Explicit aversions** *(known vocabulary to avoid)*:
+> unknown
+
+---
+
+## 4. Lead Framing
+
+**State:** `{"populated" if analytical else "unknown"}`
+
+**Preferred lead type** *(news-first / analytical-observation-first / context-first)*:
+> {lead_type}
+
+**Explicit opening avoidances**:
+> unknown
+
+---
+
+## 5. Structural Preferences
+
+**State:** `unknown`
+
+**Subheadings** *(none / contextual / required)*:
+> unknown
+
+**Bullet points and lists** *(none / contextual / preferred)*:
+> unknown
+
+**Section breaks** *(sparse / standard / frequent)*:
+> unknown
+
+**Format-dependent structural norms**:
+> unknown
+
+---
+
+## 6. Endings
+
+**State:** `unknown`
+
+**Preferred closing style** *(abrupt-closed / contextual-close / forward-looking)*:
+> unknown
+
+**Explicit closing avoidances**:
+> unknown
+
+**What-to-watch convention** *(absent / named-events-only / analytical-forecast)*:
+> unknown
+
+---
+
+## 7. Anti-Patterns
+
+**State:** `unknown`
+
+- unknown
+
+---
+
+## 8. Calibration Log
+
+*Append-only. Most recent entry first.*
+
+---
+
+### {today} — Initial generation from onboarding metadata at bootstrap
+
+**Source:** onboarding_metadata
+**Fields updated:** register (partial), vocabulary (partial), lead framing (partial) — inferred from interests[]; all other fields marked unknown
+**Notes:** Generated by bootstrap_orientation.py immediately after orientation.md was written.
+Interests available: {", ".join(interests) if interests else "(none stated)"}. Additional info: {"present" if has_additional else "not provided"}.
+Fields marked unknown should be updated as reading engagement accumulates.
+
+---
+"""
+
+
 # ── Registry helpers ───────────────────────────────────────────────────────────
 
 def load_registry(registry_path):
@@ -465,6 +659,18 @@ def main():
         print("─" * 60)
         print(content)
         print("─" * 60)
+        voice_content = build_voice_md(
+            user_id=user_id,
+            today=today,
+            interests=user_interests,
+            additional_info=additional_info,
+            country_of_residence=country_of_residence,
+            city=city,
+        )
+        print("\n[dry-run] voice.md content that would be written:\n")
+        print("─" * 60)
+        print(voice_content[:500] + "…")
+        print("─" * 60)
         if not already_registered:
             print("\n[dry-run] registry.json entry that would be added:")
             print(json.dumps({
@@ -481,6 +687,19 @@ def main():
     user_dir.mkdir(parents=True, exist_ok=True)
     orientation_path.write_text(content, encoding="utf-8")
     print(f"\n✓ orientation.md written → {orientation_path}")
+
+    # ── Write starter voice.md ─────────────────────────────────────────────────
+    voice_path = user_dir / "voice.md"
+    voice_content = build_voice_md(
+        user_id=user_id,
+        today=today,
+        interests=user_interests,
+        additional_info=additional_info,
+        country_of_residence=country_of_residence,
+        city=city,
+    )
+    voice_path.write_text(voice_content, encoding="utf-8")
+    print(f"✓ voice.md written → {voice_path}")
 
     # ── Update registry ────────────────────────────────────────────────────────
     if not already_registered:
