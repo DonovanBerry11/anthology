@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-16T21:04:42Z",
+  "generated": "2026-05-16T21:04:44Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -452,6 +452,20 @@
       "date": "2026-05-16",
       "date_display": "May 2026",
       "url": "/notes/world-cup-us-soccer-moment.html",
+      "keywords": []
+    },
+    {
+      "slug": "d021-daily-edition-2026-05-16",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Saturday, 16 May 2026",
+      "standfirst": "President Trump concluded a two-day state visit to Beijing — the first by a U.S. president since 2017 — accompanied by top executives including Tim Cook, Elon Musk, and Jensen Huang. Despite discussio.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/dispatches/d021-daily-edition-2026-05-16.html",
       "keywords": []
     },
     {
