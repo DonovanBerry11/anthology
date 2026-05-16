@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The thirty-year arc of American soccer's development is one of the more improbable institutional stories in the history of professional sport, and understanding where the U.S.">
+  <title>Home Field, Enormous Stakes: What the 30-Day World Cup Countdown Means for American Soccer — and American Business — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Home Field, Enormous Stakes: What the 30-Day World Cup Countdown Means for American Soccer — and American Business — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 4:04 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The thirty-year arc of American soccer's development is one of the more improbable institutional stories in the history of professional sport, and understanding where the U.S. finds itself in June 2026 requires understanding how precarious that arc looked at multiple points along the way. The 1994 World Cup — also hosted in the United States — was genuinely transformative for a different set of reasons than this one will be. In 1994, the primary stakes were proving to a skeptical global soccer community that American audiences would show up, that the country could host at scale, and that the domestic league that had been promised as a condition of hosting rights, MLS, would actually materialize. All three things happened, though MLS itself spent most of its first decade in a financially fragile state that bore little resemblance to the commercially robust entity it has become.</p>
+<p>What is structurally different in 2026 is the position of the U.S. men's national team relative to the global game. The 1994 U.S. team was a creditable but clearly limited outfit — it reached the round of sixteen on home soil and was competitive without being threatening. The current USMNT cohort contains players with Champions League experience, players who have been first-choice starters at top European clubs, and a tactical sophistication that the 1994 generation could not have claimed. The gap between the U.S. and the genuine elite — France, Brazil, the current Spanish and English generations — remains real, but it is a gap that can now be measured in fine distinctions of quality rather than in the categorical terms that defined American soccer's international standing for most of the sport's domestic history.</p>
+<p>The commercial stakes are substantial in ways that extend well beyond FIFA's tournament revenues. The 2026 World Cup represents, for U.S. soccer's institutional ecosystem, a potential step-change in the domestic commercial value of the game — in sponsorship rates for MLS clubs, in media rights valuations, in the pipeline of youth players whose parents choose soccer over the other sports competing for their attention and their weekend schedules. American sport operates as a market in a more explicit way than almost any other country's sporting culture, and a successful home World Cup — particularly one in which the USMNT advances deep into the knockout rounds — would inject competitive commercial energy into a sport that has spent three decades trying to establish itself as a major-league property in an extraordinarily crowded domestic market.</p>
+<p>The halftime show decision for the final at MetLife is a meaningful signal about FIFA's read of the American market and the American cultural moment. The organization has been cautious about incorporating entertainment spectacle into the tournament proper — the World Cup's brand has always rested on the soccer itself as the sufficient draw — and the decision to program a major halftime show at the final reflects both the scale of the U.S. broadcast opportunity and the recognition that American viewers, shaped by the Super Bowl, have a particular expectation of championship events as total entertainment experiences rather than pure sport. Whether that represents a sensitive adaptation to the host market or a dilution of what makes the World Cup distinctive is a question the soccer community will argue about for years.</p>
+<p>The 48-team expansion adds a layer of competitive uncertainty that is genuinely interesting from a tactical standpoint. More teams from more confederations means more stylistic variety, more potential for upsets in the group stage, and a longer path to the final that rewards squad depth as much as elite starting-eleven quality. For a U.S. team that has roster depth it did not have a decade ago, that is a structural advantage — and it is one that the coaching staff will have had months to build a tournament strategy around.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "world-cup-us-soccer-moment";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
