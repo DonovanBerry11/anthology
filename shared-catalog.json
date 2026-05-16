@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-16T05:10:52Z",
+  "generated": "2026-05-16T05:10:54Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -294,6 +294,20 @@
       "date": "2026-05-16",
       "date_display": "May 2026",
       "url": "/notes/blockade-diplomacy-limits.html",
+      "keywords": []
+    },
+    {
+      "slug": "d019-daily-edition-2026-05-16",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Saturday, 16 May 2026",
+      "standfirst": "Jerome Powell's term as Federal Reserve Chair ended May 15, with Kevin Warsh stepping in at a moment of acute central bank division. Treasury yields spiked to near-one-year highs at 4.55% and market-i.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/dispatches/d019-daily-edition-2026-05-16.html",
       "keywords": []
     },
     {
