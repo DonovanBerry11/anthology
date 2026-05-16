@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-16T05:14:07Z",
+  "generated": "2026-05-16T05:14:09Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -373,6 +373,20 @@
       "date": "2026-05-16",
       "date_display": "May 2026",
       "url": "/notes/el-nino-baseline-risk.html",
+      "keywords": []
+    },
+    {
+      "slug": "d020-daily-edition-2026-05-16",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Saturday, 16 May 2026",
+      "standfirst": "President Trump concluded a two-day summit with Xi Jinping in Beijing, with both leaders emphasising stability and touting economic progress, but departing without resolving the core disputes over Tai.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/dispatches/d020-daily-edition-2026-05-16.html",
       "keywords": []
     },
     {
