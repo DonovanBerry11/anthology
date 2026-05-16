@@ -38,7 +38,20 @@
       "date_display": "May 2026",
       "url": "/users/fe4963e3-ceb2-499f-ac08-aa4e333b082f/notes/fed-transition-inflation-risk.html",
       "keywords": []
+    },
+    {
+      "slug": "ai-chip-capital-race",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Other Chip Story: What Cerebras's 68% Debut Reveals About the AI Infrastructure Race Beyond Nvidia — Further Reading",
+      "standfirst": "AI chipmaker Cerebras Systems jumped 68% on its first day of trading on the Nasdaq on May 14, reaching a market capitalisation of approximately $95 billion, before pulling back more than 2% in Friday'.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/users/fe4963e3-ceb2-499f-ac08-aa4e333b082f/notes/ai-chip-capital-race.html",
+      "keywords": []
     }
   ],
-  "generated": "2026-05-16T21:04:39Z"
+  "generated": "2026-05-16T21:04:41Z"
 }

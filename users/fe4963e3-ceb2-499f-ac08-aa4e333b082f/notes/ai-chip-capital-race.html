@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Cerebras story is really two stories running simultaneously, and the more interesting one is not the IPO itself but what it reveals about how the AI infrastructure investment thesis has evolved si">
+  <title>The Other Chip Story: What Cerebras's 68% Debut Reveals About the AI Infrastructure Race Beyond Nvidia — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Other Chip Story: What Cerebras's 68% Debut Reveals About the AI Infrastructure Race Beyond Nvidia — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 4:04 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Cerebras story is really two stories running simultaneously, and the more interesting one is not the IPO itself but what it reveals about how the AI infrastructure investment thesis has evolved since 2023. When the current wave of AI investment began in earnest, the dominant narrative was Nvidia's story — CUDA as an unassailable moat, the H100 as the indispensable piece of industrial equipment for the intelligence age, and Nvidia's ecosystem as something that would take a decade to meaningfully displace. That narrative remains largely intact, but it has begun to develop visible cracks, and Cerebras's debut is the most public expression yet of investor belief that the cracks matter.</p>
+<p>Cerebras is architecturally distinct from Nvidia in ways that are relevant to understanding why it attracted the valuation it did. The company's Wafer Scale Engine is a single-chip design that occupies an entire silicon wafer — a fundamentally different approach to the parallelism problem that AI training and inference demand. Conventional chip design connects multiple smaller chips on a package or across a network, which creates latency and bandwidth bottlenecks that become significant at very large model scales. Cerebras's approach eliminates those bottlenecks by putting everything on one massive substrate, at the cost of yield challenges that have historically made wafer-scale design economically impractical. The company has spent several years working out the yield problem, and the market is now pricing in the possibility that they have done so at sufficient scale to be commercially competitive.</p>
+<p>The Nvidia export restriction context matters here in a specific commercial way. For hyperscalers and large enterprises that want to build out AI infrastructure without the regulatory uncertainty attached to advanced Nvidia products — particularly in markets adjacent to China or in sectors with government procurement sensitivities — Cerebras represents an alternative that carries none of the ITAR complexity. That is a genuinely valuable property in a world where the U.S.-China tech standoff shows no signs of resolution and where export control regimes have become unpredictable enough to create real procurement risk for any company building global AI infrastructure on Nvidia hardware alone.</p>
+<p>The 2% Friday pullback should be read in the context of the broader tech selloff rather than as a Cerebras-specific signal. First-day IPO pops of this magnitude almost always attract profit-taking in the days that follow, and a macro-driven selloff in chip stocks is a particularly poor environment for holding a freshly-opened position. What will matter more for the medium-term story is whether Cerebras can demonstrate revenue trajectory that justifies a $95 billion valuation — which, to be direct, is an extraordinarily ambitious figure for a company that is still in the early stages of commercial deployment. The market is pricing in a future in which Cerebras captures a meaningful share of AI inference workloads at hyperscale, and that future is plausible but far from guaranteed.</p>
+<p>The deeper structural question the Cerebras debut raises is whether the AI chip market is winner-take-most or whether it stratifies by workload type — training versus inference, edge versus cloud, regulated versus commercial — in ways that allow multiple hardware architectures to coexist profitably. Nvidia's dominance has been most absolute in training, where the CUDA ecosystem's software lock-in is most powerful. Inference is a different and in some ways more contestable market, because the software dependencies are less entrenched and the price-performance calculus is more immediately legible to buyers. If the market is indeed stratifying, the addressable opportunity for Cerebras is real. If it is not, the company has priced itself for a share of a market it may find very difficult to penetrate.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "ai-chip-capital-race";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
