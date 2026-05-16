@@ -324,7 +324,7 @@
 
       <!-- Step 1: Country of residence -->
       <div class="onb-step active" id="step-1">
-        <div class="onb-step-label">Step 1 of 5</div>
+        <div class="onb-step-label">Step 1 of 6</div>
         <h2>What country do you live in?</h2>
         <p class="onb-step-hint">These questions help us calibrate the content we deliver to you — your edition is personalised to your perspective and interests.</p>
         <div class="onb-select-wrap" id="wrap-country-res">
@@ -343,7 +343,7 @@
 
       <!-- Step 2: City -->
       <div class="onb-step" id="step-2">
-        <div class="onb-step-label">Step 2 of 5</div>
+        <div class="onb-step-label">Step 2 of 6</div>
         <h2>What city do you live in?</h2>
         <p class="onb-step-hint">Helps us include locally relevant context where appropriate.</p>
         <div class="onb-select-wrap" id="wrap-city">
@@ -362,7 +362,7 @@
 
       <!-- Step 3: Country of origin -->
       <div class="onb-step" id="step-3">
-        <div class="onb-step-label">Step 3 of 5</div>
+        <div class="onb-step-label">Step 3 of 6</div>
         <h2>What country are you from?</h2>
         <p class="onb-step-hint">Your national background shapes how you read events — we factor this in when framing stories.</p>
         <div class="onb-select-wrap" id="wrap-country-ori">
@@ -381,7 +381,7 @@
 
       <!-- Step 4: Interests -->
       <div class="onb-step" id="step-4">
-        <div class="onb-step-label">Step 4 of 5</div>
+        <div class="onb-step-label">Step 4 of 6</div>
         <h2>What are you interested in?</h2>
         <p class="onb-step-hint">Select all that apply. This shapes what we prioritise in your daily edition.</p>
         <div class="onb-interests-grid">
@@ -449,9 +449,55 @@
         </div>
       </div>
 
-      <!-- Step 5: Additional info -->
+      <!-- Step 5: Content depth preference -->
       <div class="onb-step" id="step-5">
-        <div class="onb-step-label">Step 5 of 5</div>
+        <div class="onb-step-label">Step 5 of 6</div>
+        <h2>What are you looking for?</h2>
+        <p class="onb-step-hint">This helps us calibrate the depth and tone of your edition.</p>
+        <div class="onb-interests-grid">
+          <div class="onb-interest-tile onb-depth-tile" data-value="in-depth" onclick="selectDepth(this)">
+            <div class="onb-check-box">
+              <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                <path d="M1 3.5L3.5 6L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>In-depth analysis and arguments</span>
+          </div>
+          <div class="onb-interest-tile onb-depth-tile" data-value="summaries" onclick="selectDepth(this)">
+            <div class="onb-check-box">
+              <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                <path d="M1 3.5L3.5 6L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>Simple summaries — I just want to stay up to date</span>
+          </div>
+          <div class="onb-interest-tile onb-depth-tile" data-value="both" onclick="selectDepth(this)">
+            <div class="onb-check-box">
+              <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                <path d="M1 3.5L3.5 6L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>Both</span>
+          </div>
+          <div class="onb-interest-tile onb-depth-tile" data-value="unsure" onclick="selectDepth(this)">
+            <div class="onb-check-box">
+              <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                <path d="M1 3.5L3.5 6L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>I'm not sure</span>
+          </div>
+        </div>
+        <div class="onb-error" id="err-depth">Please select an option to continue.</div>
+        <div class="onb-nav">
+          <button class="onb-btn-secondary" onclick="goBack(5)">← Back</button>
+          <button class="onb-btn-primary" onclick="validateAndNext(5)">Continue</button>
+        </div>
+      </div>
+
+      <!-- Step 6: Additional info -->
+      <div class="onb-step" id="step-6">
+        <div class="onb-step-label">Step 6 of 6</div>
         <h2>Anything specific you'd like us to know?</h2>
         <p class="onb-step-hint">Optional. Your professional background, specific areas of focus, or anything else that helps us understand your perspective.</p>
         <textarea class="onb-textarea" id="inp-additional"
@@ -459,7 +505,7 @@
                   placeholder="E.g. I work in finance and follow central bank policy closely. Particularly interested in the intersection of geopolitics and energy markets…"></textarea>
         <div class="onb-char-count"><span id="charCount">0</span> / 500</div>
         <div class="onb-nav">
-          <button class="onb-btn-secondary" onclick="goBack(5)">← Back</button>
+          <button class="onb-btn-secondary" onclick="goBack(6)">← Back</button>
           <div class="onb-nav-right">
             <button class="onb-btn-primary" onclick="submitOnboarding()">Go to Anthology</button>
             <button class="onb-btn-secondary" onclick="submitOnboarding()">Skip this step</button>
@@ -558,6 +604,7 @@
     city: '',
     countryOfOrigin: '',
     interests: [],
+    contentDepth: '',
     additionalInfo: ''
   };
 
@@ -577,15 +624,27 @@
     }
 
     _bind() {
-      this.input.addEventListener('click', () => this._open());
+      // mousedown fires before blur on other elements — correct event for custom dropdowns.
+      // Applied to the wrapper so clicking anywhere in the field opens the dropdown.
+      this.wrap.addEventListener('mousedown', e => {
+        if (this.dropdown.contains(e.target)) return; // let item mousedown handlers fire
+        e.preventDefault();
+        this._open();
+      });
       this.input.addEventListener('keydown', e => this._onKey(e));
       document.addEventListener('click', e => {
-        if (!this.wrap.contains(e.target) && !this.otherInp.contains(e.target))
+        if (
+          this.dropdown.classList.contains('open') &&
+          !this.wrap.contains(e.target) &&
+          !this.otherInp.contains(e.target)
+        ) {
           this._close();
+        }
       });
     }
 
     _open() {
+      if (this.dropdown.classList.contains('open')) { this._close(); return; }
       this.input.removeAttribute('readonly');
       if (this.selected && !this.isOther) this.input.value = '';
       this._render(this.dataset);
@@ -705,7 +764,7 @@
 
   /* ════════════════════ NAVIGATION ════════════════════ */
 
-  const TOTAL_STEPS = 5;
+  const TOTAL_STEPS = 6;
 
   function setProgress(step) {
     document.getElementById('onbProgress').style.width =
@@ -747,10 +806,20 @@
       if (answers.interests.length === 0) { showError('err-interests'); return; }
       clearError('err-interests');
       showStep(5);
+    } else if (step === 5) {
+      if (!answers.contentDepth) { showError('err-depth'); return; }
+      clearError('err-depth');
+      showStep(6);
     }
   }
 
   /* ════════════════════ INTERESTS ════════════════════ */
+
+  function selectDepth(tile) {
+    document.querySelectorAll('.onb-depth-tile').forEach(t => t.classList.remove('selected'));
+    tile.classList.add('selected');
+    answers.contentDepth = tile.dataset.value;
+  }
 
   function toggleInterest(tile) {
     const value = tile.dataset.value;
@@ -787,6 +856,14 @@
     if (answers.interests.length > 0) {
       parts.push(`Interested in: ${answers.interests.join(', ')}.`);
     }
+    if (answers.contentDepth && answers.contentDepth !== 'unsure') {
+      const depthLabel = answers.contentDepth === 'in-depth'
+        ? 'Prefers in-depth analysis and arguments.'
+        : answers.contentDepth === 'summaries'
+          ? 'Prefers concise summaries.'
+          : 'Comfortable with both analysis and summaries.';
+      parts.push(depthLabel);
+    }
     if (answers.additionalInfo) parts.push(answers.additionalInfo);
     const readingInterests = parts.join(' ').trim();
 
@@ -802,6 +879,7 @@
           city:                 answers.city,
           country_of_origin:    answers.countryOfOrigin,
           interests:            answers.interests,
+          content_depth:        answers.contentDepth,
           additional_info:      answers.additionalInfo,
           reading_interests:    readingInterests,
           onboarding_complete:  true
@@ -814,57 +892,25 @@
       // Non-fatal — proceed to homepage
     }
 
-<<<<<<< Updated upstream
-    // Trigger orientation bootstrap (fire-and-forget — does not block redirect)
-=======
-<<<<<<< Updated upstream
-    // Trigger orientation bootstrap (fire-and-forget — does not block redirect)
-=======
     // Fire both server calls (fire-and-forget — neither blocks the redirect)
->>>>>>> Stashed changes
->>>>>>> Stashed changes
     (async () => {
       try {
         const session = await _supabase.auth.getSession();
         const accessToken = session.data.session.access_token;
         const userId = session.data.session.user.id;
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-        await fetch('http://159.65.80.203:5050/bootstrap', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-          },
-          body: JSON.stringify({ user_id: userId })
-        });
-      } catch (e) {
-        // Non-blocking — failure here does not prevent redirect
-        console.warn('Bootstrap request failed:', e);
-<<<<<<< Updated upstream
-=======
-=======
         const body    = JSON.stringify({ user_id: userId });
         const headers = {
           'Content-Type':  'application/json',
           'Authorization': `Bearer ${accessToken}`
         };
-
         // Trigger orientation bootstrap
         fetch('http://159.65.80.203:5050/bootstrap', { method: 'POST', headers, body })
           .catch(e => console.warn('Bootstrap request failed:', e));
-
         // Trigger first dispatch generation (returns 202 immediately; runs async on server)
         fetch('http://159.65.80.203:5050/first-dispatch', { method: 'POST', headers, body })
           .catch(e => console.warn('First dispatch request failed:', e));
-
       } catch (e) {
-        // Non-blocking — failure here does not prevent redirect
         console.warn('Server fire-and-forget setup failed:', e);
->>>>>>> Stashed changes
->>>>>>> Stashed changes
       }
     })();
 

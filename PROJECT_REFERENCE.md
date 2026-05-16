@@ -1,6 +1,6 @@
 # Anthology — Project Reference
 
-*Current as of 14 May 2026 (dispatch format redesign — both the daily pipeline and the first-dispatch endpoint now publish one combined dispatch post (5 demarcated sections) plus 5 individual companion notes per run. Each section in the combined dispatch links to its corresponding note via "Read more →"). Use this document when starting a new context window.*
+*Current as of 16 May 2026 (onboarding.html: upgraded dropdown open/close to mousedown-on-wrapper pattern for full reliability; added Step 5 — content depth preference (in-depth / summaries / both / unsure) as a 6-step flow; `content_depth` saved to Supabase `user_metadata` and appended to `reading_interests`; `bootstrap_orientation.py` updated to read `content_depth` and surface it in orientation.md Format & Depth section and voice.md structural preferences). Use this document when starting a new context window.*
 
 ---
 
@@ -73,8 +73,9 @@ The server clones `anthology` to `/tmp/anthology-*-publish/` for each publish op
 | `city` | string | Selected from dropdown or free-text "Other" |
 | `country_of_origin` | string | Selected from dropdown or free-text "Other" |
 | `interests` | string[] | One or more of: Politics, Foreign Affairs, Economics, Finance, Tech, Sports, Entertainment |
+| `content_depth` | string | One of: `in-depth`, `summaries`, `both`, `unsure` — user's stated preference for analysis depth; set at Step 5 of onboarding |
 | `additional_info` | string | Optional free-text (max 500 chars) |
-| `reading_interests` | string | Composite string built from the above fields — consumed by the pipeline keyword-scorer and homepage feed ranking |
+| `reading_interests` | string | Composite string built from the above fields (including a depth preference sentence when `content_depth` is not `unsure`) — consumed by the pipeline keyword-scorer and homepage feed ranking |
 | `onboarding_complete` | boolean | Set to `true` on questionnaire completion; prevents re-showing the flow |
 
 #### Database Schema
@@ -355,7 +356,7 @@ These tasks remain configured in Cowork but should be **disabled** once the serv
 | `index.html` | Homepage — masthead, nav, edition view (auth'd), catalog sections |
 | `login.html` | Sign in form |
 | `signup.html` | Registration form |
-| `onboarding.html` | Post-signup questionnaire — 5 steps: country of residence, city, country of origin, interests (checkboxes), additional context. Saves structured `user_metadata` to Supabase; sets `onboarding_complete: true`; fires bootstrap fetch to port 5050; redirects to `/`. |
+| `onboarding.html` | Post-signup questionnaire — **6 steps**: country of residence (searchable dropdown) → city (searchable dropdown) → country of origin (searchable dropdown) → interests (checkboxes) → **content depth preference** (radio tiles: in-depth / summaries / both / unsure) → additional context (optional textarea). Saves structured `user_metadata` (including `content_depth`) to Supabase; appends depth preference sentence to `reading_interests` composite string; sets `onboarding_complete: true`; fires two parallel fire-and-forget fetches to port 5050 (`/bootstrap` and `/first-dispatch`); redirects to `/`. `SearchableSelect` dropdowns use a `mousedown` listener on the wrapper div (not `click` on the input) — fires before blur on other elements, preventing race conditions. `_open()` toggles: if already open, closes instead of double-opening. |
 | `account.html` | Reading interests textarea + sign out |
 | `about.html` | About page |
 | `auth/auth.js` | Supabase client init, `_supabase` global, `updateAuthNav()`, `requireAuth()` |
@@ -367,6 +368,8 @@ These tasks remain configured in Cowork but should be **disabled** once the serv
 | `run_combined_dispatch.py` | Deploy to `/root/pipeline/`. Daily autonomous pipeline — called by `run_dispatch.sh`. Handles all users in registry. Same generation flow as `first_dispatch.py` but uses `NEWS_TOPIC_QUEUE.md` for topic selection (web search fallback if queue < 5 PENDING). Marks used topics COMPLETE in the queue. Args: `--env` `--dry-run`. |
 | `anthology-bootstrap.service` | Systemd unit source — deploy via `deploy_bootstrap.command` |
 | `deploy_bootstrap.command` | Double-click to deploy bootstrap server to the droplet (installs Flask, copies files, enables service) |
+| `deploy_first_dispatch.command` | Deploys `first_dispatch.py` + updated `bootstrap_server.py` to the droplet, restarts the service, and pushes updated files to GitHub. Run once when first deploying the `/first-dispatch` feature. |
+| `update-server.sh` | SSH script: pulls `anthology-system` on the droplet and re-applies the registry path fix. Run after pushing changes to `anthology-system` from the Mac. Usage: `bash ~/Desktop/anthology/update-server.sh` |
 | `deploy_dispatch_redesign.command` | Double-click (or `bash`) to deploy the dispatch format redesign: SCPs updated scripts to server, rewrites `run_dispatch.sh`, restarts `anthology-bootstrap`, smoke-tests combined HTML generator, pushes to GitHub. |
 
 ### Content Directories (in GitHub repo)
@@ -409,7 +412,7 @@ Scripts that operate on the analytical-system live in `anthology-system/scripts/
 |---|---|
 | `update_orientation.py` | Reads `reading_events` from Supabase, appends calibration block to orientation file. Args: `--user-id --registry --supabase-url --supabase-key [--days 30]`. Uses service_role key on server (anon key lacks SELECT on reading_events). |
 | `register_new_users.py` | Syncs confirmed Supabase auth users → local registry + orientation files. Args: `--registry --users-dir [--env] [--dry-run]`. Reads `SUPABASE_KEY` (service role) from `--env` file. Reads structured onboarding fields (`country_of_residence`, `city`, `country_of_origin`, `interests[]`, `additional_info`) from `user_metadata` and writes a rich Stated Preferences section into `orientation.md`. Falls back to legacy `reading_interests` free-text for pre-onboarding users. |
-| `bootstrap_orientation.py` | Generates `orientation.md` for a single new user immediately after they complete the onboarding questionnaire. Called at the end of the onboarding flow (not on a cron schedule); designed to complete in under 5 seconds. Fetches the user by UUID from the Supabase admin API (`GET /auth/v1/admin/users/{user_id}`), parses structured `user_metadata`, writes `orientation.md` to `{system_dir}/users/{user_id}/orientation.md`, and registers the user in `registry.json` if not already present. Args: `--user-id` (required) `--env` (default: `~/Desktop/anthology/.env`) `--system-dir` (default: `~/Desktop/analytical-system`) `--dry-run`. Reads `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` from env file or environment. |
+| `bootstrap_orientation.py` | Generates `orientation.md` for a single new user immediately after they complete the onboarding questionnaire. Called at the end of the onboarding flow (not on a cron schedule); designed to complete in under 5 seconds. Fetches the user by UUID from the Supabase admin API (`GET /auth/v1/admin/users/{user_id}`), parses structured `user_metadata`, writes `orientation.md` to `{system_dir}/users/{user_id}/orientation.md`, and registers the user in `registry.json` if not already present. Args: `--user-id` (required) `--env` (default: `~/Desktop/anthology/.env`) `--system-dir` (default: `~/Desktop/analytical-system`) `--dry-run`. Reads `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` from env file or environment. **Updated 2026-05-16:** reads `content_depth` from `user_metadata`; surfaces it in the orientation.md Stated Preferences section (`**Content depth preference:**` line) and pre-populates the Format and Depth Preferences section with the stated value; passes it to `build_voice_md()` where it populates Section 5 (Structural Preferences) → depth preference field. Also generates a starter `voice.md` for each new user. |
 
 **All publish scripts clone to `/tmp/anthology-*-publish/`, work there, then push.**
 
@@ -469,8 +472,8 @@ Per-user entries have `url` pointing to `/users/{user_id}/{section}/{slug}.html`
 1. User fills out `signup.html` → Supabase sends verification email.
 2. User clicks link → `auth/callback.html` exchanges PKCE code for session.
 3. `callback.html` checks `user_metadata.onboarding_complete`: if absent → `/onboarding.html`; if true → `/`.
-4. `onboarding.html` — 5 steps: country of residence (searchable dropdown) → city (searchable dropdown) → country of origin (searchable dropdown) → interests (checkboxes: Politics, Foreign Affairs, Economics, Finance, Tech, Sports, Entertainment) → additional context (optional textarea).
-5. On submit: saves structured fields + composite `reading_interests` string + `onboarding_complete: true` to `user_metadata` via `_supabase.auth.updateUser()`.
+4. `onboarding.html` — **6 steps**: country of residence (searchable dropdown) → city (searchable dropdown) → country of origin (searchable dropdown) → interests (checkboxes: Politics, Foreign Affairs, Economics, Finance, Tech, Sports, Entertainment) → **content depth preference** (radio tiles: in-depth / summaries / both / unsure) → additional context (optional textarea).
+5. On submit: saves structured fields (including `content_depth`) + composite `reading_interests` string (with depth preference sentence appended when not `unsure`) + `onboarding_complete: true` to `user_metadata` via `_supabase.auth.updateUser()`.
 6. Immediately fires two fire-and-forget `fetch` calls in parallel: `POST http://159.65.80.203:5050/bootstrap` (triggers `bootstrap_orientation.py` to generate `orientation.md` and register the user) and `POST http://159.65.80.203:5050/first-dispatch` (generates and publishes a personalised dispatch so the homepage is not empty). Neither call blocks the redirect.
 7. Redirects to `/`.
 8. `register_new_users.py` still runs at 4:38 AM but skips users already in the registry.
@@ -533,7 +536,8 @@ Each piece dir contains: `analysis.md`, `log.md`, `review.md` (post quality cycl
 
 ## Known Gaps (Priority Order)
 
-1. **Cowork tasks and server cron both active** — both pipelines write to the same GitHub repo. Until the Cowork tasks are disabled, there is a risk of simultaneous git push conflicts if both run on the same morning. Disable the Cowork scheduled tasks once the server pipeline has run successfully for 2–3 consecutive days.
+1. **`register_new_users.py` does not yet read `content_depth`** — `bootstrap_orientation.py` was updated (2026-05-16) to read and surface the new `content_depth` field, but `register_new_users.py` in `anthology-system/scripts/` was not. Users registered via the cron path (not bootstrap) will not have `content_depth` surfaced in their orientation or voice files until `register_new_users.py` is updated with the same changes. Fix: add `content_depth = metadata.get("content_depth", "")` and pass to `build_orientation()` / `build_voice_md()` in that script.
+2. **Cowork tasks and server cron both active** — both pipelines write to the same GitHub repo. Until the Cowork tasks are disabled, there is a risk of simultaneous git push conflicts if both run on the same morning. Disable the Cowork scheduled tasks once the server pipeline has run successfully for 2–3 consecutive days.
 2. **registry.json path drift** — the server's `registry.json` has `/root/anthology-system/` paths. Any `git pull` from the Mac (which commits `/Users/donovanberry/Desktop/analytical-system/` paths) will overwrite these. Re-apply the sed fix after every pull (see Server section above). Long-term fix: make `update_orientation.py` accept a base directory override rather than using hardcoded paths from the registry.
 3. **`content_pieces` and `agent_logs` tables** — must be created manually in Supabase SQL editor if not already done.
 4. **Shared file race conditions (multi-user)** — `shared-catalog.json` is written by individual publish scripts, creating a concurrent write risk at scale. Acceptable now; centralise at scale.
@@ -542,6 +546,9 @@ Each piece dir contains: `analysis.md`, `log.md`, `review.md` (post quality cycl
 7. **Bootstrap/first-dispatch server rate-limits are in-memory** — reset on service restart. Acceptable at current scale; use Redis if multi-process/multi-server deployment needed.
 
 Previously resolved gaps:
+- ~~Onboarding dropdowns unreliable — fail to open or respond to clicks~~ — replaced `click` listener on `this.input` with `mousedown` listener on `this.wrap` (fires before blur on other elements — correct event for custom dropdowns); added toggle check in `_open()` (if already open, close instead of double-opening); wrapper mousedown skips items so item `mousedown` handlers still fire correctly. Applies to all three SearchableSelect instances (country of residence, city, country of origin) (2026-05-16)
+- ~~onboarding.html Step 1 completely broken (no JS executes)~~ — nested git merge conflict markers inside the `<script>` tag caused a SyntaxError on page load, silencing all JavaScript. Removed all markers; correct version (fire-and-forget `/bootstrap` + `/first-dispatch` in parallel IIFE) restored (2026-05-14)
+- ~~Dropdowns in onboarding open and immediately close~~ — `SearchableSelect._bind()` document click listener fired on the same click that opened the dropdown, closing it in the same tick. Fixed by guarding on `this.dropdown.classList.contains('open')` before calling `_close()`. Applies to all three selects (country of residence, city, country of origin) (2026-05-14)
 - ~~Per-user content renders with no CSS~~ — all generators switched to `href="/style.css"` (absolute); per-user note and dispatch HTML retroactively patched; `vercel.json` rewrites added for `uk-politics` and `us-sports` (2026-05-14)
 - ~~No signup → registry automation~~ — `register_new_users.py` handles this (2026-05-11)
 - ~~Edition empty state missing~~ — `#edition` shows message with link to set interests (2026-05-11)

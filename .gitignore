@@ -1,3 +1,4 @@
 .publish-config
 .supabase-config
 .DS_Store
+__pycache__/
