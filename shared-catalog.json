@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-15T19:37:35Z",
+  "generated": "2026-05-16T05:10:45Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -229,6 +229,19 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/notes/courts-not-the-brake.html",
+      "keywords": []
+    },
+    {
+      "slug": "fed-independence-under-pressure",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Warsh Inheritance: A Fed Chair Arrives Into a Rate-Hike Storm — Further Reading",
+      "standfirst": "Jerome Powell's term as Federal Reserve Chair ended May 15, with Kevin Warsh stepping in at a moment of acute central bank division. Treasury yields spiked to near-one-year highs at 4.55% and market-i.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/notes/fed-independence-under-pressure.html",
       "keywords": []
     },
     {

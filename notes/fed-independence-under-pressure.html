@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Federal Reserve chairmanship is one of the few positions in American institutional life where the biography of the occupant genuinely shapes the instrument itself.">
+  <title>The Warsh Inheritance: A Fed Chair Arrives Into a Rate-Hike Storm — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Warsh Inheritance: A Fed Chair Arrives Into a Rate-Hike Storm — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Federal Reserve chairmanship is one of the few positions in American institutional life where the biography of the occupant genuinely shapes the instrument itself. Paul Volcker's willingness to accept a deep recession as the cost of credibility in the early 1980s was not merely a policy choice — it was a character choice, and it permanently reset what markets believed the Fed was capable of. Alan Greenspan's opacity became a communication style the institution had to eventually dismantle. Ben Bernanke's academic work on the Great Depression structured his entire crisis response. What each chair brought to the role was not just a view on rates but a theory of what the Fed is for. Kevin Warsh's entry matters, then, not only because of what he has or hasn't promised the White House, but because of what he has long argued the Fed got wrong and what he believes it should become.</p>
+<p>Warsh served as a Fed governor from 2006 to 2011, which means he was present for both the catastrophic pre-crisis complacency and the emergency improvisation of 2008 and 2009. His dissent from the post-crisis consensus — particularly his skepticism of extended quantitative easing — placed him outside the mainstream of central bank thinking at a time when that mainstream was being reinforced by institutional inertia. His view, stated with varying degrees of directness over the years, has been that the Fed's balance sheet expansion blurred the boundary between monetary and fiscal policy in ways that would eventually compromise the institution's operational independence. That argument is no longer heterodox. It is, in the current environment, almost prescient.</p>
+<p>The structural problem Warsh inherits is one of compounding constraints. The Fed's traditional transmission mechanism — adjusting the short-term federal funds rate to influence borrowing costs throughout the economy — operates with significant lag, typically estimated at twelve to eighteen months for the full effect to propagate. When inflation is supply-driven, as the current Hormuz-linked shock is, that lag makes rate policy a blunt and arguably counterproductive instrument. Raising rates to suppress demand in response to an oil supply disruption does not restore oil supply; it adds a growth headwind to an already stagflationary mix. This was the core dilemma of the 1970s, and it was never fully resolved — it was eventually overcome by a supply shock running in the opposite direction, namely the collapse of OPEC discipline in 1985 and 1986, combined with Volcker's prior destruction of inflationary expectations.</p>
+<p>The bond market's current pricing — 45% implied probability of a hike, Treasury yields near 4.55% — reflects a genuine analytical disagreement about which risk the Fed should weight more heavily: embedded inflation expectations becoming unanchored, or a policy error that tips a fragile economy into contraction. Warsh's signal that he has made no commitments to the White House is the correct opening move, but it is also only a signal. The institutional credibility of a new chair is not established by statements but by the first genuine test, which typically arrives before the chair is ready for it. Powell's first test was the 2018 rate-hiking cycle that the White House publicly pressured him to reverse; he did not reverse it, and that resistance became the foundation of his credibility for everything that followed. Warsh will get his own version of that test. The difference is that he arrives when the test may already be in progress.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "fed-independence-under-pressure";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

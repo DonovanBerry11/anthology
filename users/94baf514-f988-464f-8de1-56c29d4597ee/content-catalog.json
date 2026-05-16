@@ -218,6 +218,19 @@
       "keywords": []
     },
     {
+      "slug": "fed-independence-under-pressure",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Warsh Inheritance: A Fed Chair Arrives Into a Rate-Hike Storm — Further Reading",
+      "standfirst": "Jerome Powell's term as Federal Reserve Chair ended May 15, with Kevin Warsh stepping in at a moment of acute central bank division. Treasury yields spiked to near-one-year highs at 4.55% and market-i.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/fed-independence-under-pressure.html",
+      "keywords": []
+    },
+    {
       "slug": "hormuz-leverage-game",
       "type": "note",
       "section": "notes",
@@ -563,5 +576,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-15T19:37:35Z"
+  "generated": "2026-05-16T05:10:45Z"
 }
