@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The architecture of the Beijing summit tells you more than its outcomes.">
+  <title>The Summit That Settled Nothing: What Beijing's Silence on Boeing — and Washington's Silence on Chips — Really Signals — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Summit That Settled Nothing: What Beijing's Silence on Boeing — and Washington's Silence on Chips — Really Signals — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 16 May 2026, 4:04 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The architecture of the Beijing summit tells you more than its outcomes. State visits of this kind are not designed to produce agreements — they are designed to produce the conditions under which agreements become possible, and the careful management of optics on both sides suggests both governments are still auditioning domestically before they can commit internationally. Trump arrived with the three most symbolically loaded CEOs in American tech — Cook, whose supply chain is existentially entangled with China; Musk, whose Tesla operation depends on Shanghai manufacturing; Huang, whose entire growth thesis rests on the question of whether Nvidia can ever sell advanced chips into the Chinese market again. The delegation was a message before anyone said a word, and Beijing read it precisely as intended: Washington is bringing its economic interests to the table, not just its security demands.</p>
+<p>The Boeing signal deserves particular attention because it is structurally different from the chip silence. China's tentative openness to aircraft purchases is the kind of concession that costs Beijing relatively little in the short term — Airbus has supply constraints of its own, and COMAC's C919 is not yet ready to absorb the full commercial aviation demand of a recovering Chinese travel market — while giving Trump a tangible domestic win he can announce to manufacturers and unions in swing states. The chip question is the inverse. Any softening of export controls on advanced AI semiconductors would represent a genuine strategic concession, one that the national security apparatus in Washington is deeply resistant to and that Beijing wants precisely because of that resistance. The asymmetry explains the asymmetric silence.</p>
+<p>What is easy to miss in the immediate post-summit coverage is how different the structural leverage positions of both sides are compared to any previous moment in U.S.-China trade negotiations. China is no longer simply the manufacturing floor of the global economy — it is also a near-peer competitor in AI research, a dominant force in battery technology and rare earth processing, and a country that has spent six years aggressively building alternative trade relationships precisely to reduce its exposure to American pressure. The decoupling that Washington has spent several years attempting to engineer has had the paradoxical effect of making China both more vulnerable in certain chokepoints and more insulated in others. Nvidia's restricted access to the Chinese market has, among other things, accelerated domestic chip development programs that may not match Nvidia's current generation but are closing the gap faster than most analysts expected in 2022.</p>
+<p>The markets sold off on the chip news not just because of the immediate revenue implications for Nvidia and its peers, but because investors had been quietly pricing in a partial resolution — a licensed sales framework, a carve-out for certain less-advanced chips, some diplomatic architecture that would allow commercial relationships to resume under national security cover. The absence of that framework was itself informative. It suggests that within the U.S. government, the coalition resisting any relaxation of chip controls — centered in the Commerce Department and the intelligence community — remains stronger than the commercial lobby. Jensen Huang's presence in Beijing was the commercial lobby making its case in the most visible way possible. The fact that nothing moved tells you who won that internal argument, at least for now.</p>
+<p>The phrase 'framework for deeper cooperation' in the joint communiqué is deliberately vague, but frameworks of this kind do occasionally harden into substance. The 1972 Shanghai Communiqué was famously ambiguous on Taiwan and became the foundation of four decades of managed coexistence. No one is suggesting this summit achieved anything of that magnitude, but the willingness of both sides to leave without a rupture, and to signal a continuing process, is not nothing — particularly given where the relationship stood eighteen months ago.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "after-beijing-what-now";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
