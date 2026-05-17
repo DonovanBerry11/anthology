@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Redistricting is the most consequential and least legible mechanism in American electoral politics, which is precisely why the gap between its importance and its public salience is so large.">
+  <title>The Map Is the Message: How Redistricting Is Quietly Deciding the 2026 Midterms — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Map Is the Message: How Redistricting Is Quietly Deciding the 2026 Midterms — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>Redistricting is the most consequential and least legible mechanism in American electoral politics, which is precisely why the gap between its importance and its public salience is so large. The basic arithmetic is not complicated: in a House of Representatives where control regularly turns on five to fifteen seats, the capacity to draw district lines can determine majorities before a single vote is cast. What makes it difficult to follow is that it unfolds across fifty separate state-level legal and political processes, each with its own procedural timeline, court system, and partisan configuration. There is no single event to watch.</p>
+<p>The Virginia case is a useful illustration of the layered complexity. A Democrat-drawn map, approved by voters through a referendum, was struck down by the state Supreme Court on procedural grounds — not on the merits of the map's fairness, but on the grounds of how it was adopted. The Supreme Court's decision not to reinstate it resolves nothing about whether the map was substantively legitimate; it simply allows the state Supreme Court's procedural ruling to stand. The result is a map drawn under different conditions, almost certainly more favorable to Republicans. This is how partisan redistricting increasingly works in the post-Rucho era: not through dramatically partisan gerrymanders that invite federal scrutiny, but through procedural maneuvers that achieve partisan ends while presenting a defensible legal surface.</p>
+<p>The Rucho decision itself — the 2019 Supreme Court ruling that federal courts cannot review partisan gerrymandering — is the structural precondition for everything happening now. Before Rucho, federal litigation was a backstop against the worst partisan distortions. After Rucho, the only remedies are state constitutional provisions, state courts, and whatever remains of the Voting Rights Act. The current Court's narrowing of Section 2 of the Voting Rights Act, which the dispatch references, closes another part of that backstop. The cumulative effect is a redistricting environment where the legal constraints on partisan mapmaking are substantially weaker than they were ten years ago.</p>
+<p>Louisiana's Senate primary carries a different but related logic. The Cassidy replacement dynamic reflects the ongoing sorting of the Republican Party toward candidates with tighter personal alignment to Trump — a process that has electoral map implications of its own, since incumbents like Cassidy who occasionally crossed the party leadership represented marginal general-election strength that Trump-aligned replacements may not replicate. The Senate map in 2026 already favors Republicans structurally; the question is whether the primary-driven candidate quality problem that cost Republicans the 2022 cycle reasserts itself. These two threads — redistricting and candidate selection — are operating simultaneously and in the same direction, which is why the structural picture of 2026 is more complicated than the simple partisan lean of the map suggests.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "gerrymander-power-arithmetic";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

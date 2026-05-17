@@ -257,6 +257,19 @@
       "keywords": []
     },
     {
+      "slug": "gerrymander-power-arithmetic",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Map Is the Message: How Redistricting Is Quietly Deciding the 2026 Midterms — Further Reading",
+      "standfirst": "The Supreme Court declined to reinstate a Democrat-drawn Virginia congressional map that had been approved by voters but struck down by the state Supreme Court on procedural grounds, dealing a blow to.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/gerrymander-power-arithmetic.html",
+      "keywords": []
+    },
+    {
       "slug": "fed-independence-under-pressure",
       "type": "note",
       "section": "notes",
@@ -681,5 +694,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-17T05:10:45Z"
+  "generated": "2026-05-17T05:10:47Z"
 }
