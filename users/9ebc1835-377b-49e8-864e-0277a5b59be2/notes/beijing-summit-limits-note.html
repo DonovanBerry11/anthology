@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The structural condition that the Beijing summit most clearly revealed is not diplomatic failure but strategic incommensurability — the two sides are not negotiating toward a shared framework that is ">
+  <title>Summitry Without Settlement: The Beijing Talks and the Architecture of US–China Paralysis — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Summitry Without Settlement: The Beijing Talks and the Architecture of US–China Paralysis — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 7:37 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The structural condition that the Beijing summit most clearly revealed is not diplomatic failure but strategic incommensurability — the two sides are not negotiating toward a shared framework that is currently out of reach; they are operating within frameworks that are constitutively incompatible on the issues that matter most. Taiwan is the clearest instance. Xi's framing of the island as the summit's most consequential issue is a standard opening position, but its placement at the apex of the agenda in a meeting with <a href="https://www.cnn.com/2026/05/15/politics/trump-beijing-summit-summary.html">the first US presidential visit since 2017</a> signals that Beijing intends Taiwan to function as a pre-condition for broader normalisation rather than one item within a tradeable agenda. Washington's position — that Taiwan's status is a matter for peaceful resolution in which the US retains the right to arm and support the island — is not a negotiating floor from which concessions can be extracted. It is a structural commitment that no US administration can credibly abandon without triggering cascading alliance-credibility effects across the Indo-Pacific.</p>
+<p>The presence of Musk, Jensen Huang, and Tim Cook in the delegation warrants analysis that goes beyond its obvious optics. All three represent enterprises whose operational exposure to Chinese manufacturing, distribution, and regulatory environments is sufficiently large to constitute a form of economic leverage — but leverage that cuts in both directions. They are simultaneously assets in a diplomatic performance intended to signal that US-China commercial relationships can continue under strategic rivalry, and vulnerabilities whose presence at a state summit publicly demonstrates that US technology policy and foreign policy are not fully integrated. Beijing has historically exploited precisely that gap.</p>
+<p>The agreed reconvening schedule — a Pentagon security track on May 29 followed by a political track on June 2–3 — is the diplomatic equivalent of converting a stalled negotiation into a process. Processes are valuable when they prevent deterioration and create space for incremental confidence-building; they are costly when they generate the appearance of momentum that substitutes for substantive movement and delays strategic recalibration by third parties watching for signals. European capitals, Tokyo, Seoul, and Taipei are all reading the reconvening calendar as a data point about US strategic patience with Beijing, and the read is ambiguous in ways that are themselves destabilising.</p>
+<p>The Iran dimension of the summit is analytically underdeveloped in most coverage but structurally significant. China is Iran's largest crude purchaser and has consistently resisted US pressure to enforce financial isolation of Tehran. The Hormuz stalemate — now entering its third month — is creating energy-price inflation that Beijing manages more easily than Washington does, given China's access to discounted Iranian crude and its sovereign tolerance for import-price volatility. The absence of any reported progress on the Iran file at Beijing is therefore not a neutral outcome; it is a revealed preference that China regards the current energy architecture as tolerable or advantageous relative to the alternative of coordinated pressure on Tehran.</p>
+<p>Historically, US-China summits that produce no deliverables but establish working-group schedules tend to be remembered less as diplomatic failures than as the moments at which the de facto structure of the relationship was made explicit. The Nixon-Mao encounter in 1972 produced a deliberate ambiguity on Taiwan that managed the relationship for fifty years. The Beijing summit of May 2026 may be remembered as the moment at which that ambiguity formally exhausted its productive capacity — without a successor framework yet in view.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "beijing-summit-limits-note";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

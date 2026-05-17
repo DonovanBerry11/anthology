@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-17T12:37:29Z",
+  "generated": "2026-05-17T12:37:31Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -522,6 +522,19 @@
       "date": "2026-05-17",
       "date_display": "May 2026",
       "url": "/notes/openai-governance-stakes-note.html",
+      "keywords": []
+    },
+    {
+      "slug": "beijing-summit-limits-note",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "Summitry Without Settlement: The Beijing Talks and the Architecture of US–China Paralysis — Further Reading",
+      "standfirst": "President Trump's two-day state visit to Beijing on May 14–15, 2026 — the first by a US president since 2017 — concluded without major breakthroughs on Taiwan, the Iran war, or trade architecture, des.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/notes/beijing-summit-limits-note.html",
       "keywords": []
     },
     {
