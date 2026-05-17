@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Hormuz stalemate has produced a chokepoint regime that is analytically distinct from the short-duration transit disruptions that energy markets have historically absorbed — the 1973 Arab oil embar">
+  <title>The Chokepoint Economy: How the Hormuz Stalemate Is Repricing the Global Order — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Chokepoint Economy: How the Hormuz Stalemate Is Repricing the Global Order — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 7:37 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Hormuz stalemate has produced a chokepoint regime that is analytically distinct from the short-duration transit disruptions that energy markets have historically absorbed — the 1973 Arab oil embargo, the 1979 Iranian revolution, the 1990 Gulf War supply shock — because its duration is now exceeding the operational buffers that strategic petroleum reserves and alternative routing were designed to provide. <a href="https://www.eia.gov/petroleum/gasprices/">Crude above $100 per barrel</a> for a sustained period is not merely a price event; it is a balance-of-payments shock for energy-importing economies, a fiscal destabiliser for subsidy-dependent developing governments, and a recursive inflationary input into the food supply chain through fertiliser and agricultural transport costs. The compounding character of that transmission mechanism — energy into fertiliser into food prices into political instability in import-dependent states — is what transforms a bilateral US-Iran military confrontation into a systemic global-order stress.</p>
+<p>The legal architecture of the Hormuz dispute is more complex than the operational standoff suggests. The Strait qualifies as an international strait under the United Nations Convention on the Law of the Sea, which guarantees transit passage rights that cannot be unilaterally suspended by a bordering state. Iran has never ratified UNCLOS, formally contests its application to Hormuz, and asserts a domestic legal framework under which transit fees on commercial shipping are permissible sovereign acts. The US position — that Iran's transit-fee regime is unlawful interdiction — is legally sound under customary international law but operationally difficult to enforce without direct naval confrontation with Iranian forces already positioned in the strait. The result is a de facto Iranian-controlled chokepoint that the US can contest legally but not practically reverse without escalatory risk it has so far declined to accept.</p>
+<p>The fertiliser dimension deserves particular analytical weight because it is the least visible and most durable of the downstream effects. Ammonia synthesis, the basis of nitrogen fertiliser production, is natural-gas-intensive; <a href="https://www.worldbank.org/en/research/commodity-markets">global fertiliser prices have surged</a> in direct correlation with the energy price spike, and the planting-season timing means that the agricultural impact will not be fully visible in food prices until late 2026 and through 2027. Sub-Saharan African and South Asian import-dependent economies, whose governments were already carrying elevated debt loads from post-COVID fiscal expansion, face a compounding vulnerability: higher import bills for food and energy simultaneously, denominated in a dollar that remains strong precisely because global risk aversion is driving safe-haven flows.</p>
+<p>The geopolitical opportunity structure that the stalemate creates for third parties is not receiving adequate analytical attention. China — as noted in the Beijing summit context — is absorbing Iranian crude at discounted prices while publicly calling for diplomatic resolution, a posture that costs nothing and yields a material energy advantage. Russia benefits from the crude price floor that Hormuz constriction provides, partially offsetting the fiscal pressure of the Ukrainian front. Both states have structural incentives to prolong the stalemate at low cost to themselves while the burden falls asymmetrically on Western and developing-economy importers.</p>
+<p>The US policy calculus is consequently more constrained than the military posture implies. Forcing open the strait requires either a negotiated framework with Iran — which would require security concessions the White House has not signalled willingness to offer — or a kinetic operation that risks direct naval engagement, regional escalation, and a crude price spike that would compound the domestic inflation problem that is simultaneously pressuring the new Fed chair. The stalemate is not a failure of resolve; it is the expression of a cost structure in which all available exits carry serious penalties.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "hormuz-economic-cascade-note";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

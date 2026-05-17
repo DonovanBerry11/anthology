@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-17T12:37:31Z",
+  "generated": "2026-05-17T12:37:33Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -535,6 +535,19 @@
       "date": "2026-05-17",
       "date_display": "May 2026",
       "url": "/notes/beijing-summit-limits-note.html",
+      "keywords": []
+    },
+    {
+      "slug": "hormuz-economic-cascade-note",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Chokepoint Economy: How the Hormuz Stalemate Is Repricing the Global Order — Further Reading",
+      "standfirst": "The US–Iran conflict has entered its third month with the Strait of Hormuz functioning as a de facto Iranian-controlled chokepoint rather than a free-transit waterway, having driven crude oil above $1.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/notes/hormuz-economic-cascade-note.html",
       "keywords": []
     },
     {
