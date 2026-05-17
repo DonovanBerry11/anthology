@@ -244,6 +244,19 @@
       "keywords": []
     },
     {
+      "slug": "us-china-strategic-decoupling",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Summit and the Subtext: What Beijing and Washington Couldn't Say Out Loud — Further Reading",
+      "standfirst": "President Trump's May 13–15 visit to Beijing ended with both sides claiming progress and praise, but persistent disagreements on Taiwan and key strategic issues remained. Trump said Xi offered help on.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/us-china-strategic-decoupling.html",
+      "keywords": []
+    },
+    {
       "slug": "fed-independence-under-pressure",
       "type": "note",
       "section": "notes",
@@ -668,5 +681,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-17T05:10:43Z"
+  "generated": "2026-05-17T05:10:45Z"
 }

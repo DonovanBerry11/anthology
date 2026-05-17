@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The structural problem with US-China summitry since roughly 2017 is that the two governments have incompatible theories of what a summit is for.">
+  <title>The Summit and the Subtext: What Beijing and Washington Couldn't Say Out Loud — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Summit and the Subtext: What Beijing and Washington Couldn't Say Out Loud — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The structural problem with US-China summitry since roughly 2017 is that the two governments have incompatible theories of what a summit is for. The American conception, rooted in a Cold War–era diplomatic tradition, treats summits as inflection points — moments where high-level personal engagement can unlock concessions or establish frameworks that working-level negotiations cannot. The Chinese conception is closer to ceremonial consolidation: summits ratify existing agreements and signal status, but the actual work happens in technical channels over much longer time horizons. When these two frameworks meet, both sides can leave Beijing claiming success while the underlying disagreements remain structurally unchanged.</p>
+<p>Taiwan is the clearest example of this dynamic. The November 2025 trade deal — whatever its specific provisions — cannot actually resolve the Taiwan question because the Taiwan question is not a trade question. It is a sovereignty and deterrence question, which means it operates on a different logic entirely. Xi's willingness to engage productively on trade reflects a calculation that economic interdependence creates leverage; his unwillingness to alter the fundamental posture on Taiwan reflects the calculation that sovereignty is not a bargaining chip. Trump's transactional instincts may read the former as an opening without fully pricing in the rigidity of the latter.</p>
+<p>The Iran dimension of the summit is analytically the most interesting precisely because it is the most opaque. Xi offering help on Iran means something different depending on what channel that help takes. If it means Chinese pressure on Iranian oil purchases — which fund a significant portion of the Iranian state's capacity — then it is genuinely consequential. China has been by far Iran's largest oil customer throughout the sanctions period, and any reduction in that market access would impose real fiscal constraint. If it means Chinese diplomatic mediation of the kind Beijing offered in the Saudi-Iran normalization process, that is a different instrument with different leverage points. Analysts are right to ask how far Beijing would actually go, but the more precise question is: through which mechanism, and at what cost to Chinese interests?</p>
+<p>The spillover from the Iran war into energy markets and global supply chains creates a channel through which the US-China relationship is under pressure from a third actor — a structurally unusual configuration. Typically the bilateral is stressed by bilateral choices. When the stressor is an ongoing conflict that both Washington and Beijing are trying to manage simultaneously, the incentives become partially aligned in ways that neither government can publicly acknowledge without political cost. That alignment, and the constraints on making it explicit, is probably the most important subtext of what both sides chose not to say out loud.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "us-china-strategic-decoupling";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
