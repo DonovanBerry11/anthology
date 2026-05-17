@@ -53,6 +53,19 @@
       "keywords": []
     },
     {
+      "slug": "gaza-ceasefire-what-next",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "Hamas's Military Chief Is Dead. Does It Change Anything in Gaza? — Further Reading",
+      "standfirst": "Israel announced it has killed the head of Hamas' military wing in Gaza, describing him as a key planner of the October 7, 2023 attacks that triggered the war. The strike comes as Israel and Lebanon s.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/users/fe4963e3-ceb2-499f-ac08-aa4e333b082f/notes/gaza-ceasefire-what-next.html",
+      "keywords": []
+    },
+    {
       "slug": "after-beijing-what-now",
       "type": "note",
       "section": "notes",
@@ -132,5 +145,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-17T05:14:16Z"
+  "generated": "2026-05-17T05:14:18Z"
 }

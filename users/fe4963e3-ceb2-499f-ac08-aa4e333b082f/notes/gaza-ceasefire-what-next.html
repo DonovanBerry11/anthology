@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The killing of a Hamas military commander is an event that requires two separate analytical frames to understand properly, and the coverage tends to collapse them into one.">
+  <title>Hamas's Military Chief Is Dead. Does It Change Anything in Gaza? — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Hamas's Military Chief Is Dead. Does It Change Anything in Gaza? — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 12:14 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The killing of a Hamas military commander is an event that requires two separate analytical frames to understand properly, and the coverage tends to collapse them into one. The first frame is operational and specific: who was this person, what did they control, and what does their death mean for Hamas's immediate capacity to organize, recruit, and conduct operations? The second frame is strategic and broader: does the removal of individuals, however significant, alter the conditions that sustain an organization's existence and purpose? These questions have different answers, and confusing them is how observers have repeatedly misread the trajectory of the conflict.</p>
+<p>On the operational question, the record of targeted killing programs across multiple conflicts suggests that decapitation of senior leadership creates genuine short-term disruption. Planning cycles get interrupted. Networks that depended on a specific individual's relationships and judgment have to reconstitute around someone new. In some cases, successors are less experienced or less respected, and that matters. Israel's intelligence services have accumulated decades of experience conducting these operations, and they have genuine expertise in identifying and reaching high-value targets within complex urban environments. The strike that killed this commander is a serious operational achievement within that tradition.</p>
+<p>The strategic question is harder. Hamas has survived the killing of senior leaders before — including the assassination of founder Ahmed Yassin in 2004 — and the organization's durability has derived not primarily from any individual's leadership but from its institutional infrastructure, its political base in Gaza, and the conditions of governance and grievance that gave it relevance in the first place. Removing the head of the military wing does not change the territorial reality in Gaza, does not resolve the political question of what authority will govern the strip after the conflict ends, and does not address the underlying population dynamics that have consistently regenerated militant organizations across the region when the structural conditions for them remain.</p>
+<p>The ceasefire extension with Lebanon is worth holding alongside this development, because the two events together describe a regional picture that is more complex than either one alone. Israel is simultaneously conducting high-intensity military operations in Gaza — including strikes that eliminate senior Hamas figures — while extending a diplomatic accommodation with Hezbollah on the northern front. That is not contradictory, but it reflects a prioritization calculation: the Lebanese front carries higher escalation risk given Hezbollah's missile capacity and its relationship with Iran, so containing it through a ceasefire extension creates space to operate more aggressively elsewhere. Whether that architecture holds depends heavily on what happens in Tehran, which is a variable neither Israel nor anyone else fully controls.</p>
+<p>The Knesset legislation allowing military trials for October 7 suspects adds a legal dimension that will draw international attention regardless of the security situation. Military court jurisdiction over civilian suspects has a contentious history in the occupied territories, and this expansion will be contested in domestic Israeli courts, in international legal forums, and in the diplomatic relationships Israel is trying to manage simultaneously. The war in Gaza is being conducted on military, political, legal, and diplomatic fronts at once, and what happens on any one of them affects the others in ways that are not always predictable.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "gaza-ceasefire-what-next";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
