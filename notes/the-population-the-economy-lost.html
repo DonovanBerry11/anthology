@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Trump administration's immigration enforcement has locked in a below-trend growth trajectory for the US economy by inducing the first near-negative net migration in over fifty years in a country w">
+  <title>The Population the Economy Lost — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Population the Economy Lost</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 1:38 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Trump administration's immigration enforcement has locked in a below-trend growth trajectory for the US economy by inducing the first near-negative net migration in over fifty years in a country whose post-2008 growth model depended entirely on immigration to expand the labour force — and no combination of tariffs, deregulation, or tax cuts can offset a problem that is not about demand but about the size of the workforce itself. The Census Bureau's January 2026 population estimates show net international migration falling from a peak of 2.7 million in 2024 to 1.3 million in 2025, with projections toward 321,000 or lower in 2026. If current trends continue, <a href="https://www.census.gov/newsroom/blogs/random-samplings/2026/01/historic-decline-in-net-international-migration.html">the Census Bureau notes</a>, the US will see net negative migration for the first time in more than fifty years. This is being covered as an immigration enforcement story. It is a labour supply story with permanent arithmetic consequences.</p>
+<p>The fertility dimension closes the alternative. The US total fertility rate has sat at approximately 1.6 — below the 2.1 replacement rate — since the Great Recession. The US-born working-age population, which grew by 1.64 million people annually in the early 2000s, had turned into a decline of 270,000 people per year by 2020-2023, <a href="https://econofact.org/immigration-and-waning-us-labor-force-growth">according to Econofact</a>. There is no domestic labour supply reservoir to substitute for an immigration reduction. The working-age population without immigration does not stay flat — it shrinks, which means fewer workers supporting a growing cohort of retirees, declining consumer spending at the base, and a Social Security and Medicare tax base that is contracting precisely as the dependency ratio expands. The population being deterred or removed is disproportionately prime working-age: the <a href="https://budgetmodel.wharton.upenn.edu/p/2025-07-25-mass-deportation-of-unauthorized-immigrants-fiscal-and-economic-effects/">Penn Wharton Budget Model's analysis of mass deportation</a> found that unauthorised workers paid approximately $24 billion in Social Security taxes in 2024 despite being ineligible for future benefits — a subsidy to the programme being eliminated in exchange for the enforcement optics. The model projects the Trust Fund depleting six months earlier and the 75-year Social Security deficit rising by 0.25 percentage points of payroll as a direct result.</p>
+<p>The political economy of the error is structurally self-reinforcing. The costs of negative net migration are diffuse — slower GDP growth, tighter labour markets in construction and agriculture and healthcare, Social Security shortfalls that materialise in twenty-year increments — while the political benefits of enforcement are immediate, visible, and concentrated in the constituencies that delivered the electoral outcome. This is not a policy that was adopted without an understanding of its demographic consequences; it is a policy whose demographic consequences are deniable at the timescale on which politicians are evaluated. By the time the arithmetic becomes undeniable in the data, the workforce that growth would have required will no longer exist.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-population-the-economy-lost";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

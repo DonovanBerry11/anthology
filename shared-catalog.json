@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-17T06:37:15Z",
+  "generated": "2026-05-17T06:38:45Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -325,6 +325,19 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/notes/the-compute-layer.html",
+      "keywords": []
+    },
+    {
+      "slug": "the-population-the-economy-lost",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Population the Economy Lost",
+      "standfirst": "US net migration is approaching negative territory for the first time in over fifty years — in a country where virtually all labour force growth since 2008 has come from immigration. The Trump administration's enforcement has induced a demographic reversal with permanent economic consequences that tariffs, deregulation, and tax cuts are structurally incapable of reversing.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/notes/the-population-the-economy-lost.html",
       "keywords": []
     },
     {
