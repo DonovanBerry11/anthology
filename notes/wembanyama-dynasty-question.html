@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Thunder's 8–0 record entering the Conference Finals invites a particular kind of historical pressure-testing, because dominant regular-season and early-playoff teams have a consistent tendency to ">
+  <title>Eight and Oh: Can Anyone Stop the Thunder Before Wembanyama Does? — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Eight and Oh: Can Anyone Stop the Thunder Before Wembanyama Does? — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Thunder's 8–0 record entering the Conference Finals invites a particular kind of historical pressure-testing, because dominant regular-season and early-playoff teams have a consistent tendency to be remembered by how they end rather than how they dominated. The 2015–16 Warriors went 73–9 and lost the Finals. The 1996–97 Utah Jazz had the league's best record and never won a championship. Dominance through the first two rounds is a credential, not a guarantee, and the Western Conference Finals tends to be where the credential gets audited.</p>
+<p>What makes Oklahoma City structurally interesting is the composition of their dominance. Shai Gilgeous-Alexander is the engine, but the team's defensive architecture is unusually deep — they are not a one-superstar team masking weakness elsewhere. That matters in a seven-game series against a Spurs team that is now battle-tested in a way they were not two weeks ago. San Antonio closed out Minnesota, which means Castle and the core rotation have now played high-leverage elimination basketball, which is a different preparation than a sweep provides.</p>
+<p>Stephon Castle's development arc is worth contextualizing. He was the fourth pick in the 2024 draft — a remarkable draft class by historical standards — and his progression to 32-point, 11-rebound playoff performances in his second season places him in a specific lineage of Spurs developmental success that goes back to the organization's work with Robinson, Duncan, Parker, and Ginobili. The Spurs have historically been one of the few franchises capable of accelerating player development through system rather than raw talent alone, and Castle's performance reads as evidence that the institutional knowledge survived the transition away from the Popovich era.</p>
+<p>Victor Wembanyama is the subtext of this entire playoff bracket, though he is not in it. The Spurs are playing without him due to injury, which means the team advancing to the Conference Finals is doing so as a demonstration that the supporting cast is real. For franchise-building purposes, that is arguably more valuable than a Wembanyama-led run would have been — it resolves uncertainty about whether the surrounding talent can carry load. When he returns, the question of what the Spurs actually are becomes considerably less speculative.</p>
+<p>In the East, the Pistons' ability to stave off elimination four times in a single series against the Cavaliers is its own historical anomaly. No team in NBA history has survived four elimination games in a single series and gone on to win that series, though the statistical sample is small enough that the precedent is more novelty than prediction. What it does reflect is that the Cavaliers, for all their regular-season excellence, have not closed with the efficiency their talent suggests they should. A Game 7 against Detroit, after four attempts to close the series, is a psychological data point as much as a tactical one, and whichever team emerges will carry the residue of that series into the next round.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "wembanyama-dynasty-question";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
