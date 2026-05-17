@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Preakness Stakes has a particular kind of historical character that this year's race both fits and complicates.">
+  <title>Preakness Upset: With Golden Tempo Gone, the Triple Crown Race Is Anyone's — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Preakness Upset: With Golden Tempo Gone, the Triple Crown Race Is Anyone's — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 12:14 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Preakness Stakes has a particular kind of historical character that this year's race both fits and complicates. It is the middle jewel of the Triple Crown, which means it exists in permanent relationship to the races on either side of it. When the Derby winner runs and loses, the Preakness produces a new contender. When the Derby winner skips, as happened here, the Preakness produces something more ambiguous — a winner whose claim to the moment is real but whose place in the larger narrative is conditional, pending what happens at Belmont.</p>
+<p>The Triple Crown sequence was constructed with this kind of tension in mind, even if not deliberately. The three races were not originally conceived as a unified test — they were separately organized events that became linked by geography, prestige, and the sporting public's appetite for narrative. The formal designation of the Triple Crown as an achievement worth recognizing came only after Sir Barton won all three in 1919, and even then the term wasn't widely used for years. What the sequence measures, in theory, is a horse's ability to compete at three different distances under significant physical and logistical stress over a five-week period. What it actually measures, increasingly, is a combination of excellence and management decisions made by trainers and owners who are weighing long-term soundness against short-term glory.</p>
+<p>Golden Tempo's withdrawal is part of a broader pattern in contemporary thoroughbred racing. The business calculus around elite horses has shifted substantially over the past two decades. A top-tier stallion can generate tens or hundreds of millions of dollars in breeding fees over a career, and the risk of injury in a grueling three-race sequence against the best competition in the country — on hard tracks, in short intervals — is non-trivial. Trainers and owners who withdraw a healthy Derby winner from the Preakness are making a rational decision within the economics of the sport, even if it frustrates the narrative that fans want. The tension between racing as athletic spectacle and racing as an industry built on bloodstock value is old, but it has become more acute as breeding fees have escalated.</p>
+<p>Paco Lopez is one of the more interesting figures in this story regardless of the race circumstances. He spent years as a leading rider in New Jersey, accumulating wins at Monmouth and the Meadowlands without breaking into the elite national conversation that attaches to riders who win at Churchill Downs, Saratoga, or Belmont. A Preakness victory is a legitimate landmark regardless of who doesn't show, and Napoleon Solo's performance — in a field of 14, without the benefit of being the obvious favorite — is not diminished by the absence of one horse. The Belmont will determine whether this year's sequence produces a Triple Crown story or simply a Preakness winner, and those two outcomes have very different resonances. The six weeks between now and Belmont are when the narratives that will define the 2026 racing season will actually form.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "belmont-stakes-triple-crown-odds";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
