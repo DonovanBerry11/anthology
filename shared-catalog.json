@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-17T06:32:51Z",
+  "generated": "2026-05-17T06:34:19Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -285,6 +285,20 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/dispatches/trump-ai-oversight-mythos-2026.html",
+      "keywords": []
+    },
+    {
+      "slug": "china-iran-dividend-2026",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "China's Iran Dividend: US Intelligence Finds Beijing Is the War's Strategic Winner",
+      "standfirst": "A classified assessment produced for Joint Chiefs Chairman General Dan Caine finds China systematically exploiting the Iran conflict across all four dimensions of state power — the same day Trump and Xi met in Beijing to agree a trade truce and Hormuz stability framework, placing the diplomatic surface and the intelligence reality in direct contradiction.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/dispatches/china-iran-dividend-2026.html",
       "keywords": []
     },
     {

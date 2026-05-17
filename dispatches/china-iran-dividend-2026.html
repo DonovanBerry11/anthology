@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A classified US intelligence assessment produced for Joint Chiefs Chairman General Dan Caine — [reported by the Washington Post on May 13](https://www.washingtonpost.com/national-security/2026/05/13/c">
+  <title>China's Iran Dividend: US Intelligence Finds Beijing Is the War's Strategic Winner — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>China's Iran Dividend: US Intelligence Finds Beijing Is the War's Strategic Winner</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 1:34 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>A classified US intelligence assessment produced for Joint Chiefs Chairman General Dan Caine — <a href="https://www.washingtonpost.com/national-security/2026/05/13/china-gains-major-edge-us-amid-iran-war-us-intelligence-finds/">reported by the Washington Post on May 13</a> — concludes that China is exploiting the Iran conflict, which began on February 28, to systematically expand its strategic advantage over the United States across all four dimensions of state power: diplomatic, informational, military, and economic. The assessment, which has triggered alarm within the Pentagon, finds that Beijing is not merely a passive beneficiary of US-Israeli military engagement in Iran — it is actively managing the conflict's second-order effects to reposition itself as the indispensable actor in a region where American credibility is being consumed by the war.</p>
+<p>The DIME analysis is specific. Diplomatically, China has positioned itself as a responsible stabiliser, stepping in to manage disruptions to Gulf energy flows and serving as a quiet intermediary for states caught between American alliance obligations and economic dependence on Chinese trade. Informationally, Beijing has channelled anti-war sentiment through its state media ecosystem to reinforce the narrative that the US, not Iran, is the destabilising actor — a message that has found traction in South Asia, Southeast Asia, and among Global South governments with longstanding non-alignment traditions. Militarily, the war is providing China with real-time data on US operational logistics, weapons use rates, precision-strike doctrine, and force coordination at scale — an intelligence dividend that directly informs Chinese military planning for a potential Taiwan scenario. <a href="https://foreignpolicy.com/2026/03/10/china-gulf-iran-war-middle-east-partnerships/">According to Jacob Stokes, a senior fellow at the Center for a New American Security</a>, "the war in Iran is massively improving China's geopolitical position." The assessment also notes that US missile and defence stockpile drawdowns in Iran are producing readiness concerns inside the Pentagon about a concurrent Taiwan contingency.</p>
+<p>The summit between President Donald Trump and President Xi Jinping in Beijing on May 14 — the day after the assessment was reported — produced an agreement that "the Strait of Hormuz must remain open to support the free flow of energy" and a commitment from Xi not to supply military equipment to Iran. <a href="https://www.cnbc.com/2026/05/15/trump-xi-summit-the-3-big-takeaways-from-historic-meeting-in-beijing.html">According to CNBC's reporting on the summit's outcomes</a>, the two leaders agreed to "strategic stability" as a framework for the next three years, and China committed to purchasing 200 Boeing aircraft and billions in US agricultural goods. The surface optics are of managed coexistence. The intelligence assessment underneath describes something different: a state that is simultaneously extending a trade truce and exploiting the military and diplomatic costs of a war it did not enter. The Pentagon and White House disputed the report's "broader findings" as "fundamentally false," but offered no public rebuttal of its specific DIME conclusions. Whether the summit's Hormuz agreement translates into Chinese pressure on Iran — or remains a gesture calibrated to extract trade concessions — is the question that will clarify Beijing's actual posture in the months ahead.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "china-iran-dividend-2026";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
