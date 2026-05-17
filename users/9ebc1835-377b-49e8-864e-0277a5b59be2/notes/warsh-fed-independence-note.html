@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Warsh confirmation is best understood not as a personnel decision but as a constitutional stress test — one that the Federal Reserve's institutional design was never engineered to survive cleanly.">
+  <title>The Politicisation of the Fed: What Warsh's Confirmation Signals for Monetary Independence — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Politicisation of the Fed: What Warsh's Confirmation Signals for Monetary Independence — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 7:37 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Warsh confirmation is best understood not as a personnel decision but as a constitutional stress test — one that the Federal Reserve's institutional design was never engineered to survive cleanly. The central bank's independence rests on a legal fiction embedded in the Federal Reserve Act: governors serve staggered fourteen-year terms precisely to insulate monetary policy from electoral cycles, yet the chair serves a renewable four-year term, creating a vulnerability that any sufficiently motivated executive can exploit. That vulnerability is now operative. The 54–45 confirmation vote, cleaving almost perfectly along partisan lines, signals that the Senate no longer treats the Fed chair as a technocratic appointment above political contestation — a norm erosion with durable consequences regardless of how Warsh himself governs.</p>
+<p>Warsh's intellectual record complicates the simple narrative of executive capture. A former Fed governor who dissented against Bernanke's quantitative easing programme in 2010 on inflation-expectations grounds, he is neither a monetary dove installed to manufacture rate cuts nor an ideological cipher. His published work has consistently emphasised rules-based frameworks and balance-sheet discipline. The more precise risk is not that Warsh will mechanically execute White House preferences, but that the institutional context in which he operates has been so thoroughly politicised that markets will discount Fed communications as endogenous to executive pressure — a credibility tax that compounds regardless of his actual policy judgements.</p>
+<p>The macroeconomic inheritance sharpens that risk materially. Inflation at <a href="https://www.bls.gov/cpi/">3.8% annually</a> sits above the Fed's 2% symmetric target by a margin that historically would counsel restrictive policy, yet the White House has publicly and repeatedly demanded rate reductions. The Hormuz-driven energy price surge — detailed elsewhere in this edition — is itself an inflationary supply shock that a credible central bank would be expected to look through rather than accommodate. If Warsh cuts into that environment under visible political pressure, the inflation-expectations anchor that Volcker built and Greenspan institutionalised begins to drift. If he holds, the political conflict becomes explicit and public in ways that further undermine the perception of independence even while the substance is preserved.</p>
+<p>The historical parallel most frequently invoked is the Nixon-Burns episode of the early 1970s, in which Arthur Burns, under sustained White House pressure, pursued accommodative policy into an inflationary supply shock and contributed to the wage-price spiral that defined the decade. That comparison is instructive but imprecise: Burns was ideologically predisposed toward accommodation in ways Warsh is not, and the Fed's institutional credibility — however stressed — is better anchored now than it was before Volcker's tenure. The more granular parallel may be the late-1960s relationship between William McChesney Martin and Lyndon Johnson, in which a Fed chair with genuine independence credentials nonetheless found his policy space progressively compressed by fiscal and political conditions he could not control.</p>
+<p>What markets are pricing, and what the confirmation vote crystallises, is a structural shift in the Fed's operating environment rather than a simple change in personnel. The zero-probability-of-a-June-cut pricing reflects not faith in Warsh's hawkishness but uncertainty about the institutional framework within which any policy signal will be produced. That uncertainty itself carries a term premium, and it is not obviously self-correcting. The Federal Open Market Committee retains its statutory authority, its staff apparatus, and its analytical capacity — but the signal that monetary policy can be made a partisan instrument, once transmitted, is extraordinarily difficult to retract.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "warsh-fed-independence-note";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

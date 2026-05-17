@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-17T06:38:45Z",
+  "generated": "2026-05-17T12:37:27Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -496,6 +496,19 @@
       "date": "2026-05-17",
       "date_display": "May 2026",
       "url": "/dispatches/d023-daily-edition-2026-05-17.html",
+      "keywords": []
+    },
+    {
+      "slug": "warsh-fed-independence-note",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Politicisation of the Fed: What Warsh's Confirmation Signals for Monetary Independence — Further Reading",
+      "standfirst": "The Senate confirmed Kevin Warsh as the 17th chair of the Federal Reserve in a 54-45 vote on May 13, 2026 — the most partisan confirmation for a Fed chair in history — replacing Jerome Powell, whose t.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/notes/warsh-fed-independence-note.html",
       "keywords": []
     },
     {
