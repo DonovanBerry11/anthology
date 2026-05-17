@@ -218,6 +218,20 @@
       "keywords": []
     },
     {
+      "slug": "gaza-ceasefire-seven-months",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "weekly",
+      "title": "Gaza Ceasefire: Seven Months In, the Door Is Still Closed",
+      "standfirst": "Seven months after the October ceasefire, Board of Peace envoy Nickolay Mladenov declared from Jerusalem that 'the door to Gaza's future is still closed' — a verdict that exposes the recursive deadlock between Hamas disarmament and phase one implementation, compounded by the Iran war's erasure of diplomatic pressure on both parties.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/dispatches/gaza-ceasefire-seven-months.html",
+      "keywords": []
+    },
+    {
       "slug": "warsh-era-monetary-stakes",
       "type": "note",
       "section": "notes",
@@ -721,5 +735,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-17T05:10:51Z"
+  "generated": "2026-05-17T06:28:16Z"
 }
