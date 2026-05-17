@@ -260,6 +260,20 @@
       "keywords": []
     },
     {
+      "slug": "trump-ai-oversight-mythos-2026",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Trump's AI Oversight U-Turn: Anthropic's Mythos Model Forces Washington's Hand",
+      "standfirst": "Anthropic's April 7 release of Mythos Preview — a frontier model capable of autonomously exploiting zero-day vulnerabilities in 83% of tested cases — triggered a direct policy reversal: the Trump administration, which had explicitly positioned itself against Biden-era AI safety regulation, is now drafting a pre-deployment evaluation executive order and has agreed with Google DeepMind, Microsoft, and xAI on voluntary CAISI safety testing.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/dispatches/trump-ai-oversight-mythos-2026.html",
+      "keywords": []
+    },
+    {
       "slug": "warsh-era-monetary-stakes",
       "type": "note",
       "section": "notes",
@@ -763,5 +777,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-17T06:31:32Z"
+  "generated": "2026-05-17T06:32:51Z"
 }

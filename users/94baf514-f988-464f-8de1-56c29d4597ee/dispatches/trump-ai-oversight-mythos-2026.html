@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Trump administration has reversed its stated position on AI regulation, and the mechanism is specific: [Anthropic's April 7 release of Mythos Preview](https://www.axios.com/2026/04/07/anthropic-my">
+  <title>Trump's AI Oversight U-Turn: Anthropic's Mythos Model Forces Washington's Hand — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Trump's AI Oversight U-Turn: Anthropic's Mythos Model Forces Washington's Hand</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 1:32 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>The Trump administration has reversed its stated position on AI regulation, and the mechanism is specific: <a href="https://www.axios.com/2026/04/07/anthropic-mythos-preview-cybersecurity-risks">Anthropic's April 7 release of Mythos Preview</a>, a frontier model limited to a controlled security research cohort because of documented autonomous cyberattack capabilities, triggered a national security assessment that the administration's hands-off regulatory posture could not survive. White House National Economic Council Director Kevin Hassett confirmed on May 5 that the administration is drafting an executive order to require pre-deployment government evaluation of new frontier AI models, describing the proposed process as analogous to FDA drug approval. <a href="https://federalnewsnetwork.com/artificial-intelligence/2026/05/wh-studying-ai-security-executive-order/">According to Federal News Network</a>, the White House is studying the EO in parallel with voluntary agreements: the Center for AI Standards and Innovation (CAISI) announced pre-deployment evaluation agreements with Google DeepMind, Microsoft, and xAI on May 5, joining existing agreements with Anthropic and OpenAI. CAISI has conducted 40 evaluations to date, including on unreleased models.</p>
+<p>Mythos changed the calculus because its capabilities are categorically different from prior frontier models. <a href="https://red.anthropic.com/2026/mythos-preview/">According to Anthropic's own safety card</a> and the UK AI Safety Institute's independent evaluation, Mythos Preview successfully reproduced known vulnerabilities and created working exploits on the first attempt in 83.1 percent of cases, autonomously identified zero-day vulnerabilities in every major operating system and web browser, and chained Linux kernel flaws into a complete remote takeover capability. <a href="https://www.justsecurity.org/138011/too-dangerous-anthropic-mythos/">Just Security described these capabilities</a> as surpassing "all but the most skilled human" attackers. The national security framing is direct: a model with these capabilities, in the hands of a state adversary or criminal actor, represents an asymmetric threat to critical infrastructure that existing defensive capacity is not designed to absorb. Notably, Anthropic is simultaneously the company the Defense Department designated a "supply chain risk" in March 2026 — a designation that complicated the administration's ability to use Mythos's danger as a regulatory argument while also treating its developer as untrusted.</p>
+<p>The proposed EO and the CAISI agreements represent a significant shift, but the institutional capacity question is unresolved. <a href="https://www.cnbc.com/2026/05/05/ai-oversight-trump-google-microsoft-xai.html">The America First Policy Institute noted</a> that CAISI is chronically underfunded with approximately 30 staff and has received $30 million since its 2024 establishment — less than equivalent AI safety centres in Canada and Singapore. The voluntary agreement model, in which companies submit models for evaluation but are not legally required to delay release pending results, also has no enforcement mechanism. The more consequential signal from the policy reversal is geopolitical: the US has implicitly conceded that frontier AI requires governance, which repositions Washington closer to the EU's AI Act framework and strengthens the EU's argument that differentiated national approaches to AI safety create regulatory arbitrage rather than a race-to-the-top.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "trump-ai-oversight-mythos-2026";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
