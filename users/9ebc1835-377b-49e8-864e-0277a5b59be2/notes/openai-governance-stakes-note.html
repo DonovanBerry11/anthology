@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The most consequential dimension of Musk v.">
+  <title>Charitable Trust or Corporate Capture? The OpenAI Trial Heads to the Jury — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Charitable Trust or Corporate Capture? The OpenAI Trial Heads to the Jury — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 7:37 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The most consequential dimension of Musk v. Altman is not the immediate question of whether Sam Altman breached a charitable trust — it is whether US equity law possesses the conceptual vocabulary to govern organisations whose stated mission is the prevention of existential catastrophe and whose operational assets are denominated in the hundreds of billions. California's cy-pres doctrine, which permits courts to redirect charitable assets toward purposes as close as practicable to the original mission when the original mission becomes impracticable, was designed for community foundations and educational endowments. Applying it to a recapitalised AI laboratory with a capped-profit structure and global strategic significance requires doctrinal improvisation that no appellate court has yet been asked to perform.</p>
+<p>The advisory jury's role in this posture deserves particular analytical attention. Federal courts in equity cases occasionally empanel advisory juries under Rule 39(c) to obtain a factual read on disputed matters, but the judge retains full authority over both liability findings and remedial architecture. This means the jury's verdict — whatever its direction — functions as a signal rather than a determination. Judge Yvonne Gonzalez Rogers, who has demonstrated considerable comfort with complex technology cases in prior proceedings, will ultimately decide whether remedies as structurally disruptive as <a href="https://www.reuters.com/legal/musk-openai-trial-closing-arguments-2026-05-15/">unwinding the 2025 recapitalisation</a> are proportionate to the breach, if any is found. The range of possible outcomes is unusually wide: from nominal findings with no structural remedy, to the appointment of a receiver, to forced disgorgement orders that would effectively dissolve the for-profit entity.</p>
+<p>OpenAI's defence theory — that Musk's litigation is an instrument of competitive disruption rather than principled charitable enforcement — is strategically coherent and legally insufficient. The cy-pres claim does not require Musk to have clean hands or disinterested motives; it requires only that the original charitable trust was real, that its assets were diverted, and that the diversion was not authorised. The defendant's tu quoque framing may be persuasive to a lay jury and nearly irrelevant to the judge's equitable analysis. The more technically dangerous argument for OpenAI is the one Musk's counsel pressed on recapitalisation mechanics: that the conversion of donated intellectual property and reputational capital into equity owned by for-profit investors constitutes unjust enrichment regardless of whether the mission language was formally preserved.</p>
+<p>For the broader AI industry, the structural stakes of the remedial question exceed the immediate parties. Microsoft's equity position, the valuation of derivative enterprises built on OpenAI's API infrastructure, and the governance templates being adopted by Anthropic, xAI, and DeepMind all carry implicit exposure to whatever doctrinal settlement emerges here. A ruling that nonprofit-origin AI laboratories cannot structurally convert without explicit attorney-general approval and court oversight would impose compliance costs and governance constraints across the sector that are currently unpriced. Conversely, a ruling that validates OpenAI's conversion process — even on narrow procedural grounds — effectively establishes a roadmap for analogous restructurings and forecloses the cy-pres theory as a governance check on mission-critical technology organisations.</p>
+<p>The deepest irony of the proceedings is that both principals — Musk and Altman — built their competing enterprises on the premise that artificial general intelligence represents a civilisational inflection point requiring governance structures beyond conventional corporate law. The trial has now made that premise operational in the most adversarial possible setting, and the court's answer will constitute the first serious judicial engagement with the question of whether existing legal infrastructure is adequate to the task.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "openai-governance-stakes-note";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
