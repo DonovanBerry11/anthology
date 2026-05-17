@@ -270,6 +270,19 @@
       "keywords": []
     },
     {
+      "slug": "agentic-commerce-infrastructure",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Agent Economy: When AI Stops Advising and Starts Spending — Further Reading",
+      "standfirst": "Amazon Web Services has launched AgentCore Payments, a system built with Coinbase and Stripe that allows AI agents to autonomously execute stablecoin-based micropayments using Coinbase's x402 protocol.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/agentic-commerce-infrastructure.html",
+      "keywords": []
+    },
+    {
       "slug": "fed-independence-under-pressure",
       "type": "note",
       "section": "notes",
@@ -694,5 +707,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-17T05:10:47Z"
+  "generated": "2026-05-17T05:10:49Z"
 }

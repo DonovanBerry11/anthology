@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The history of payment infrastructure is a history of the progressive abstraction of the transaction — from physical coin, to paper claim, to electronic ledger entry, to tokenized instruction.">
+  <title>The Agent Economy: When AI Stops Advising and Starts Spending — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Agent Economy: When AI Stops Advising and Starts Spending — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The history of payment infrastructure is a history of the progressive abstraction of the transaction — from physical coin, to paper claim, to electronic ledger entry, to tokenized instruction. Each transition has been contested, has taken longer than advocates predicted, and has ultimately reorganized the institutional arrangements around money in ways that were not fully visible at the moment of introduction. The AgentCore Payments launch sits inside this long history, and locating it there helps clarify what is genuinely novel versus what is a continuation of existing trends.</p>
+<p>What is continuous: the reduction of friction in micropayments has been a goal of payment infrastructure builders since the early commercial internet. The original web was supposed to enable pay-per-article, pay-per-query, pay-per-resource business models. It largely did not, because the transaction cost floor for card-based payments made sub-dollar charges economically irrational, and because the user experience of micropayment systems was consistently worse than the advertising-supported alternative. Stablecoins and the x402 protocol are another attempt to push that transaction cost floor toward zero. The difference this time is that the counterparty requesting payment is not a human navigating a checkout flow but a software agent making an API call — which eliminates the user experience problem entirely.</p>
+<p>What is genuinely novel: the institutional claim embedded in machine-to-machine payment is different from the institutional claim embedded in human-to-merchant payment, even when the underlying instrument is the same. When a person pays for something, the legal and normative framework of consumer commerce applies — contracts, warranties, fraud protections, dispute resolution. When an AI agent pays for something autonomously, that framework does not map cleanly. Who is the contracting party? Who bears liability if the agent overpays, or pays for something harmful, or is defrauded? AWS's framing of agents as first-class economic actors is partly technical description and partly a bid to establish the conceptual vocabulary before the regulatory vocabulary exists.</p>
+<p>The Coinbase and Stripe partnership structure is worth reading carefully. Both companies have existing regulatory relationships — Coinbase as a licensed exchange, Stripe as a regulated payment processor — and routing the agent payment infrastructure through their rails is partly a strategy for importing that regulatory legitimacy into a new context. It is the same move large financial institutions make when they launch novel products through existing chartered entities: the new activity inherits the regulatory standing of the established one. Whether regulators will accept that framing as agentic payments scale is an open question, but it is clearly the bet AWS and its partners are making.</p>
+<p>The commercial implications for the AI application layer are significant in a direction that has not received enough attention: if agents can autonomously pay for data feeds, APIs, and content, the economics of information goods change. Paywalled content that was previously inaccessible to automated systems becomes accessible. The marginal cost of an AI agent accessing a premium data source approaches zero at scale. That has implications for media business models, for financial data providers, and for any business whose revenue model depends on human-gated access to information.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "agentic-commerce-infrastructure";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
