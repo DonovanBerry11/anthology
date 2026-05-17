@@ -232,6 +232,20 @@
       "keywords": []
     },
     {
+      "slug": "april-us-cpi-2026",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "April US CPI: 3.8% as Energy and Tariffs Drive the Fastest Inflation Since 2023",
+      "standfirst": "The April 2026 CPI print of 3.8% year-on-year — the highest since May 2023 — landed one day after Kevin Warsh's Senate confirmation, positioning the incoming Fed chair to face his first June meeting with an inflation overshoot driven partly by the trade and military policies of the president who appointed him.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/dispatches/april-us-cpi-2026.html",
+      "keywords": []
+    },
+    {
       "slug": "warsh-era-monetary-stakes",
       "type": "note",
       "section": "notes",
@@ -735,5 +749,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-17T06:28:16Z"
+  "generated": "2026-05-17T06:30:07Z"
 }

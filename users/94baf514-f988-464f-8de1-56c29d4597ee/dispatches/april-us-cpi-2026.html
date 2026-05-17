@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Bureau of Labor Statistics released the April 2026 Consumer Price Index on May 12, showing a 3.8 percent year-on-year increase in the CPI-U — [the highest annual rate since May 2023](https://www.c">
+  <title>April US CPI: 3.8% as Energy and Tariffs Drive the Fastest Inflation Since 2023 — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>April US CPI: 3.8% as Energy and Tariffs Drive the Fastest Inflation Since 2023</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 1:30 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>The Bureau of Labor Statistics released the April 2026 Consumer Price Index on May 12, showing a 3.8 percent year-on-year increase in the CPI-U — <a href="https://www.cnbc.com/2026/05/12/cpi-inflation-april-2026-.html">the highest annual rate since May 2023</a> and above the consensus forecast of 3.7 percent. The monthly gain was 0.6 percent seasonally adjusted. Energy was the dominant driver: the energy index rose 3.8 percent for the month, with BLS attributing more than 40 percent of the overall monthly gain to energy alone. On a twelve-month basis, energy prices are up 17.9 percent — a direct consequence of the oil shock produced by the Iran conflict that began in February. Food prices added 0.5 percent for the month. Core CPI — excluding food and energy — rose 0.4 percent monthly and 2.8 percent annually, well above the Federal Reserve's 2 percent target.</p>
+<p>The tariff pass-through picture in goods is more complicated. April was the first CPI print in which the Trump administration's reinstated 10 percent global tariff could plausibly appear in consumer goods prices, but the data showed <a href="https://verifiedinvesting.com/blogs/us-economic-metrics/us-cpi-april-2026-core-doubled-services-not-tariffs">mixed results</a>. Apparel rose 0.6 percent in April — slower than 1.0 percent in March and 1.3 percent in February. New vehicles fell 0.2 percent; household furnishings declined 0.5 percent. A <a href="https://www.frbsf.org/research-and-insights/publications/economic-letter/2026/03/effects-of-tariffs-on-components-of-inflation/">San Francisco Federal Reserve analysis from March 2026</a> found that tariff effects on consumer prices typically appear with a one-to-two-quarter lag, partly absorbed in retailer margins first. Producer prices rose 6 percent wholesale in April — with the standard lag, that signals further consumer goods pressure arriving in May and June.</p>
+<p>The timing of the release — one day after the Senate confirmed Kevin Warsh as Federal Reserve chair by a 54-45 vote — creates the most analytically awkward opening for a new Fed chair in decades. Warsh takes formal control on June 16, when the FOMC next meets. <a href="https://polymarket.com/event/fed-decision-in-june-825">Futures markets are pricing a 98 percent probability of no rate change at that meeting</a>, leaving rates at their current level despite inflation running at nearly double target. The political geometry is sharp: Warsh's appointment was premised partly on openness to the rate cuts Trump has demanded, but the inflation environment he now faces — driven by an oil shock from a US-Israel military campaign and tariffs imposed by the president who appointed him — forecloses the easy-cut scenario. His June statement will be watched for whether he adopts a one-time-shock framing that would give the committee cover to ease later in the year without formally abandoning the 2 percent mandate.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "april-us-cpi-2026";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
