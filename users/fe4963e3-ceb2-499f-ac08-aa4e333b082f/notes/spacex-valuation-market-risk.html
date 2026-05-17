@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The comparison to Facebook's 2012 IPO is doing a lot of work in the coverage, and it's worth examining what that analogy actually implies — because the Facebook debut was, by most measures, a disaster">
+  <title>Countdown to Launch: What SpaceX's Accelerated IPO Means for Markets — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Countdown to Launch: What SpaceX's Accelerated IPO Means for Markets — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 12:14 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The comparison to Facebook's 2012 IPO is doing a lot of work in the coverage, and it's worth examining what that analogy actually implies — because the Facebook debut was, by most measures, a disaster in the short term before it became a legend in the long term. The stock priced at $38, opened chaotically amid Nasdaq technical failures, and spent more than a year trading below its offering price before the mobile advertising business that analysts had doubted began generating the revenues that eventually made it one of the most valuable companies in history. If SpaceX's trajectory rhymes with that precedent, investors need to decide which part of the story they're buying into.</p>
+<p>SpaceX is a structurally unusual IPO candidate in ways that go beyond its scale. The company operates across two distinct business lines with very different financial profiles. Its launch business — Falcon 9, Falcon Heavy, and the developing Starship program — is capital-intensive, contract-driven, and increasingly dominant in commercial and government launch markets. Starlink, its satellite internet constellation, is a recurring-revenue subscription business that more closely resembles a telecommunications utility than an aerospace contractor. Valuing those two businesses under a single equity structure is genuinely complex, and the range of analyst estimates has been wide enough to suggest that reasonable people looking at the same financials reach very different conclusions about what the company is worth.</p>
+<p>The IPO's timing introduces a variable that is not entirely within SpaceX's control. The Cerebras listing generated excitement, but the AI chip market has a different investor base and a different risk profile than a company whose revenue still depends heavily on government contracts, including a NASA relationship that involves significant political exposure. More consequentially, the broader market environment in mid-2026 is not the frothy, liquidity-flush backdrop that produced the great SPAC wave of 2020 and 2021. Rates are elevated, the Fed is not cutting, and institutional allocators are more selective than they were five years ago.</p>
+<p>The concern that a SpaceX listing could be destructive for smaller players is not frivolous. When a mega-cap IPO prices, it absorbs capital that would otherwise circulate through the broader market. Fund managers who need liquidity to participate in the SpaceX offering may reduce positions elsewhere. Secondary offerings that smaller companies had planned around similar windows get pushed or repriced. This is a gravitational effect — the bigger the mass, the more it bends the space around it — and SpaceX's anticipated market cap puts it in a category where that effect is meaningful.</p>
+<p>Elon Musk's continued role at the company adds an unusual layer of headline risk. His other ventures, his political activities, and his public conduct have become variables in investor calculations about companies he runs. Some institutional investors have explicit ESG or governance constraints that make Musk-associated holdings complicated regardless of underlying business quality. That is not a reason the IPO won't succeed, but it is a reason the investor base may look different — more retail, more speculative — than a comparable offering from a more conventionally managed firm. How that affects the post-listing trading dynamics is genuinely difficult to predict.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "spacex-valuation-market-risk";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
