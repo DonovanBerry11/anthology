@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-17T12:37:34Z",
+  "generated": "2026-05-17T12:37:36Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -561,6 +561,20 @@
       "date": "2026-05-17",
       "date_display": "May 2026",
       "url": "/notes/ai-labour-reallocation-note.html",
+      "keywords": []
+    },
+    {
+      "slug": "d024-daily-edition-2026-05-17",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Sunday, 17 May 2026",
+      "standfirst": "The Senate confirmed Kevin Warsh as the 17th chair of the Federal Reserve in a 54-45 vote on May 13, 2026 — the most partisan confirmation for a Fed chair in history — replacing Jerome Powell, whose t.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/dispatches/d024-daily-edition-2026-05-17.html",
       "keywords": []
     },
     {
