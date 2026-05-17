@@ -66,6 +66,20 @@
       "keywords": []
     },
     {
+      "slug": "d023-daily-edition-2026-05-17",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Sunday, 17 May 2026",
+      "standfirst": "President Trump's two-day state visit to Beijing ended without substantive agreements on key issues including Taiwan, Iran, or trade, though both sides characterised the summit positively. China's for.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/users/fe4963e3-ceb2-499f-ac08-aa4e333b082f/dispatches/d023-daily-edition-2026-05-17.html",
+      "keywords": []
+    },
+    {
       "slug": "after-beijing-what-now",
       "type": "note",
       "section": "notes",
@@ -145,5 +159,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-17T05:14:18Z"
+  "generated": "2026-05-17T05:14:19Z"
 }
