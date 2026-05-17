@@ -1,23 +1,67 @@
 {
-  "date": "2026-05-16",
-  "date_display": "Saturday, 16 May 2026",
-  "generated_at": "16 May 2026, 12:10 AM EST",
+  "date": "2026-05-17",
+  "date_display": "Sunday, 17 May 2026",
+  "generated_at": "17 May 2026, 12:10 AM EST",
   "user_id": "94baf514-f988-464f-8de1-56c29d4597ee",
   "lead": {
-    "slug": "d019-daily-edition-2026-05-16",
+    "slug": "d022-daily-edition-2026-05-17",
     "type": "dispatch",
     "section": "dispatches",
     "domain": "global",
     "sector": "geopolitics",
     "dispatch_type": "daily",
-    "title": "Saturday, 16 May 2026",
-    "standfirst": "Jerome Powell's term as Federal Reserve Chair ended May 15, with Kevin Warsh stepping in at a moment of acute central bank division. Treasury yields spiked to near-one-year highs at 4.55% and market-i.",
-    "date": "2026-05-16",
+    "title": "Sunday, 17 May 2026",
+    "standfirst": "Bank of America Global Research has revised its Fed rate-cut forecast to July 2027, citing energy-driven inflation from the ongoing Iran conflict that has pushed headline PCE to 3.5% and core PCE to 3.",
+    "date": "2026-05-17",
     "date_display": "May 2026",
-    "url": "/dispatches/d019-daily-edition-2026-05-16.html",
+    "url": "/dispatches/d022-daily-edition-2026-05-17.html",
     "keywords": []
   },
   "secondary": [
+    {
+      "slug": "d019-daily-edition-2026-05-16",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Saturday, 16 May 2026",
+      "standfirst": "Jerome Powell's term as Federal Reserve Chair ended May 15, with Kevin Warsh stepping in at a moment of acute central bank division. Treasury yields spiked to near-one-year highs at 4.55% and market-i.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/dispatches/d019-daily-edition-2026-05-16.html",
+      "keywords": []
+    },
+    {
+      "slug": "d020-daily-edition-2026-05-16",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Saturday, 16 May 2026",
+      "standfirst": "President Trump concluded a two-day summit with Xi Jinping in Beijing, with both leaders emphasising stability and touting economic progress, but departing without resolving the core disputes over Tai.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/dispatches/d020-daily-edition-2026-05-16.html",
+      "keywords": []
+    },
+    {
+      "slug": "d021-daily-edition-2026-05-16",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Saturday, 16 May 2026",
+      "standfirst": "President Trump concluded a two-day state visit to Beijing — the first by a U.S. president since 2017 — accompanied by top executives including Tim Cook, Elon Musk, and Jensen Huang. Despite discussio.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/dispatches/d021-daily-edition-2026-05-16.html",
+      "keywords": []
+    }
+  ],
+  "further_reading": [
     {
       "slug": "d017-daily-edition-2026-05-15",
       "type": "dispatch",
@@ -59,9 +103,7 @@
       "date_display": "May 2026",
       "url": "/dispatches/trump-xi-beijing-summit-may15.html",
       "keywords": []
-    }
-  ],
-  "further_reading": [
+    },
     {
       "slug": "d016-daily-edition-2026-05-14",
       "type": "dispatch",
@@ -143,73 +185,6 @@
         "sanctions",
         "negotiations",
         "history"
-      ]
-    },
-    {
-      "slug": "section-122-tariff-ruling",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "political-economy",
-      "dispatch_type": "daily",
-      "title": "Trade Court Strikes Down Trump's Section 122 Tariffs",
-      "standfirst": "A 2-1 panel of the US Court of International Trade ruled on May 7 that the administration's 10% global import surcharge exceeds presidential authority under Section 122 of the Trade Act of 1974 — but limited relief to three named plaintiffs, leaving the surcharge in place for all other US importers.",
-      "date": "2026-05-10",
-      "date_display": "May 2026",
-      "url": "/dispatches/section-122-tariff-ruling.html",
-      "keywords": []
-    },
-    {
-      "slug": "china-blocking-rules",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "geopolitics",
-      "dispatch_type": "daily",
-      "title": "China's Legal Shield",
-      "standfirst": "China's Ministry of Commerce invoked its Blocking Rules for the first time on 2 May, ordering domestic firms not to comply with US sanctions on five Chinese oil refineries. The legal escalation transforms a bilateral diplomatic dispute into a multilateral compliance problem for any international bank or shipper caught between Washington and Beijing.",
-      "date": "2026-05-09",
-      "date_display": "May 2026",
-      "url": "/dispatches/china-blocking-rules.html",
-      "keywords": [
-        "China",
-        "sanctions",
-        "Iran",
-        "geopolitics",
-        "trade",
-        "financial markets",
-        "oil",
-        "OFAC",
-        "blocking rules",
-        "US",
-        "compliance",
-        "international"
-      ]
-    },
-    {
-      "slug": "trump-ai-oversight-reversal",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "technology",
-      "dispatch_type": "daily",
-      "title": "White House Reverses on AI Oversight",
-      "standfirst": "An administration that spent its first year opposing AI oversight is now drafting an executive order requiring pre-deployment government vetting of advanced models, following the Mythos security alarm. The reversal signals that national security framing is doing what the broader AI safety debate failed to do.",
-      "date": "2026-05-08",
-      "date_display": "May 2026",
-      "url": "/dispatches/trump-ai-oversight-reversal.html",
-      "keywords": [
-        "AI",
-        "artificial intelligence",
-        "Trump",
-        "US politics",
-        "technology",
-        "regulation",
-        "oversight",
-        "executive order",
-        "commercial",
-        "applications",
-        "national security"
       ]
     }
   ]
