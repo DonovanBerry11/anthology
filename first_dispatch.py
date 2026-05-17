@@ -305,8 +305,9 @@ No markdown fences, no commentary — just the JSON:
         for i, t in enumerate(topics)
     )
 
-    dispatch_draft_prompt = f"""You are the writer for Anthology, a personalised analytical newspaper. \
-Write 5 daily dispatches for the reader described below.
+    dispatch_draft_prompt = f"""You are the writer for Anthology, a personalised newspaper. \
+Write 5 dispatch sections for the reader described below. These sections appear in a combined \
+dispatch; each links to a companion note where deeper analysis lives.
 
 READER PROFILE:
 {orientation_excerpt}{voice_instruction_block}
@@ -314,20 +315,24 @@ READER PROFILE:
 FIVE STORIES TO COVER:
 {topics_summary}
 
-For each story, write a separate dispatch body. Each dispatch must:
-- Be 350–450 words
+For each story, write a separate dispatch section body. Each dispatch section must:
+- Be no more than 150 words — this is a hard cap. Count carefully.
+- Report what happened. Do not editorialize, characterise, or use rhetorical framing. \
+Save analysis and opinion for the companion note.
 - Use prose paragraphs only — no subheadings, no bullet points, no numbered lists
 - Open with a strong declarative sentence (not a question, not "In recent weeks")
-- Name the source naturally within the text
 - Close with a forward-looking sentence about what to watch
 - NOT include the title, byline, date, or any meta-text — body paragraphs only
 - Be calibrated to this reader's background and sophistication
+- Do not name news outlets in the prose. Embed the substance of what they reported as a \
+direct statement, and attach a hyperlink to the specific claim or data point. \
+Correct form: '[the vote was 8–4](url)'. Incorrect form: 'As CNBC reported, the vote was 8–4'.
 
 Respond with ONLY a valid JSON array of exactly 5 objects. No markdown fences:
 [
   {{
     "index": 0,
-    "body": "Full dispatch body text for story 1…"
+    "body": "Full dispatch section body text for story 1…"
   }},
   …
 ]"""
@@ -358,14 +363,20 @@ Respond with ONLY a valid JSON array of exactly 5 objects. No markdown fences:
         for i, body in enumerate(dispatch_bodies)
     )
 
-    qc_prompt = f"""You are a quality editor for Anthology. Review these 5 dispatch bodies:
+    qc_prompt = f"""You are a quality editor for Anthology. Review these 5 dispatch sections.
 
-For each dispatch, check:
+Before checking anything else, independently verify specific factual claims in each section \
+via web search — particularly named vote counts or margins, named scores or standings, \
+named statistics, and current officeholders. Then for each section check:
 1. STRUCTURE: Prose paragraphs only — no subheadings, bullets, or lists?
-2. LENGTH: Between 300 and 500 words?
-3. OPENING: Strong declarative opening (not a question, not "In recent weeks")?
-4. SOURCE: Source named naturally in the text?
-5. CLOSING: Forward-looking final sentence?
+2. LENGTH: No more than 150 words? Flag and trim any section that exceeds this hard cap.
+3. REGISTER: Plain reporting only — no editorialising, no rhetorical framing, no \
+characterisation beyond what is directly attributable?
+4. CITATION STYLE: No verbal outlet citation — "As X reported", "According to X", \
+"X's coverage noted" are prohibited; sources must appear as inline hyperlinks on the claim.
+5. OPENING: Strong declarative opening (not a question, not "In recent weeks")?
+6. CLOSING: Forward-looking final sentence?
+7. FACTUAL ACCURACY: Any claim contradicted by your web search must be corrected or removed.
 
 For each dispatch that passes all checks, respond with just its index and PASS.
 For each dispatch that needs fixing, respond with its index, REVISED, and the corrected body.
@@ -383,6 +394,7 @@ DISPATCHES TO REVIEW:
     qc_response = client.messages.create(
         model=MODEL,
         max_tokens=8192,
+        tools=[{"type": "web_search_20250305", "name": "web_search"}],
         messages=[{"role": "user", "content": qc_prompt}],
     )
 
@@ -413,8 +425,9 @@ DISPATCHES TO REVIEW:
     )
 
     note_draft_prompt = f"""You are a writer for Anthology, a personalised newspaper. \
-You have just written 5 short dispatches (350–450 words each) covering current stories. \
-Now write 5 companion notes — one for each story — that go deeper.
+You have just written 5 short dispatch sections (≤150 words each) covering current stories. \
+Now write 5 companion notes — one for each story — that go deeper. Notes are where analysis, \
+context, and opinion live; the dispatch section reported the facts, the note develops them.
 
 READER PROFILE:
 {orientation_excerpt}{voice_instruction_block}
@@ -430,6 +443,10 @@ Each companion note must:
 - Be written for this reader specifically — calibrated to their sophistication and interests
 - NOT be a summary or repeat of the dispatch — the reader has already read the dispatch
 - NOT include a title, byline, date, or meta-text — body paragraphs only
+- Do not name news outlets in the prose. Embed the substance of what they reported as a \
+  direct statement, and attach a hyperlink to the specific claim or data point. \
+  Correct form: '[analysts projected 2.1% contraction](url)'. \
+  Incorrect form: 'As the FT reported, analysts projected a 2.1% contraction'.
 
 Respond with ONLY a valid JSON array of exactly 5 objects. No markdown fences:
 [

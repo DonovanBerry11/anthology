@@ -277,8 +277,9 @@ Respond with ONLY a valid JSON array of {N_DISPATCHES} objects. No markdown fenc
         for i, t in enumerate(topics)
     )
 
-    dispatch_prompt = f"""You are the writer for Anthology. Write 5 daily dispatches for the \
-reader described below.
+    dispatch_prompt = f"""You are the writer for Anthology. Write 5 dispatch sections for the \
+reader described below. These sections appear in a combined dispatch; each links to a companion \
+note where deeper analysis lives.
 
 READER PROFILE:
 {orientation_excerpt}
@@ -286,17 +287,21 @@ READER PROFILE:
 FIVE STORIES TO COVER:
 {topics_summary}
 
-Each dispatch must:
-- Be 350–450 words
+Each dispatch section must:
+- Be no more than 150 words — this is a hard cap. Count carefully.
+- Report what happened. Do not editorialize, characterise, or use rhetorical framing. \
+Save analysis and opinion for the companion note.
 - Use prose paragraphs only — no subheadings, no bullets, no numbered lists
 - Open with a strong declarative sentence
-- Name the source naturally within the text
 - Close with a forward-looking sentence
 - NOT include the title, byline, date, or meta-text — body paragraphs only
+- Do not name news outlets in the prose. Embed the substance of what they reported as a \
+direct statement, and attach a hyperlink to the specific claim or data point. \
+Correct form: '[the vote was 8–4](url)'. Incorrect form: 'As CNBC reported, the vote was 8–4'.
 
 Respond with ONLY a valid JSON array of {N_DISPATCHES} objects. No markdown fences:
 [
-  {{"index": 0, "body": "Full dispatch body for story 1…"}},
+  {{"index": 0, "body": "Full dispatch section body for story 1…"}},
   …
 ]"""
 
@@ -318,9 +323,22 @@ Respond with ONLY a valid JSON array of {N_DISPATCHES} objects. No markdown fenc
     dispatches_for_qc = '\n\n'.join(
         f'=== DISPATCH {i+1} ===\n{body}' for i, body in enumerate(dispatch_bodies)
     )
-    qc_prompt = f"""Quality-check these 5 dispatch bodies. For each, verify:
-1. Prose only (no subheadings/bullets), 2. 300–500 words, 3. Strong declarative opening,
-4. Source named, 5. Forward-looking close.
+    qc_prompt = f"""Quality-check these 5 dispatch sections. Before checking anything else, \
+independently verify specific factual claims in each section via web search — particularly \
+named vote counts or margins, named scores or standings, named statistics, and current \
+officeholders. Then for each section check:
+1. Prose only (no subheadings/bullets)
+2. No more than 150 words — flag and trim any section that exceeds this hard cap
+3. Plain reporting register — no editorialising, no rhetorical framing, no characterisation \
+beyond what is directly attributable; report facts only
+4. No verbal outlet citation — "As X reported", "According to X", "X's coverage noted" \
+constructions are prohibited; sources must appear as inline hyperlinks on the specific claim
+5. Strong declarative opening
+6. Forward-looking close
+7. Factual accuracy — any claim contradicted by your web search must be corrected or removed
+
+For each section that passes, return its index and PASS.
+For each section that needs fixing, return its index, REVISED, and the full corrected body.
 
 Respond as JSON array:
 [
@@ -334,6 +352,7 @@ DISPATCHES:
 
     qc_response = client.messages.create(
         model=MODEL, max_tokens=8192,
+        tools=[{"type": "web_search_20250305", "name": "web_search"}],
         messages=[{"role": "user", "content": qc_prompt}],
     )
     qc_data = parse_json_response(extract_text(qc_response), 'QC')
@@ -355,8 +374,9 @@ DISPATCHES:
         for i in range(N_DISPATCHES)
     )
 
-    note_prompt = f"""You have written 5 dispatches. Now write 5 companion notes — one per \
-story — that go deeper for the reader described below.
+    note_prompt = f"""You have written 5 dispatch sections. Now write 5 companion notes — one per \
+story — that go deeper for the reader described below. Notes are where analysis, context, and \
+opinion live; the dispatch section reported the facts, the note develops them.
 
 READER PROFILE:
 {orientation_excerpt}
@@ -370,6 +390,10 @@ Each note must:
 - Use prose paragraphs — no subheadings or bullets
 - NOT repeat the dispatch — the reader has already read it
 - NOT include title, byline, date, or meta-text
+- Do not name news outlets in the prose. Embed the substance of what they reported as a \
+direct statement, and attach a hyperlink to the specific claim or data point. \
+Correct form: '[analysts projected 2.1% contraction](url)'. \
+Incorrect form: 'As the FT reported, analysts projected a 2.1% contraction'.
 
 Respond with ONLY a valid JSON array of {N_DISPATCHES} objects. No markdown fences:
 [
