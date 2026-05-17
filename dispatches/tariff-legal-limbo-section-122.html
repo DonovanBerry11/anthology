@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="On May 7, a 2-1 panel of the [Court of International Trade ruled](https://www.conference-board.org/research/ced-policy-backgrounders/court-of-international-trade-rules-against-the-10-percent-global-ta">
+  <title>Trump's 10% Tariff Legal Limbo: Trade Court Struck Them Down, Appeals Court Put Them Back — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Trump's 10% Tariff Legal Limbo: Trade Court Struck Them Down, Appeals Court Put Them Back</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 1:31 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>On May 7, a 2-1 panel of the <a href="https://www.conference-board.org/research/ced-policy-backgrounders/court-of-international-trade-rules-against-the-10-percent-global-tariff">Court of International Trade ruled</a> that the Trump administration's 10 percent global tariff — imposed on February 24 under Section 122 of the Trade Act of 1974 — exceeded the statutory authority granted by Congress and was therefore unlawful. On May 12, the US Court of Appeals for the Federal Circuit issued an <a href="https://abcnews.com/US/appeals-court-temporarily-pauses-order-declared-trumps-global/story?id=132891699">administrative stay of that ruling</a>, leaving the tariffs in place while the appeal proceeds. The plaintiffs — Burlap & Barrel, Inc., Basic Fun, Inc., and the State of Washington — have until May 19 to respond; the government has until May 22. The 10 percent tariff, which was already set to expire on July 24 under Section 122's 150-day statutory limit, is now the subject of a live constitutional contest over the boundaries of presidential emergency trade power.</p>
+<p>The legal sequence matters. <a href="https://www.hklaw.com/en/insights/publications/2026/02/supreme-court-strikes-down-ieepa-tariffs">The Supreme Court struck down IEEPA-based tariffs on February 20</a>, holding that the International Emergency Economic Powers Act does not authorise the president to impose tariffs — that the power to "regulate importation" is distinct from the taxing power, which belongs exclusively to Congress. The administration responded within days by shifting to Section 122, which explicitly allows a temporary import surcharge of up to 15 percent for up to 150 days when "large and serious United States balance-of-payments deficits" require it. The CIT's May 7 ruling found that condition was not met: Congress used "balance-of-payments deficits" in its specific 1974 monetary sense, not as a synonym for a general trade deficit or current account shortfall. The administration's proclamation relied on the latter metrics, the court held, and therefore fell outside the statutory authority. The dissenting judge on the three-judge panel disagreed, and the Federal Circuit's willingness to stay the ruling signals it regards the government's appeal as at least facially viable.</p>
+<p>The stakes extend far beyond the current 10 percent rate. The administration is already <a href="https://www.wiley.law/alert-Trump-Imposes-Section-122-Tariffs-After-Halting-IEEPA-Tariffs-Previews-New-Section-301-Investigations">signalling plans for new Section 301 investigations</a> and other tariff instruments as the Section 122 authority approaches its July 24 expiration — but each of those alternatives has its own legal exposure. If the Federal Circuit ultimately upholds the CIT ruling, the Section 122 tariffs will be voided and the administration's entire tariff architecture will lack a clear legal foundation for a third time, having already lost IEEPA before the Supreme Court. <a href="https://www.gtlaw.com/en/insights/2026/5/us-tariff-update-section-122-duties-found-unauthorized-by-law-ieepa-refunds-under-way">Approximately $166 billion in IEEPA duties previously collected are currently being refunded</a> following the February decision; a second round of refunds from Section 122 duties would compound the fiscal disruption. The decision on the stay pending appeal, expected by late May, is the next critical marker.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "tariff-legal-limbo-section-122";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

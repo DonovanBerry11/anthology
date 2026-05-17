@@ -246,6 +246,20 @@
       "keywords": []
     },
     {
+      "slug": "tariff-legal-limbo-section-122",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Trump's 10% Tariff Legal Limbo: Trade Court Struck Them Down, Appeals Court Put Them Back",
+      "standfirst": "A May 7 Court of International Trade ruling that Trump's Section 122 tariffs exceeded statutory authority was stayed by the Federal Circuit on May 12, creating a live constitutional contest over presidential emergency trade power — and exposing the administration's entire tariff architecture to a third legal collapse.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/dispatches/tariff-legal-limbo-section-122.html",
+      "keywords": []
+    },
+    {
       "slug": "warsh-era-monetary-stakes",
       "type": "note",
       "section": "notes",
@@ -749,5 +763,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-17T06:30:07Z"
+  "generated": "2026-05-17T06:31:32Z"
 }
