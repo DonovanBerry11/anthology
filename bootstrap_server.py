@@ -8,7 +8,9 @@ Route: POST /bootstrap
 Auth:  Supabase JWT validated against /auth/v1/user
 """
 
+import json
 import os
+import tempfile
 import time
 import logging
 import subprocess
@@ -21,35 +23,17 @@ from dotenv import load_dotenv
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-ENV_FILE         = '/root/.anthology.env'
-BOOTSTRAP_SCRIPT = '/root/anthology/bootstrap_orientation.py'
-SYSTEM_DIR       = '/root/anthology-system'
-LOG_FILE         = '/root/anthology-system/logs/bootstrap-server.log'
-VENV_PYTHON      = '/root/anthology-env/bin/python3'
-PORT             = 5050
-SUBPROCESS_TIMEOUT = 30
-RATE_LIMIT_MAX   = 3
-RATE_LIMIT_WINDOW = 3600  # seconds
-<<<<<<< Updated upstream
-=======
-=======
-ENV_FILE               = '/root/.anthology.env'
-BOOTSTRAP_SCRIPT       = '/root/anthology/bootstrap_orientation.py'
-FIRST_DISPATCH_SCRIPT  = '/root/pipeline/first_dispatch.py'
-SYSTEM_DIR             = '/root/anthology-system'
-LOG_FILE               = '/root/anthology-system/logs/bootstrap-server.log'
-VENV_PYTHON            = '/root/anthology-env/bin/python3'
-PORT                   = 5050
-SUBPROCESS_TIMEOUT     = 30
-RATE_LIMIT_MAX         = 3
-RATE_LIMIT_WINDOW      = 3600  # seconds
-FIRST_DISPATCH_RATE_MAX = 1    # per hour per user
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+ENV_FILE                = '/root/.anthology.env'
+BOOTSTRAP_SCRIPT        = '/root/anthology/bootstrap_orientation.py'
+FIRST_DISPATCH_SCRIPT   = '/root/pipeline/first_dispatch.py'
+SYSTEM_DIR              = '/root/anthology-system'
+LOG_FILE                = '/root/anthology-system/logs/bootstrap-server.log'
+VENV_PYTHON             = '/root/anthology-env/bin/python3'
+PORT                    = 5050
+SUBPROCESS_TIMEOUT      = 30
+RATE_LIMIT_MAX          = 3
+RATE_LIMIT_WINDOW       = 3600  # seconds
+FIRST_DISPATCH_RATE_MAX = 1     # per hour per user
 
 ALLOWED_ORIGINS = [
     'https://anthology-weld.vercel.app',
@@ -81,14 +65,8 @@ logger = logging.getLogger('bootstrap-server')
 # ── Rate limiting (in-memory) ─────────────────────────────────────────────────
 
 _rate_store: dict = defaultdict(list)
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
 _first_dispatch_rate_store: dict = defaultdict(list)
 
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
 def is_rate_limited(user_id: str) -> bool:
     """Return True (and do NOT record) if user has hit the limit; else record and return False."""
@@ -100,10 +78,6 @@ def is_rate_limited(user_id: str) -> bool:
     _rate_store[user_id].append(now)
     return False
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
 
 def is_first_dispatch_rate_limited(user_id: str) -> bool:
     """Rate-limit /first-dispatch to 1 request per user per hour."""
@@ -117,8 +91,7 @@ def is_first_dispatch_rate_limited(user_id: str) -> bool:
     _first_dispatch_rate_store[user_id].append(now)
     return False
 
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+
 # ── Flask app ─────────────────────────────────────────────────────────────────
 
 app = Flask(__name__)
@@ -208,6 +181,41 @@ def bootstrap():
         return jsonify({'status': 'error', 'message': 'Bootstrap timed out after 30 seconds'}), 504
 
     if result.returncode == 0:
+        # 7. Verify registry entry was written
+        registry_path = os.path.join(SYSTEM_DIR, 'users', 'registry.json')
+        try:
+            with open(registry_path, 'r', encoding='utf-8') as rf:
+                registry = json.load(rf)
+            registered_ids = {u.get('user_id') for u in registry.get('users', [])}
+            if user_id in registered_ids:
+                logger.info(f'[{ts}] Registry verified for {user_id}')
+            else:
+                logger.warning(
+                    f'[{ts}] WARNING: Registry entry missing after bootstrap for {user_id} '
+                    f'— writing recovery entry'
+                )
+                try:
+                    recovery_entry = {
+                        'user_id':          user_id,
+                        'name':             'Unknown',
+                        'orientation_path': f'/root/anthology-system/users/{user_id}/orientation.md',
+                        'active':           True,
+                    }
+                    registry.setdefault('users', []).append(recovery_entry)
+                    registry_dir = os.path.dirname(registry_path)
+                    with tempfile.NamedTemporaryFile(
+                        'w', dir=registry_dir, delete=False,
+                        suffix='.tmp', encoding='utf-8'
+                    ) as tf:
+                        json.dump(registry, tf, indent=2, ensure_ascii=False)
+                        tmp_path = tf.name
+                    os.replace(tmp_path, registry_path)
+                    logger.info(f'[{ts}] Recovery entry written to registry.json for {user_id}')
+                except Exception as recovery_exc:
+                    logger.error(f'[{ts}] Recovery write failed for {user_id}: {recovery_exc}')
+        except Exception as verify_exc:
+            logger.error(f'[{ts}] Registry verification failed for {user_id}: {verify_exc}')
+
         logger.info(f'[{ts}] 200 ok user={user_id}')
         return jsonify({'status': 'ok', 'message': result.stdout}), 200
     else:
@@ -215,10 +223,6 @@ def bootstrap():
         return jsonify({'status': 'error', 'message': result.stderr}), 500
 
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
 @app.route('/first-dispatch', methods=['POST'])
 def first_dispatch():
     ts = __import__('datetime').datetime.utcnow().isoformat()
@@ -270,11 +274,18 @@ def first_dispatch():
         stderr=subprocess.DEVNULL,
     )
 
+    # 7. Append to first-dispatch-queue.log for visibility
+    try:
+        queue_log_path = os.path.join(SYSTEM_DIR, 'logs', 'first-dispatch-queue.log')
+        timestamp_str = __import__('datetime').datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+        with open(queue_log_path, 'a', encoding='utf-8') as qf:
+            qf.write(f'{timestamp_str} | {user_id} | spawned\n')
+    except Exception as log_exc:
+        logger.warning(f'[{ts}] /first-dispatch queue log write failed: {log_exc}')
+
     return jsonify({'status': 'accepted', 'message': 'First dispatch generation started'}), 202
 
 
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 @app.route('/health', methods=['GET'])
 def health():
     return jsonify({'status': 'ok'}), 200
