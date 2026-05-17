@@ -283,6 +283,20 @@
       "keywords": []
     },
     {
+      "slug": "d022-daily-edition-2026-05-17",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Sunday, 17 May 2026",
+      "standfirst": "Bank of America Global Research has revised its Fed rate-cut forecast to July 2027, citing energy-driven inflation from the ongoing Iran conflict that has pushed headline PCE to 3.5% and core PCE to 3.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/dispatches/d022-daily-edition-2026-05-17.html",
+      "keywords": []
+    },
+    {
       "slug": "fed-independence-under-pressure",
       "type": "note",
       "section": "notes",
@@ -707,5 +721,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-17T05:10:49Z"
+  "generated": "2026-05-17T05:10:51Z"
 }
