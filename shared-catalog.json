@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-17T06:35:33Z",
+  "generated": "2026-05-17T06:37:15Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -312,6 +312,19 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/notes/dollar-by-friendly-fire.html",
+      "keywords": []
+    },
+    {
+      "slug": "the-compute-layer",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Compute Layer",
+      "standfirst": "The US strategy of restricting China's access to advanced AI chips was designed to preserve American control over the infrastructure layer that will underpin the next economy. It has instead accelerated the Chinese chip ecosystem it aimed to prevent, while concentrating global compute in five US firms and a handful of Gulf sovereign funds — a sovereignty race that the export controls have fragmented rather than won.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/notes/the-compute-layer.html",
       "keywords": []
     },
     {

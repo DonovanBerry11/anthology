@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The US strategy of restricting China's access to advanced AI chips was designed to preserve American dominance over the infrastructure layer underpinning the next economy — and has instead produced th">
+  <title>The Compute Layer — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Compute Layer</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 1:37 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The US strategy of restricting China's access to advanced AI chips was designed to preserve American dominance over the infrastructure layer underpinning the next economy — and has instead produced the one outcome it was meant to prevent: an accelerating Chinese alternative ecosystem, built without American inputs, operating outside the reach of any US regulatory or commercial leverage. When the export controls on Nvidia's H100 and then A100 chips began tightening in 2022, the working assumption was that China's AI development would stall at the hardware constraint. The logic was internally consistent: frontier model training requires massive compute, massive compute requires advanced semiconductors, and Nvidia held an overwhelming market share in both performance and software ecosystem. What the assumption missed is that constraint does not eliminate demand — it redirects it. By April 2026, DeepSeek had released V4, the first frontier-class AI model built entirely on Chinese domestic silicon: Huawei's Ascend 950PR chips. ByteDance, Tencent, and Alibaba moved immediately to secure Ascend orders. A broader ecosystem of Chinese AI chip companies — Enflame, Biren, and Moore Threads — collectively raised over $8 billion during the period the export controls were at their most restrictive. The controls forfeited the commercial relationship that gave Nvidia and by extension the US government informational and pricing leverage over Chinese AI deployment, while accelerating the domestic Chinese capability the controls were designed to suppress.</p>
+<p>The second structural distortion is the concentration problem. The $500 billion-plus wave of hyperscale AI infrastructure investment that the controls triggered in the US and among allied Gulf sovereign funds is not distributed sovereignty — it is the privatisation of strategic infrastructure at global scale by five firms and a handful of state vehicles. Saudi Arabia's HUMAIN, a subsidiary of the Public Investment Fund, is building toward six gigawatts of data centre capacity over the next decade and has signed infrastructure partnerships with NVIDIA, Amazon, AMD, Qualcomm, and xAI. The UAE's Stargate project — a joint venture involving G42, Oracle, and NVIDIA — is targeting one gigawatt in Abu Dhabi. <a href="https://carnegieendowment.org/research/2026/05/the-geopolitical-debates-over-controlling-cloud-compute">Carnegie Endowment researcher Noah Tan, writing in May 2026</a>, identifies the resulting architecture: US policymakers who restrict China's access to frontier AI will eventually need to extend those restrictions to cloud access — meaning the question of who governs compute access will become a question of which US-aligned firm or Gulf sovereign fund controls the API. That is not a geopolitical settlement; it is a dependency structure that replicates the leverage problem at a different layer.</p>
+<p>The grid constraint makes the asymmetry concrete. US data centres are projected to consume 12 percent of total US electricity by 2028 — a demand curve that sits against infrastructure built for a different era and a permitting system that makes meaningful grid expansion a decade-long process. China's state-directed grid expansion does not face this constraint. The bottleneck limiting American AI capacity is not export controls or chip design — it is concrete and copper, and one the market cannot build fast enough to close.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-compute-layer";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
