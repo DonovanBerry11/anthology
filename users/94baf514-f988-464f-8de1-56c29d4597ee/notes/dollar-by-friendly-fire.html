@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The dollar's declining reserve share is not primarily China's achievement — it is America's own doing, the predictable consequence of transforming a neutral financial infrastructure into a coercive fo">
+  <title>Dollar by Friendly Fire — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>Dollar by Friendly Fire</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 1:35 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The dollar's declining reserve share is not primarily China's achievement — it is America's own doing, the predictable consequence of transforming a neutral financial infrastructure into a coercive foreign policy instrument, and every use of that instrument generates precisely the incentive it was designed to eliminate. The IMF's Currency Composition of Official Foreign Exchange Reserves data shows the dollar's share of global central bank holdings falling from 65 percent in 2016 to 56.9 percent in Q3 2025 — below 57 percent for the first time since 1995. The standard explanation attributes this to Beijing's de-dollarization campaign: CIPS, the petroyuan, BRICS local-currency settlement. But Chinese-led alternatives remain structurally limited. CIPS processed approximately $270 billion in transactions in a single month by March 2026 — impressive in absolute terms, but a fraction of SWIFT's daily volumes. The yuan's share of global reserve holdings remains below 3 percent. What is moving the dollar's share downward is not the pull of better alternatives — it is the push of rational self-protection by states that have watched the US deploy dollar-system exclusion as a routine instrument of foreign policy.</p>
+<p>The sanctions logic is self-defeating in a way that compounds with each application. When the US froze $300 billion in Russian central bank assets after the February 2022 invasion of Ukraine, it demonstrated — to every sovereign treasury on the planet — that dollar reserves held in Western jurisdictions are conditional property, subject to confiscation by executive order. The demonstration was most effective the first time, as a deterrent to specific behaviour. But as a signal about the system itself, it was permanent. Every subsequent use of dollar-system exclusion reinforces the same lesson at lower political cost to the US and at lower reputational cost to states diversifying away. The weapon is most effective on first use and becomes less effective each time, while the incentive to reduce exposure intensifies.</p>
+<p>The confidence problem compounds the sanctions paradox. Dollar dominance rests not on any formal agreement but on a global expectation of US institutional stability — that the Federal Reserve operates independently, that US sovereign debt is not subject to political manipulation, that dollar-denominated contracts will be honoured regardless of bilateral political relations. The Trump administration's fiscal behaviour — deficit projections above $2 trillion annually, sustained pressure on the Federal Reserve chair, and tariff-induced price instability — is eroding that expectation. States are not diversifying because yuan-denominated assets are more attractive. They are diversifying because the confidence premium justifying dollar holdings over gold or other assets is contracting. Central banks purchased 863 tonnes of gold in 2025; gold's share of global reserves rose from 13 percent in 2017 to approximately 30 percent by 2025. Gold offers no yield. That states prefer it to dollar assets is a direct measure of the confidence the US is destroying in its own reserve currency — and the structural incentive driving the erosion is one that only American policy can repair, and that the current administration shows no interest in repairing.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "dollar-by-friendly-fire";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

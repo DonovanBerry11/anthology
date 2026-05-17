@@ -288,6 +288,19 @@
       "keywords": []
     },
     {
+      "slug": "dollar-by-friendly-fire",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "Dollar by Friendly Fire",
+      "standfirst": "The dollar's declining reserve share — from 65% in 2016 to below 57% in 2025 — is not primarily China's achievement. It is the compounding result of the US weaponising its own financial infrastructure, giving every sovereign treasury a rational and permanent incentive to reduce exposure every time the instrument is deployed.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/dollar-by-friendly-fire.html",
+      "keywords": []
+    },
+    {
       "slug": "warsh-era-monetary-stakes",
       "type": "note",
       "section": "notes",
@@ -791,5 +804,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-17T06:34:19Z"
+  "generated": "2026-05-17T06:35:33Z"
 }
