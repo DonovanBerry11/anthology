@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Federal Reserve has been here before, though not quite like this.">
+  <title>The Fed's Impossible Position: Oil Shock, Sticky Inflation, and a Rate Path Going Nowhere — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Fed's Impossible Position: Oil Shock, Sticky Inflation, and a Rate Path Going Nowhere — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 12:14 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Federal Reserve has been here before, though not quite like this. The stagflationary episode of the 1970s remains the canonical reference point whenever energy prices and inflation interact in ways that complicate monetary policy, but the analogy has always been imprecise and is worth examining carefully before accepting it as a guide to what comes next.</p>
+<p>In the 1970s, the Fed's core problem was that it lacked both the credibility and the institutional independence to respond aggressively to inflation without political interference. The result was a stop-go pattern of tightening and loosening that allowed inflationary expectations to become embedded in wage and price-setting behavior. It took Paul Volcker's willingness to cause a severe recession — unemployment climbed above 10 percent — to break the cycle. What's different now is that the Fed enters this supply shock with inflation expectations still relatively anchored, at least by the measures that matter most. The five-year breakeven rate at 2.69 percent is elevated, but it is not a signal of unmoored expectations — it is a signal of concern. That distinction is meaningful, because the entire logic of modern monetary credibility is that anchored expectations give the central bank room to look through temporary supply shocks without needing to crush demand.</p>
+<p>The Strait of Hormuz closure is the kind of supply shock that tests exactly that proposition. It is external, it is not caused by domestic demand conditions, and in theory the appropriate policy response is to accommodate it rather than tighten into it — because tightening into a supply shock reduces output without reducing the underlying cause of the price pressure. The problem is that theory assumes the shock is clearly temporary. When markets are pricing a Hormuz disruption that has already lasted several months with no clear resolution timeline, the line between a temporary shock and a persistent structural shift starts to blur, and the Fed's latitude to stay patient narrows.</p>
+<p>The 74.5 percent probability that markets are assigning to rates staying flat through all of 2026 is itself a kind of policy input. When the Fed's forward guidance and market pricing align closely, the central bank loses a tool — it can no longer surprise markets by doing something they weren't expecting, which is part of how monetary policy transmits through financial conditions. The current configuration essentially means the Fed is frozen not just by the economic environment but by the market's interpretation of that environment, which has its own self-reinforcing quality.</p>
+<p>Softening growth adds the demand-side complication that makes this genuinely painful. If the economy were running hot, the Fed could tighten without much hand-wringing about causing a recession. If inflation were falling, it could cut without worrying about re-igniting price pressures. Neither condition holds. What the Fed faces instead is the need to hold a position that pleases no one — not hawks who want tighter policy to suppress inflation expectations, not doves who want relief for a slowing economy — while hoping the external shock that created the problem resolves itself. That is not a strategy so much as an acknowledgment that the available options are all bad, and the least bad one is waiting.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "stagflation-2026-vs-1970s";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
