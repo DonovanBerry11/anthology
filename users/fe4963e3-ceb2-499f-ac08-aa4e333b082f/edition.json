@@ -1,23 +1,51 @@
 {
-  "date": "2026-05-16",
-  "date_display": "Saturday, 16 May 2026",
-  "generated_at": "16 May 2026, 4:04 PM EST",
+  "date": "2026-05-17",
+  "date_display": "Sunday, 17 May 2026",
+  "generated_at": "17 May 2026, 12:14 AM EST",
   "user_id": "fe4963e3-ceb2-499f-ac08-aa4e333b082f",
   "lead": {
-    "slug": "d019-daily-edition-2026-05-16",
+    "slug": "d022-daily-edition-2026-05-17",
     "type": "dispatch",
     "section": "dispatches",
     "domain": "global",
     "sector": "geopolitics",
     "dispatch_type": "daily",
-    "title": "Saturday, 16 May 2026",
-    "standfirst": "Jerome Powell's term as Federal Reserve Chair ended May 15, with Kevin Warsh stepping in at a moment of acute central bank division. Treasury yields spiked to near-one-year highs at 4.55% and market-i.",
-    "date": "2026-05-16",
+    "title": "Sunday, 17 May 2026",
+    "standfirst": "Bank of America Global Research has revised its Fed rate-cut forecast to July 2027, citing energy-driven inflation from the ongoing Iran conflict that has pushed headline PCE to 3.5% and core PCE to 3.",
+    "date": "2026-05-17",
     "date_display": "May 2026",
-    "url": "/dispatches/d019-daily-edition-2026-05-16.html",
+    "url": "/dispatches/d022-daily-edition-2026-05-17.html",
     "keywords": []
   },
   "secondary": [
+    {
+      "slug": "d023-daily-edition-2026-05-17",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Sunday, 17 May 2026",
+      "standfirst": "President Trump's two-day state visit to Beijing ended without substantive agreements on key issues including Taiwan, Iran, or trade, though both sides characterised the summit positively. China's for.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/dispatches/d023-daily-edition-2026-05-17.html",
+      "keywords": []
+    },
+    {
+      "slug": "d019-daily-edition-2026-05-16",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Saturday, 16 May 2026",
+      "standfirst": "Jerome Powell's term as Federal Reserve Chair ended May 15, with Kevin Warsh stepping in at a moment of acute central bank division. Treasury yields spiked to near-one-year highs at 4.55% and market-i.",
+      "date": "2026-05-16",
+      "date_display": "May 2026",
+      "url": "/dispatches/d019-daily-edition-2026-05-16.html",
+      "keywords": []
+    },
     {
       "slug": "d020-daily-edition-2026-05-16",
       "type": "dispatch",
@@ -31,7 +59,9 @@
       "date_display": "May 2026",
       "url": "/dispatches/d020-daily-edition-2026-05-16.html",
       "keywords": []
-    },
+    }
+  ],
+  "further_reading": [
     {
       "slug": "d021-daily-edition-2026-05-16",
       "type": "dispatch",
@@ -59,9 +89,7 @@
       "date_display": "May 2026",
       "url": "/dispatches/d017-daily-edition-2026-05-15.html",
       "keywords": []
-    }
-  ],
-  "further_reading": [
+    },
     {
       "slug": "d018-daily-edition-2026-05-15",
       "type": "dispatch",
@@ -144,47 +172,6 @@
       "date": "2026-05-12",
       "date_display": "May 2026",
       "url": "/dispatches/warsh-fed-confirmation.html",
-      "keywords": []
-    },
-    {
-      "slug": "hormuz-tanker-strikes",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "geopolitics",
-      "dispatch_type": "daily",
-      "title": "Hormuz Under Fire",
-      "standfirst": "US fires on Iranian tankers as Hormuz talks stall; ceasefire holds nominally. A US Navy F/A-18 disabled two Iranian-flagged tankers attempting to breach the naval blockade. Iran has yet to respond to a 14-point MOU proposed by Washington.",
-      "date": "2026-05-10",
-      "date_display": "May 2026",
-      "url": "/dispatches/hormuz-tanker-strikes.html",
-      "keywords": [
-        "Iran",
-        "US",
-        "military",
-        "geopolitics",
-        "oil",
-        "Hormuz",
-        "tankers",
-        "Navy",
-        "CENTCOM",
-        "sanctions",
-        "negotiations",
-        "history"
-      ]
-    },
-    {
-      "slug": "section-122-tariff-ruling",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "political-economy",
-      "dispatch_type": "daily",
-      "title": "Trade Court Strikes Down Trump's Section 122 Tariffs",
-      "standfirst": "A 2-1 panel of the US Court of International Trade ruled on May 7 that the administration's 10% global import surcharge exceeds presidential authority under Section 122 of the Trade Act of 1974 — but limited relief to three named plaintiffs, leaving the surcharge in place for all other US importers.",
-      "date": "2026-05-10",
-      "date_display": "May 2026",
-      "url": "/dispatches/section-122-tariff-ruling.html",
       "keywords": []
     }
   ]
