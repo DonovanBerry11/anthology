@@ -1,7 +1,7 @@
 {
   "date": "2026-05-17",
   "date_display": "Sunday, 17 May 2026",
-  "generated_at": "17 May 2026, 12:10 AM EST",
+  "generated_at": "17 May 2026, 1:38 AM EST",
   "user_id": "94baf514-f988-464f-8de1-56c29d4597ee",
   "lead": {
     "slug": "d022-daily-edition-2026-05-17",
@@ -18,6 +18,20 @@
     "keywords": []
   },
   "secondary": [
+    {
+      "slug": "d023-daily-edition-2026-05-17",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Sunday, 17 May 2026",
+      "standfirst": "President Trump's two-day state visit to Beijing ended without substantive agreements on key issues including Taiwan, Iran, or trade, though both sides characterised the summit positively. China's for.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/dispatches/d023-daily-edition-2026-05-17.html",
+      "keywords": []
+    },
     {
       "slug": "d019-daily-edition-2026-05-16",
       "type": "dispatch",
@@ -45,7 +59,9 @@
       "date_display": "May 2026",
       "url": "/dispatches/d020-daily-edition-2026-05-16.html",
       "keywords": []
-    },
+    }
+  ],
+  "further_reading": [
     {
       "slug": "d021-daily-edition-2026-05-16",
       "type": "dispatch",
@@ -59,9 +75,7 @@
       "date_display": "May 2026",
       "url": "/dispatches/d021-daily-edition-2026-05-16.html",
       "keywords": []
-    }
-  ],
-  "further_reading": [
+    },
     {
       "slug": "d017-daily-edition-2026-05-15",
       "type": "dispatch",
@@ -159,33 +173,6 @@
       "date_display": "May 2026",
       "url": "/dispatches/warsh-fed-confirmation.html",
       "keywords": []
-    },
-    {
-      "slug": "hormuz-tanker-strikes",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "geopolitics",
-      "dispatch_type": "daily",
-      "title": "Hormuz Under Fire",
-      "standfirst": "US fires on Iranian tankers as Hormuz talks stall; ceasefire holds nominally. A US Navy F/A-18 disabled two Iranian-flagged tankers attempting to breach the naval blockade. Iran has yet to respond to a 14-point MOU proposed by Washington.",
-      "date": "2026-05-10",
-      "date_display": "May 2026",
-      "url": "/dispatches/hormuz-tanker-strikes.html",
-      "keywords": [
-        "Iran",
-        "US",
-        "military",
-        "geopolitics",
-        "oil",
-        "Hormuz",
-        "tankers",
-        "Navy",
-        "CENTCOM",
-        "sanctions",
-        "negotiations",
-        "history"
-      ]
     }
   ]
 }
