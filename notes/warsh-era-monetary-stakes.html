@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Fed has been here before, though the configuration was different enough to make direct comparison treacherous.">
+  <title>The Hawkish Trap: How an Energy War Turned the Fed's Next Move Into a Coin Flip — Further Reading — Anthology</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="../index.html#notes">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Hawkish Trap: How an Energy War Turned the Fed's Next Move Into a Coin Flip — Further Reading</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 17 May 2026, 12:10 AM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Fed has been here before, though the configuration was different enough to make direct comparison treacherous. The closest structural analogue is probably the 1973–1974 episode, when the first oil shock forced the Fed to choose between fighting inflation it had not caused and supporting an economy it had not broken. Arthur Burns chose, in effect, to do neither cleanly, and the result was a prolonged period of policy incoherence that embedded inflation expectations at exactly the wrong moment. The lesson the institution took from Burns was that credibility, once lost, is extraordinarily expensive to recover — which is why every Fed chair since Volcker has treated the optics of resolve as nearly as important as the substance of policy.</p>
+<p>What makes the current moment structurally distinct is the nature of the shock. Energy-driven inflation arriving via a regional war sits in an uncomfortable middle category: it is supply-side in origin, which normally argues against tightening into it, but it is persistent enough to risk second-round effects in wages and services inflation, which argues for holding or hiking. The Fed's dual mandate provides no clean adjudication between these considerations. The result is what the 8–4 vote actually expressed — not disagreement about data but disagreement about which causal story to weight.</p>
+<p>Kevin Warsh's arrival matters here in ways that go beyond personality. Warsh dissented from the Fed's QE expansion in 2010, arguing it risked inflation and distorted asset prices. That record positions him, temperamentally and institutionally, closer to the hawks on the current committee. But the chair's power over near-term outcomes is frequently overstated. The FOMC is a committee, and the chair's main lever is agenda-setting and communication, not votes. What Warsh can do is shift the rhetorical frame — alter the language in statements and press conferences in ways that move market pricing before any actual policy change. Given that markets have already begun pricing a non-trivial probability of a hike, the communication channel is live and consequential.</p>
+<p>The Bank of America forecast revision to July 2027 deserves disaggregation. A forecast that far out is less a prediction than a structural argument: that the conditions for easing will not materialize for over a year. Embedded in that argument is a view about the Iran conflict's duration and the persistence of the energy price channel into core PCE. Core PCE at 3.2% is not crisis-level inflation, but it is far enough above the 2% target that it forecloses the kind of forward guidance language the Fed used in 2023 and 2024 to prepare markets for cuts. The three governors who objected to easing language in the April 29 statement were, in this sense, doing arithmetic rather than ideology — they were protecting optionality.</p>
+<p>The coin-flip framing in markets reflects something real: the distribution of outcomes has widened, not narrowed. That is itself a policy problem. The Fed's institutional function includes anchoring expectations, and a market that genuinely cannot assign probability to the direction of the next move is a market that has lost that anchor. Whether the next move is a hike or a hold, the restoration of that anchor is probably the most important thing the FOMC does in the next two meetings.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "warsh-era-monetary-stakes";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

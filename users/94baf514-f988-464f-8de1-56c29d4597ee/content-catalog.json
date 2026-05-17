@@ -218,6 +218,19 @@
       "keywords": []
     },
     {
+      "slug": "warsh-era-monetary-stakes",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "The Hawkish Trap: How an Energy War Turned the Fed's Next Move Into a Coin Flip — Further Reading",
+      "standfirst": "Bank of America Global Research has revised its Fed rate-cut forecast to July 2027, citing energy-driven inflation from the ongoing Iran conflict that has pushed headline PCE to 3.5% and core PCE to 3.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/warsh-era-monetary-stakes.html",
+      "keywords": []
+    },
+    {
       "slug": "fed-independence-under-pressure",
       "type": "note",
       "section": "notes",
@@ -642,5 +655,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-16T05:10:54Z"
+  "generated": "2026-05-17T05:10:41Z"
 }
