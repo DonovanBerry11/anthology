@@ -51,7 +51,20 @@
       "date_display": "May 2026",
       "url": "/users/9ebc1835-377b-49e8-864e-0277a5b59be2/notes/hormuz-economic-cascade-note.html",
       "keywords": []
+    },
+    {
+      "slug": "ai-labour-reallocation-note",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "political-economy",
+      "title": "From Payroll to Compute: The Enterprise Restructuring Logic Behind AI's Workforce Displacement — Further Reading",
+      "standfirst": "Cisco Systems announced nearly 4,000 job cuts on May 14, 2026, as part of a restructuring explicitly aimed at shifting investment toward AI infrastructure, silicon, optics, and security, while simulta.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/users/9ebc1835-377b-49e8-864e-0277a5b59be2/notes/ai-labour-reallocation-note.html",
+      "keywords": []
     }
   ],
-  "generated": "2026-05-17T12:37:33Z"
+  "generated": "2026-05-17T12:37:34Z"
 }
