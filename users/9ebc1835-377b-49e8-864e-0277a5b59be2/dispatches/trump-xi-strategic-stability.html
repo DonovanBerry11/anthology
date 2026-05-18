@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Trump's May 13–15 state visit to Beijing closed Friday with a [joint commitment to "constructive strategic stability"](https://english.news.cn/20260517/d50300c5f44b418eaf63dc9a0494e856/c.html) as the">
+  <title>Trump-Xi summit closes with three-year 'strategic stability' framework but few specifics — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Trump-Xi summit closes with three-year 'strategic stability' framework but few specifics</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 18 May 2026, 12:33 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>Trump's May 13–15 state visit to Beijing closed Friday with a <a href="https://english.news.cn/20260517/d50300c5f44b418eaf63dc9a0494e856/c.html">joint commitment to "constructive strategic stability"</a> as the frame for US–China relations "over the next three years and beyond" — but with little of the substance it is meant to organise actually settled.</p>
+<p>Trump told reporters China had agreed to <a href="https://www.alaskasnewssource.com/2026/05/15/trump-concludes-beijing-summit-with-vague-iran-commitment-china/">buy 200 Boeing aircraft, plus US soybeans, oil and LNG</a>; Beijing did not confirm those figures, listing only <a href="https://english.news.cn/20260517/d50300c5f44b418eaf63dc9a0494e856/c.html">trade and investment councils and an "in-principle" tariff cut on equivalent product baskets</a>. Marco Rubio said US Taiwan policy remained "unchanged." No agreement was reached on AI chip export controls or rare earths beyond a protocol on non-state actors' access to AI models. China's Iran undertaking — support for reopening the Strait of Hormuz — was general, not operational.</p>
+<p>Trump invited Xi to Washington in late September, his first US visit in over a decade. That meeting inherits the unresolved agenda.</p>
+<p><a href="#">Read more →</a></p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "trump-xi-strategic-stability";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

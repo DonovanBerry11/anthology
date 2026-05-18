@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-17T12:37:36Z",
+  "generated": "2026-05-18T05:33:26Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -338,6 +338,20 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/notes/the-population-the-economy-lost.html",
+      "keywords": []
+    },
+    {
+      "slug": "trump-xi-strategic-stability",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Trump-Xi summit closes with three-year 'strategic stability' framework but few specifics",
+      "standfirst": "Trump's May 13–15 Beijing visit produced a process — a 'strategic stability' framework for three years and a September return visit — without resolving Taiwan, AI export controls, or rare earths.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/dispatches/trump-xi-strategic-stability.html",
       "keywords": []
     },
     {
