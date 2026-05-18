@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EU legislators [reached a political agreement on May 7](https://www.consilium.europa.eu/en/press/press-releases/2026/05/07/artificial-intelligence-council-and-parliament-agree-to-simplify-and-streamli">
+  <title>EU AI Act Omnibus: High-Risk Deadline Extended to 2027, Global Governance Race Resets — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>EU AI Act Omnibus: High-Risk Deadline Extended to 2027, Global Governance Race Resets</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 18 May 2026, 1:00 PM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>EU legislators <a href="https://www.consilium.europa.eu/en/press/press-releases/2026/05/07/artificial-intelligence-council-and-parliament-agree-to-simplify-and-streamline-rules/">reached a political agreement on May 7</a> on an omnibus package that substantially rewrites the AI Act's compliance timeline — the most significant revision to the regulation since its adoption in 2024.</p>
+<p>The core change is a deadline extension. Standalone high-risk AI systems, originally due to comply from August 2026, now have until <a href="https://www.lw.com/en/insights/ai-act-update-eu-resolves-to-change-rules-and-extend-deadlines">December 2, 2027</a>. High-risk systems embedded in regulated products — medical devices, machinery, vehicles — get a further extension to August 2, 2028. The agreement also raises the SME compliance exemption to companies with up to <a href="https://www.resultsense.com/news/2026-05-14-eu-ai-act-omnibus-deadlines-extension/">750 employees and €150 million in annual revenue</a>, broadening the lighter-touch regime that previously applied only to small businesses. On May 8, the European Commission opened a <a href="https://www.insideglobaltech.com/2026/05/12/10-takeaways-european-commission-draft-guidelines-on-ai-transparency-under-the-eu-ai-act/">targeted consultation on draft transparency guidelines</a> under Article 50 of the Act — covering AI-generated content marking, emotion recognition disclosure, and deepfake labelling — with responses due by June 3.</p>
+<p>The deal requires formal ratification by both the Council and the Parliament before it enters into force. Given the proximity of the original August deadline, the process is expected to move on an accelerated track.</p>
+<p>Who benefits: large technology companies operating in Europe, which had been investing in compliance infrastructure for a deadline they now have 18 additional months to meet. Mid-cap firms — previously outside the SME threshold — gain access to simplified documentation requirements and regulatory sandbox access. The delay is less welcome to civil society organisations, which have noted that the deferral concentrates attention on technical compliance timelines rather than the fundamental rights protections the regulation was designed to provide.</p>
+<p>The timing places the EU in sharpening contrast with the United States. The Trump administration's approach to AI regulation — a voluntary safety-testing framework administered through the CAISI centre — operates on an opt-in basis with no mandatory compliance deadlines for any category of system. EU officials have maintained that the omnibus deal is a simplification, not a retreat; the core risk classifications and prohibited practices remain in place. But for US companies assessing their obligations, the 2027 deadline represents a narrower compliance window than it might appear — most high-risk AI systems in regulated sectors require 18 to 24 months of preparation even before the clock starts.</p>
+<p>Watch the formal ratification timeline and whether the Commission accelerates the transparency guidelines consultation in light of the August 2026 deadline for those specific obligations, which were not deferred by the omnibus agreement.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "eu-ai-act-omnibus";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

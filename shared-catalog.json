@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-18T18:00:06Z",
+  "generated": "2026-05-18T18:00:17Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -366,6 +366,20 @@
       "date": "2026-05-18",
       "date_display": "May 2026",
       "url": "/dispatches/warsh-fed-first-week.html",
+      "keywords": []
+    },
+    {
+      "slug": "eu-ai-act-omnibus",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "technology",
+      "dispatch_type": "daily",
+      "title": "EU AI Act Omnibus: High-Risk Deadline Extended to 2027, Global Governance Race Resets",
+      "standfirst": "EU legislators agreed on May 7 to push back the AI Act's high-risk compliance deadline from August 2026 to December 2027, while the Trump administration moves in the opposite direction — widening the transatlantic governance gap just as frontier models accelerate.",
+      "date": "2026-05-18",
+      "date_display": "May 2026",
+      "url": "/dispatches/eu-ai-act-omnibus.html",
       "keywords": []
     },
     {
