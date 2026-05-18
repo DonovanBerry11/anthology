@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Trump administration's FY2027 budget — which proposes cutting NIH by [approximately 40% and NSF by 57%](https://www.nature.com/articles/d41586-026-01234-x), terminating 1,752 NSF grants worth $1.4">
+  <title>The Knowledge State Liquidation — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Knowledge State Liquidation</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 18 May 2026, 1:07 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The Trump administration's FY2027 budget — which proposes cutting NIH by <a href="https://www.nature.com/articles/d41586-026-01234-x">approximately 40% and NSF by 57%</a>, terminating 1,752 NSF grants worth $1.4 billion, and cancelling doctoral fellowships at institutions including Brown — rests on a claim so poorly examined that it functions as ideology: that private AI investment can substitute for what is being dismantled. It cannot. The confusion is not a policy mistake. It is a category error about where in the innovation pipeline different kinds of investment operate.</p>
+<p>Private R&D — the capital that Anthropic, Google DeepMind, and Microsoft deploy — builds at the frontier of applications. It turns basic scientific knowledge into products, systems, and capabilities. What it cannot do is generate the basic scientific knowledge those products are built on. The transistor came from Bell Labs' fundamental physics research in 1947, funded under a model that no venture firm would touch — multi-decade, open-ended, with no specified product outcome. The mathematics underlying the large language models the administration now claims as a national industrial priority — linear algebra, backpropagation, statistical learning theory — accumulated through publicly funded universities over decades before it became commercially legible. Private capital arrived to harvest that work. The harvest is now being celebrated while the soil is being sold.</p>
+<p>The damage operates below the visibility threshold of electoral cycles. A doctoral fellowship cancelled in 2026 produces a missing researcher in 2032 and a missing paper in 2035 — by which point the causal chain to today's budget decision will be invisible to everyone except the people who did not get to do the work. This is not a slow version of cutting a product team. It is harm to a different level of the pipeline entirely: the talent supply and published knowledge base that make the next generation of commercial AI possible. China understood the distinction when it expanded its national science programmes in 2021 and again in 2023 — not because Chinese planners are wiser but because they are not operating under a fiscal logic that treats curiosity-driven research as discretionary spending.</p>
+<p>The administration is simultaneously declaring AI supremacy the defining ambition of US industrial policy and defunding the NIH laboratories, NSF grant programmes, and doctoral training that US technological leadership has depended on since 1945. These two positions are in tension not because one is ideological and the other practical, but because the people who designed the AI strategy have not looked carefully at what lies upstream of the systems they want the US to lead in building. What lies upstream is decades of basic research and graduate training with no immediate commercial answer. Defunding it while celebrating its products is not a contradiction. It is a liquidation.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-knowledge-state-liquidation";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

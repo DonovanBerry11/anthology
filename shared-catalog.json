@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-18T18:02:18Z",
+  "generated": "2026-05-18T18:07:25Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -421,6 +421,19 @@
       "date": "2026-05-18",
       "date_display": "May 2026",
       "url": "/us-sports/nba-conference-finals-open.html",
+      "keywords": []
+    },
+    {
+      "slug": "the-knowledge-state-liquidation",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "technology",
+      "title": "The Knowledge State Liquidation",
+      "standfirst": "The Trump administration is simultaneously claiming AI supremacy as its industrial ambition and defunding the NIH laboratories, NSF grant programmes, and doctoral training that US technological leadership has run on since 1945 — the claim that private investment compensates is a category error about where in the pipeline different money operates.",
+      "date": "2026-05-18",
+      "date_display": "May 2026",
+      "url": "/notes/the-knowledge-state-liquidation.html",
       "keywords": []
     },
     {
