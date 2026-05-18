@@ -1,23 +1,81 @@
 {
-  "date": "2026-05-17",
-  "date_display": "Sunday, 17 May 2026",
-  "generated_at": "17 May 2026, 1:38 AM EST",
+  "date": "2026-05-18",
+  "date_display": "Monday, 18 May 2026",
+  "generated_at": "18 May 2026, 1:09 PM EST",
   "user_id": "94baf514-f988-464f-8de1-56c29d4597ee",
   "lead": {
-    "slug": "d022-daily-edition-2026-05-17",
+    "slug": "warsh-fed-first-week",
     "type": "dispatch",
     "section": "dispatches",
     "domain": "global",
-    "sector": "geopolitics",
+    "sector": "fiscal",
     "dispatch_type": "daily",
-    "title": "Sunday, 17 May 2026",
-    "standfirst": "Bank of America Global Research has revised its Fed rate-cut forecast to July 2027, citing energy-driven inflation from the ongoing Iran conflict that has pushed headline PCE to 3.5% and core PCE to 3.",
-    "date": "2026-05-17",
+    "title": "Warsh's First Week: No Rate Cuts This Year, Possibly Ever Under Trump's Terms",
+    "standfirst": "Kevin Warsh took the helm of the Federal Reserve on May 15 inheriting inflation at 3.8% and oil near $115 — both created by the president who nominated him — making the rate cuts Trump expects structurally impossible to deliver.",
+    "date": "2026-05-18",
     "date_display": "May 2026",
-    "url": "/dispatches/d022-daily-edition-2026-05-17.html",
+    "url": "/dispatches/warsh-fed-first-week.html",
     "keywords": []
   },
   "secondary": [
+    {
+      "slug": "eu-ai-act-omnibus",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "technology",
+      "dispatch_type": "daily",
+      "title": "EU AI Act Omnibus: High-Risk Deadline Extended to 2027, Global Governance Race Resets",
+      "standfirst": "EU legislators agreed on May 7 to push back the AI Act's high-risk compliance deadline from August 2026 to December 2027, while the Trump administration moves in the opposite direction — widening the transatlantic governance gap just as frontier models accelerate.",
+      "date": "2026-05-18",
+      "date_display": "May 2026",
+      "url": "/dispatches/eu-ai-act-omnibus.html",
+      "keywords": []
+    },
+    {
+      "slug": "iran-fuel-crisis",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitical",
+      "dispatch_type": "daily",
+      "title": "Iran War Fuel Crisis: Europe Has Weeks of Jet Fuel Left as Brent Hits $114",
+      "standfirst": "The closure of the Strait of Hormuz since late February has produced what the IEA calls the largest energy crisis ever recorded — with Europe's jet fuel reserves down to weeks, and Trump's Project Freedom maritime corridor paused pending Iran talks.",
+      "date": "2026-05-18",
+      "date_display": "May 2026",
+      "url": "/dispatches/iran-fuel-crisis.html",
+      "keywords": []
+    },
+    {
+      "slug": "trump-xi-summit-taiwan",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitical",
+      "dispatch_type": "daily",
+      "title": "After the Summit: Xi's Taiwan Red Line and the Contradictory Beijing Readouts",
+      "standfirst": "The Trump-Xi summit produced conflicting readouts: Xi's warning that mishandling Taiwan could lead to 'clashes and even conflicts' appeared in Chinese state media but not the White House summary — and the trade deliverables the US claimed remain unverified against Chinese sources.",
+      "date": "2026-05-18",
+      "date_display": "May 2026",
+      "url": "/dispatches/trump-xi-summit-taiwan.html",
+      "keywords": []
+    }
+  ],
+  "further_reading": [
+    {
+      "slug": "d022-daily-edition-2026-05-17",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Sunday, 17 May 2026",
+      "standfirst": "Bank of America Global Research has revised its Fed rate-cut forecast to July 2027, citing energy-driven inflation from the ongoing Iran conflict that has pushed headline PCE to 3.5% and core PCE to 3.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/dispatches/d022-daily-edition-2026-05-17.html",
+      "keywords": []
+    },
     {
       "slug": "d023-daily-edition-2026-05-17",
       "type": "dispatch",
@@ -30,6 +88,20 @@
       "date": "2026-05-17",
       "date_display": "May 2026",
       "url": "/dispatches/d023-daily-edition-2026-05-17.html",
+      "keywords": []
+    },
+    {
+      "slug": "d024-daily-edition-2026-05-17",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Sunday, 17 May 2026",
+      "standfirst": "The Senate confirmed Kevin Warsh as the 17th chair of the Federal Reserve in a 54-45 vote on May 13, 2026 — the most partisan confirmation for a Fed chair in history — replacing Jerome Powell, whose t.",
+      "date": "2026-05-17",
+      "date_display": "May 2026",
+      "url": "/dispatches/d024-daily-edition-2026-05-17.html",
       "keywords": []
     },
     {
@@ -59,9 +131,7 @@
       "date_display": "May 2026",
       "url": "/dispatches/d020-daily-edition-2026-05-16.html",
       "keywords": []
-    }
-  ],
-  "further_reading": [
+    },
     {
       "slug": "d021-daily-edition-2026-05-16",
       "type": "dispatch",
@@ -102,76 +172,6 @@
       "date": "2026-05-15",
       "date_display": "May 2026",
       "url": "/dispatches/d018-daily-edition-2026-05-15.html",
-      "keywords": []
-    },
-    {
-      "slug": "trump-xi-beijing-summit-may15",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "geopolitics",
-      "dispatch_type": "daily",
-      "title": "Trump-Xi Beijing Summit: 200 Jets, Rare Earths Preserved, Truce Extended",
-      "standfirst": "Trump's two-day Beijing summit delivered a narrow set of trade commitments — 200 Boeing jets, beef imports restored, rare-earth flows preserved — while Taiwan, Iran, and AI chip export controls were all left unresolved, with Xi framing the outcome as 'constructive strategic stability' ahead of an October tariff deadline.",
-      "date": "2026-05-15",
-      "date_display": "May 2026",
-      "url": "/dispatches/trump-xi-beijing-summit-may15.html",
-      "keywords": []
-    },
-    {
-      "slug": "d016-daily-edition-2026-05-14",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "geopolitics",
-      "dispatch_type": "daily",
-      "title": "Thursday, 14 May 2026",
-      "standfirst": "President Trump and Chinese President Xi Jinping held a two-day summit in Beijing — attended by top American CEOs including Elon Musk, Tim Cook, and Larry Fink — covering trade, the Iran war, and Taiw.",
-      "date": "2026-05-14",
-      "date_display": "May 2026",
-      "url": "/dispatches/d016-daily-edition-2026-05-14.html",
-      "keywords": []
-    },
-    {
-      "slug": "cloudflare-ai-layoffs",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "technology",
-      "dispatch_type": "daily",
-      "title": "Cloudflare Cuts 1,100 Jobs at Record Revenue",
-      "standfirst": "Cloudflare announced its first mass layoff in sixteen years on May 7 — 1,100 jobs eliminated alongside record quarterly revenue — and explicitly attributed the cut to internal AI agent adoption. The move is the clearest disclosed case yet of AI displacement at a growing company.",
-      "date": "2026-05-12",
-      "date_display": "May 2026",
-      "url": "/dispatches/cloudflare-ai-layoffs.html",
-      "keywords": []
-    },
-    {
-      "slug": "ai-hardware-rotation",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "technology",
-      "dispatch_type": "daily",
-      "title": "Wall Street's AI Chip Rotation",
-      "standfirst": "AMD, Intel, and Micron have outrun Nvidia by orders of magnitude year-to-date as Wall Street rotates AI-hardware capital from training GPUs to inference-era CPUs and memory. Nvidia's counter-move is a 0 billion equity-investment campaign across its own customer base.",
-      "date": "2026-05-12",
-      "date_display": "May 2026",
-      "url": "/dispatches/ai-hardware-rotation.html",
-      "keywords": []
-    },
-    {
-      "slug": "warsh-fed-confirmation",
-      "type": "dispatch",
-      "section": "dispatches",
-      "domain": "global",
-      "sector": "fiscal",
-      "dispatch_type": "daily",
-      "title": "Warsh Clears Cloture as Partisan Fed Confirmation Concludes",
-      "standfirst": "The Senate's Monday cloture vote on Kevin Warsh's Fed nomination — 49-44 on party lines — caps the most strictly partisan confirmation process in Fed Chair history. Warsh inherits a Fed pinned between an Iran-war energy shock and a shutdown-distorted core inflation print due Tuesday.",
-      "date": "2026-05-12",
-      "date_display": "May 2026",
-      "url": "/dispatches/warsh-fed-confirmation.html",
       "keywords": []
     }
   ]
