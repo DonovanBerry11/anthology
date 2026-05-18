@@ -355,6 +355,20 @@
       "keywords": []
     },
     {
+      "slug": "iran-fuel-crisis",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitical",
+      "dispatch_type": "daily",
+      "title": "Iran War Fuel Crisis: Europe Has Weeks of Jet Fuel Left as Brent Hits $114",
+      "standfirst": "The closure of the Strait of Hormuz since late February has produced what the IEA calls the largest energy crisis ever recorded — with Europe's jet fuel reserves down to weeks, and Trump's Project Freedom maritime corridor paused pending Iran talks.",
+      "date": "2026-05-18",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/dispatches/iran-fuel-crisis.html",
+      "keywords": []
+    },
+    {
       "slug": "warsh-era-monetary-stakes",
       "type": "note",
       "section": "notes",
@@ -858,5 +872,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-18T18:00:17Z"
+  "generated": "2026-05-18T18:00:27Z"
 }
