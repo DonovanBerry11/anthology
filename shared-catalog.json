@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-18T05:33:26Z",
+  "generated": "2026-05-18T18:00:06Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -352,6 +352,20 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/dispatches/trump-xi-strategic-stability.html",
+      "keywords": []
+    },
+    {
+      "slug": "warsh-fed-first-week",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "fiscal",
+      "dispatch_type": "daily",
+      "title": "Warsh's First Week: No Rate Cuts This Year, Possibly Ever Under Trump's Terms",
+      "standfirst": "Kevin Warsh took the helm of the Federal Reserve on May 15 inheriting inflation at 3.8% and oil near $115 — both created by the president who nominated him — making the rate cuts Trump expects structurally impossible to deliver.",
+      "date": "2026-05-18",
+      "date_display": "May 2026",
+      "url": "/dispatches/warsh-fed-first-week.html",
       "keywords": []
     },
     {
