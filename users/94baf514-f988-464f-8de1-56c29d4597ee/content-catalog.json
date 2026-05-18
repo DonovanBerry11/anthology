@@ -369,6 +369,20 @@
       "keywords": []
     },
     {
+      "slug": "trump-xi-summit-taiwan",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitical",
+      "dispatch_type": "daily",
+      "title": "After the Summit: Xi's Taiwan Red Line and the Contradictory Beijing Readouts",
+      "standfirst": "The Trump-Xi summit produced conflicting readouts: Xi's warning that mishandling Taiwan could lead to 'clashes and even conflicts' appeared in Chinese state media but not the White House summary — and the trade deliverables the US claimed remain unverified against Chinese sources.",
+      "date": "2026-05-18",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/dispatches/trump-xi-summit-taiwan.html",
+      "keywords": []
+    },
+    {
       "slug": "warsh-era-monetary-stakes",
       "type": "note",
       "section": "notes",
@@ -872,5 +886,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-18T18:00:27Z"
+  "generated": "2026-05-18T18:00:37Z"
 }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Trump-Xi summit in Beijing concluded with the two governments issuing readouts that only partially overlap — describing different agreements, different emphases, and in one critical instance, a di">
+  <title>After the Summit: Xi's Taiwan Red Line and the Contradictory Beijing Readouts — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>After the Summit: Xi's Taiwan Red Line and the Contradictory Beijing Readouts</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 18 May 2026, 1:00 PM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>The Trump-Xi summit in Beijing concluded with the two governments issuing readouts that only partially overlap — describing different agreements, different emphases, and in one critical instance, a different event. <a href="https://www.cnbc.com/2026/05/14/trump-xi-beijing-summit-trade-taiwan-ai-iran-rare-earths-tariffs.html">Xi Jinping's explicit warning</a> that mishandling Taiwan would put the US-China relationship "in great jeopardy" and could lead to "clashes and even conflicts" was prominently featured in Chinese state media readouts; the White House's summary of the meeting did not mention Taiwan at all.</p>
+<p>The trade deliverables show a similar asymmetry. The US readout specified: 200 Boeing 737 purchases (Beijing's first commercial aircraft order from Boeing since 2017), <a href="https://www.cnbc.com/2026/05/18/us-china-announce-deals-after-trump-xi-summit.html">$17 billion annually in US agricultural goods through 2028</a>, and Chinese commitments to address rare earth supply restrictions affecting US industry. The Chinese Commerce Ministry's statement noted the aircraft purchase in general terms, did not confirm an agricultural dollar figure, did not mention soybeans or rare earths, and added that the US would reduce tariffs — a concession the White House statement did not mention. A <a href="https://www.cnn.com/2026/05/18/china/xi-trump-trade-agreements-china-visit-intl-hnk">CNN analysis</a> found that the most concrete deliverable is the Boeing agreement; the agricultural and rare earth commitments remain unverified against Chinese sources as of May 18.</p>
+<p>Trump characterised the summit as producing "fantastic trade deals." The Atlantic Council's assessment described the outcome as <a href="https://www.atlanticcouncil.org/dispatches/wheres-the-beef-trumps-underwhelming-meeting-with-xi/">"underwhelming,"</a> noting that the substantive gaps between the two readouts reflect the actual state of negotiations rather than diplomatic miscommunication. A proposed "board of trade" to facilitate ongoing bilateral discussions appears in both readouts, and both sides confirmed agreement on promoting agricultural trade — the areas of genuine overlap are narrow.</p>
+<p>The Taiwan divergence is the most significant asymmetry. Xi's warning was delivered in plenary session, making it a formal statement of Chinese policy rather than a private communication. Its absence from the White House readout does not diminish its significance — it signals the limits of what Trump was willing to absorb publicly from the meeting and the degree to which the two governments are framing the same summit for different domestic audiences.</p>
+<p>The next scheduled diplomatic contact is a planned meeting of the proposed board of trade in the coming weeks. Whether the rare earth and agricultural commitments generate Chinese follow-through — or whether they remain at the level of general intent — will determine whether the summit is read as a substantive reset or a managed appearance.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "trump-xi-summit-taiwan";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
