@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The US-led deterrence posture in the Taiwan Strait — carrier strike groups, arms sales, security commitments, and the studied ambiguity of official US policy — is calibrated for a threat that is not t">
+  <title>What Deterrence Doesn't Reach — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>What Deterrence Doesn't Reach</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 18 May 2026, 1:08 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The US-led deterrence posture in the Taiwan Strait — carrier strike groups, arms sales, security commitments, and the studied ambiguity of official US policy — is calibrated for a threat that is not the primary threat. China's actual theory of success in Taiwan is not military conquest requiring a beach landing. It is political attrition: sustained economic pressure, disinformation, diplomatic isolation, and the exploitation of democratic institutions until Taiwan's own political processes generate accommodation. The deterrence architecture addresses none of these vectors. It is, in a precise sense, an answer to the wrong question.</p>
+<p>The asymmetry runs deeper than a mismatch between tools and targets. Democratic political systems are structurally more vulnerable to coercive attrition than authoritarian ones — public opinion shifts under economic pressure; factions within elected governments can be cultivated; institutions can be slow-walked into accommodation without any single decision that looks like capitulation. An authoritarian government conducting the attrition does not face the same vulnerabilities. The deterrence framework has no mechanism for this structural difference because it was designed around the problem of military deterrence, which presupposes that the threat is a discrete, visible act that can be met with a proportionate counter-threat. Attrition is not discrete and not visible. It is the accumulation of conditions.</p>
+<p>The stakes asymmetry makes this worse. Taiwan's continued de facto independence is existential to the Chinese Communist Party's legitimacy narrative — it is the living refutation of the claim that Chinese sovereignty is singular and complete. For the United States, Taiwan matters strategically and commercially, but it is not existential. This asymmetry of stakes is known to both parties, and it means that China can sustain a long attrition campaign at a cost the US cannot match with a commitment to intervene militarily. The <a href="https://warontherocks.com/2026/02/deterrence-wont-fail-in-the-taiwan-strait-it-will-be-bypassed/">War on the Rocks analysis</a> published in February put it precisely: deterrence in the Taiwan Strait will not fail. It will be bypassed.</p>
+<p>The semiconductor dependency adds a further complication that military deterrence cannot resolve. Taiwan produces approximately 60% of advanced logic chips, including nearly all of the leading-edge nodes below 3nm. The US and its allies have spent five years building alternative supply through the CHIPS Act and allied programmes, but the buildout is years from closing the gap. This means that complete decoupling from Taiwan's production base is economically self-destructive for the US, and Beijing has leverage — the threat of disrupting chip supply — that no carrier group neutralises. A strategy adequate to the actual threat would address political resilience in Taiwan's democratic institutions, economic diversification away from Chinese market dependency, and the information environment that Beijing has spent a decade shaping. The current strategy addresses the threat that carrier groups are useful against. That is a different threat entirely.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "what-deterrence-doesnt-reach";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

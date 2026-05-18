@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-18T18:07:25Z",
+  "generated": "2026-05-18T18:08:57Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -434,6 +434,19 @@
       "date": "2026-05-18",
       "date_display": "May 2026",
       "url": "/notes/the-knowledge-state-liquidation.html",
+      "keywords": []
+    },
+    {
+      "slug": "what-deterrence-doesnt-reach",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "geopolitical",
+      "title": "What Deterrence Doesn't Reach",
+      "standfirst": "The US deterrence posture in the Taiwan Strait addresses the threat of military invasion — China's actual strategy is political attrition through economic pressure, disinformation, and democratic exploitation, none of which carrier groups can counter.",
+      "date": "2026-05-18",
+      "date_display": "May 2026",
+      "url": "/notes/what-deterrence-doesnt-reach.html",
       "keywords": []
     },
     {
