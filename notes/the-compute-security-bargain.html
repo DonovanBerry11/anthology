@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The $2.5 trillion in US technology investment committed by Saudi Arabia, the UAE, and Qatar since Trump's Gulf tour — Humain's [$10 billion Google partnership](https://www.csis.org/analysis/if-compute">
+  <title>The Compute-Security Bargain — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--note">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Note</div>
+    <h1>The Compute-Security Bargain</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 18 May 2026, 1:09 PM EST</div>
+  </header>
+
+  <article class="note-body">
+<p>The $2.5 trillion in US technology investment committed by Saudi Arabia, the UAE, and Qatar since Trump's Gulf tour — Humain's <a href="https://www.csis.org/analysis/if-compute-new-oil-war-gulf-significantly-raises-stakes">$10 billion Google partnership</a>, the UAE's $50 billion AI infrastructure pledge, Saudi Arabia's $40 billion Humain fund — is covered as a technology story about sovereign AI ambitions and as a business story about hyperscale data centres. It is neither. The Gulf states are buying protection, using the same logic that structured petrodollar recycling in the 1970s. The difference is that the new bargain contains a flaw the original did not, and the 2026 Iran war has exposed it.</p>
+<p>Petrodollar recycling worked like this: Gulf oil revenues were channelled into US Treasuries and defence procurement contracts, converting resource wealth into claims on the US financial and military system. The security guarantee the US provided in return was expensive to maintain but not contingent on any particular asset remaining intact — Treasuries do not burn and arms contracts do not require a specific geographic location to retain their value. The protection logic was robust because the collateral was liquid and mobile.</p>
+<p>Compute infrastructure is not liquid or mobile. A $20 billion hyperscale data centre — the kind being built now in Riyadh and Abu Dhabi to anchor sovereign AI capacity — is a fixed, physical asset with a specific geographic footprint. In April, Iranian drone strikes demonstrated the ability to reach Gulf territory at low cost with high accuracy. The CSIS assessment of the Hormuz conflict noted that Gulf AI infrastructure now sits inside the threat perimeter that the security guarantee is supposed to protect against. The assets the Gulf is using to purchase protection are among the first assets that would be destroyed if protection failed. Petrodollars held their value in a crisis; data centres do not survive one.</p>
+<p>The leverage distribution also runs differently from the original bargain. In the 1970s, the US needed Gulf oil — the dependency was mutual and the bargain reflected it. Today, Gulf AI ambitions require Nvidia's advanced chips, US hyperscaler infrastructure, and access to US capital markets, while the US has no comparable dependency on Gulf compute capacity. The Gulf states need the relationship to proceed; the US can impose costs on Gulf AI programmes — through export controls, chip allocation priorities, or cloud access restrictions — without facing equivalent exposure. This asymmetry does not make the bargain irrational from the Gulf's perspective. It makes it fragile. The security logic requires the US to value the relationship enough to bear costs to sustain it. Whether $2.5 trillion in data centres creates that obligation more reliably than $2.5 trillion in Treasuries did is the question that no one involved in signing these agreements appears to have asked.</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "the-compute-security-bargain";
+  const PIECE_TYPE = "note";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -422,6 +422,19 @@
       "keywords": []
     },
     {
+      "slug": "the-compute-security-bargain",
+      "type": "note",
+      "section": "notes",
+      "domain": "global",
+      "sector": "geopolitical",
+      "title": "The Compute-Security Bargain",
+      "standfirst": "The $2.5 trillion in Gulf AI investment is not a technology pivot — it replicates the petrodollar security bargain, with compute capital substituting for oil revenues; but Treasuries held their value in a crisis, and a $20 billion data centre in a drone-strike zone does not.",
+      "date": "2026-05-18",
+      "date_display": "May 2026",
+      "url": "/users/94baf514-f988-464f-8de1-56c29d4597ee/notes/the-compute-security-bargain.html",
+      "keywords": []
+    },
+    {
       "slug": "warsh-era-monetary-stakes",
       "type": "note",
       "section": "notes",
@@ -925,5 +938,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-18T18:08:57Z"
+  "generated": "2026-05-18T18:09:39Z"
 }
