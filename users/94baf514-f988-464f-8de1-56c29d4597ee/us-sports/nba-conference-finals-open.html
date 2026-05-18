@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The 2026 Western Conference Finals open Monday night at Paycom Center in Oklahoma City (8:30 p.m.">
+  <title>NBA Conference Finals Open: Thunder-Spurs Game 1, Cavs Advance to Face Knicks — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">NBA</div>
+    <h1>NBA Conference Finals Open: Thunder-Spurs Game 1, Cavs Advance to Face Knicks</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 18 May 2026, 1:02 PM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>The 2026 Western Conference Finals open Monday night at Paycom Center in Oklahoma City (8:30 p.m. ET, NBC/Peacock). The <a href="https://www.nba.com/playoffs/2026/west-final">Oklahoma City Thunder</a> enter at 10-0 — the best two-round playoff record in franchise history — having swept the first two rounds without a loss. Shai Gilgeous-Alexander, who <a href="https://www.espn.com/nba/story/_/id/48551947/2026-nba-mvp-nikola-jokic-shai-gilgeous-alexander-victor-wembanyama">won his second consecutive NBA MVP award</a> on Sunday, leads the Thunder into the matchup that has defined the Western bracket since November: SGA versus Victor Wembanyama.</p>
+<p>The <a href="https://www.aljazeera.com/sports/2026/5/16/wembanyamas-spurs-reach-western-finals-pistons-stay-alive-in-nba-playoffs">San Antonio Spurs</a> reach the Conference Finals for the first time since 2005 after eliminating the Minnesota Timberwolves in six games, capped by a 139-109 road win in Game 6. Wembanyama — the unanimous <a href="https://www.espn.com/nba/story/_/id/48551947/2026-nba-mvp-nikola-jokic-shai-gilgeous-alexander-victor-wembanyama">Defensive Player of the Year</a> and the youngest ever to claim the award — recorded 19 points, 6 rebounds, and 3 blocks in the closeout. He is the central figure in the most anticipated individual matchup of the postseason.</p>
+<p>Sunday night's Game 7 in Detroit was decisive: the <a href="https://www.espn.com/nba/recap?gameId=401871339">Cleveland Cavaliers defeated the Pistons 125-94</a>, ending Detroit's breakthrough playoff run. Jarrett Allen scored 23 points; Sam Merrill added 23; Evan Mobley contributed 21 points and 12 rebounds. The margin — 31 points — reflected Cleveland's ability to lock in when elimination arrived.</p>
+<p>The Cavaliers now face the <a href="https://www.nba.com/news/2026-nba-playoffs-series-preview-knicks-cavs">New York Knicks</a> in the Eastern Conference Finals, Game 1 on Tuesday (8 p.m. ET, ESPN). The Knicks have been dominant through two rounds: a 4-2 first-round win over Atlanta, then a sweep of Philadelphia in which New York outscored the Sixers by an average of 19.4 points — the best differential through two rounds in the 43-year history of the 16-team playoff format. The Knicks have won 10 straight playoff games and are pursuing the franchise's first championship since 1973.</p>
+<ul class="dispatch-list-items">
+      <li><strong>West Game 1:</strong> Spurs at Thunder — Monday, May 18, 8:30 p.m. ET (NBC/Peacock)</li>
+      <li><strong>East Game 1:</strong> Cavaliers at Knicks — Tuesday, May 19, 8 p.m. ET (ESPN)</li>
+      <li><strong>West Game 2:</strong> Spurs at Thunder — Wednesday, May 20 (TNT)</li>
+      <li><strong>East Game 2:</strong> Cavaliers at Knicks — Thursday, May 21 (ESPN)</li>
+    </ul>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "nba-conference-finals-open";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

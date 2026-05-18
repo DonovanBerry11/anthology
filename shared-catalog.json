@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-18T18:00:37Z",
+  "generated": "2026-05-18T18:02:18Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -408,6 +408,19 @@
       "date": "2026-05-18",
       "date_display": "May 2026",
       "url": "/dispatches/trump-xi-summit-taiwan.html",
+      "keywords": []
+    },
+    {
+      "slug": "nba-conference-finals-open",
+      "type": "briefing",
+      "section": "us-sports",
+      "domain": "us-sports",
+      "sector": "nba",
+      "title": "NBA Conference Finals Open: Thunder-Spurs Game 1, Cavs Advance to Face Knicks",
+      "standfirst": "The Cleveland Cavaliers blew out Detroit 125-94 in Game 7 to reach the Eastern Conference Finals against the Knicks; in the West, Wembanyama's Spurs face the 10-0 Thunder in Game 1 tonight.",
+      "date": "2026-05-18",
+      "date_display": "May 2026",
+      "url": "/us-sports/nba-conference-finals-open.html",
       "keywords": []
     },
     {
