@@ -15,6 +15,20 @@
       "keywords": []
     },
     {
+      "slug": "six-state-primary-day",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Six-State Primary Day",
+      "standfirst": "Voters in Alabama, Georgia, Idaho, Kentucky, Oregon and Pennsylvania go to the polls May 19 in the first multi-state primary day since Louisiana v. Callais, with Shapiro-endorsed Democrats in three Pennsylvania districts, a Trumpless Georgia GOP Senate scrum, and Trump-backed Ed Gallrein leading Thomas Massie in KY-4 polling.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/users/9ebc1835-377b-49e8-864e-0277a5b59be2/dispatches/six-state-primary-day.html",
+      "keywords": []
+    },
+    {
       "slug": "warsh-fed-independence-note",
       "type": "note",
       "section": "notes",
@@ -94,5 +108,5 @@
       "keywords": []
     }
   ],
-  "generated": "2026-05-18T05:33:26Z"
+  "generated": "2026-05-19T05:37:19Z"
 }

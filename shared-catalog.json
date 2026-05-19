@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-19T05:22:48Z",
+  "generated": "2026-05-19T05:37:19Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -366,6 +366,20 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/dispatches/global-bond-rout-may18.html",
+      "keywords": []
+    },
+    {
+      "slug": "six-state-primary-day",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Six-State Primary Day",
+      "standfirst": "Voters in Alabama, Georgia, Idaho, Kentucky, Oregon and Pennsylvania go to the polls May 19 in the first multi-state primary day since Louisiana v. Callais, with Shapiro-endorsed Democrats in three Pennsylvania districts, a Trumpless Georgia GOP Senate scrum, and Trump-backed Ed Gallrein leading Thomas Massie in KY-4 polling.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/dispatches/six-state-primary-day.html",
       "keywords": []
     },
     {

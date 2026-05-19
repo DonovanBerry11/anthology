@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Voters in [Alabama, Georgia, Idaho, Kentucky, Oregon and Pennsylvania](https://www.npr.org/2026/05/18/g-s1-122235/primary-day-alabama-georgia-idaho-kentucky-oregon-pennsylvania) go to the polls Tuesda">
+  <title>Six-State Primary Day — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Six-State Primary Day</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 19 May 2026, 12:37 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>Voters in <a href="https://www.npr.org/2026/05/18/g-s1-122235/primary-day-alabama-georgia-idaho-kentucky-oregon-pennsylvania">Alabama, Georgia, Idaho, Kentucky, Oregon and Pennsylvania</a> go to the polls Tuesday, May 19, in the first multi-state primary day since <em>Louisiana v. Callais</em>. In Pennsylvania, Governor Josh Shapiro has <a href="https://www.spotlightpa.org/news/2026/05/pennsylvania-primary-elections-2026-house-congress/">endorsed</a> Bob Harvie in PA-1 against Brian Fitzpatrick, firefighter union president Bob Brooks in a four-way PA-7 primary, and 2024 nominee Janelle Stelson in PA-10 against Scott Perry. Georgia's Republican Senate primary — Buddy Carter, Mike Collins, <a href="https://time.com/article/2026/05/18/georgia-republicans-brace-for-bruising-senate-runoff-in-key-2026-battleground/">Kemp-backed</a> Derek Dooley, plus two others — has no Trump endorsement, with a <a href="https://ballotpedia.org/United_States_Senate_election_in_Georgia,_2026">June 16 runoff</a> if no one clears 50 percent; Jon Ossoff is unopposed. Senator Jim Risch and Governor Brad Little face crowded but <a href="https://idahocapitalsun.com/2026/05/08/three-candidates-challenge-risch-in-republican-primary-election-for-u-s-senate/">under-funded</a> Idaho fields. In KY-4, Thomas Massie trails Trump-endorsed Ed Gallrein 53-45 in a <a href="https://www.wcpo.com/news/northern-kentucky/new-poll-shows-gallrein-overtaking-massie-in-gop-primary">Quantus Insights poll</a>. Polls close 6 p.m. local in Kentucky, 7 p.m. in Alabama and Georgia, 8 p.m. in Idaho and Pennsylvania; Oregon ballots due by 8 p.m.</p>
+<p>[Read more →]</p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "six-state-primary-day";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>
