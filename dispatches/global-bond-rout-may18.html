@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Long-dated government bond yields rose in lockstep across Tokyo, London, New York and Frankfurt on Monday as [Brent crude pushed above $111 a barrel](https://discoveryalert.com.au/brent-breaks-111-oil">
+  <title>Global Bond Rout Deepens as JGBs, Treasuries and Bunds Sell Off in Lockstep — Anthology</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page--dispatch">
+
+<div class="container">
+
+  <header class="essay-page-header">
+    <a class="essay-page-header__back" href="/">← Anthology</a>
+    <div class="essay-page-header__pub">Daily Dispatch</div>
+    <h1>Global Bond Rout Deepens as JGBs, Treasuries and Bunds Sell Off in Lockstep</h1>
+    <div class="essay-page-header__meta">May 2026 &middot; Published 19 May 2026, 12:22 AM EST</div>
+  </header>
+
+  <article class="dispatch-body">
+<p>Long-dated government bond yields rose in lockstep across Tokyo, London, New York and Frankfurt on Monday as <a href="https://discoveryalert.com.au/brent-breaks-111-oil-shortages-hormuz-supply-shock-2026/">Brent crude pushed above $111 a barrel</a> earlier in the session on the Hormuz closure, before retracing on US sanctions-waiver reports. Japan's <a href="https://en.bloomingbit.io/feed/news/112310">30-year JGB yield reached a record near 4.20 percent</a>, the highest since the tenor was first issued in 1999; the <a href="https://www.nippon.com/en/news/yjj2026051800204/">10-year hit 2.78 percent</a>, a new 29-year high.</p>
+<p>In the US, the 10-year Treasury <a href="https://tradingeconomics.com/united-states/government-bond-yield">touched 4.6 percent</a> and the 30-year <a href="https://www.bloomberg.com/news/articles/2026-05-13/treasury-buyers-get-5-long-bond-rate-for-first-time-since-2007">cleared 5 percent at auction on May 13</a> for the first time since 2007. UK 10-year gilts hit their highest since 2008; Germany's <a href="https://tradingeconomics.com/germany/government-bond-yield">Bund reached 3.19 percent</a>, a 15-year high. Treasury earlier this month <a href="https://home.treasury.gov/news/press-releases/sb0485">revised its Q2 borrowing estimate to $189bn</a>, $79bn above the February projection. The next FOMC meets June 16–17, the <a href="https://www.cnbc.com/2026/05/13/kevin-warsh-wins-senate-confirmation-as-the-next-federal-reserve-chair.html">first under chair Kevin Warsh</a>.</p>
+<p><a href="#">Read more →</a></p>
+  </article>
+
+  <footer class="site-footer">
+    <p>Anthology &copy; 2026</p>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth/auth.js"></script>
+<script>
+// ── Reading engagement tracker ────────────────────────────────────────────
+// Records scroll depth and time-on-page to Supabase reading_events table.
+// Requires: reading_events(user_id uuid, piece_slug text, piece_type text,
+//           read_depth_percent int, time_on_page_seconds int, created_at timestamptz)
+(function() {
+  const PIECE_SLUG = "global-bond-rout-may18";
+  const PIECE_TYPE = "dispatch";
+  const startTime  = Date.now();
+  let maxDepth     = 0;
+  let recorded50   = false;
+
+  function getDepth() {
+    const el  = document.documentElement;
+    const top = el.scrollTop || document.body.scrollTop;
+    const h   = el.scrollHeight - el.clientHeight;
+    return h > 0 ? Math.round((top / h) * 100) : 100;
+  }
+
+  async function record(depth) {
+    try {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+      const secs = Math.round((Date.now() - startTime) / 1000);
+      await _supabase.from('reading_events').insert({
+        user_id: session.user.id,
+        piece_slug: PIECE_SLUG,
+        piece_type: PIECE_TYPE,
+        read_depth_percent: depth,
+        time_on_page_seconds: secs
+      });
+    } catch(e) { /* non-blocking */ }
+  }
+
+  window.addEventListener('scroll', function() {
+    const d = getDepth();
+    if (d > maxDepth) maxDepth = d;
+    if (!recorded50 && maxDepth >= 50) { recorded50 = true; record(50); }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', function() {
+    record(maxDepth);
+  });
+})();
+</script>
+
+</body>
+</html>

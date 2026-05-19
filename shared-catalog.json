@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-18T18:09:39Z",
+  "generated": "2026-05-19T05:22:48Z",
   "pieces": [
     {
       "slug": "the-permanent-deficit",
@@ -352,6 +352,20 @@
       "date": "May 2026",
       "date_display": "May 2026",
       "url": "/dispatches/trump-xi-strategic-stability.html",
+      "keywords": []
+    },
+    {
+      "slug": "global-bond-rout-may18",
+      "type": "dispatch",
+      "section": "dispatches",
+      "domain": "global",
+      "sector": "geopolitics",
+      "dispatch_type": "daily",
+      "title": "Global Bond Rout Deepens as JGBs, Treasuries and Bunds Sell Off in Lockstep",
+      "standfirst": "Long-dated yields hit multi-decade highs from Tokyo to Frankfurt on May 18 as Brent crude topped $111 on the Hormuz closure and US Treasury supply pressure mounted.",
+      "date": "May 2026",
+      "date_display": "May 2026",
+      "url": "/dispatches/global-bond-rout-may18.html",
       "keywords": []
     },
     {
